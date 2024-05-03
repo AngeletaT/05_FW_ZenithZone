@@ -1,0 +1,44 @@
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top d-flex align-items-center">
+	<div class="container d-flex justify-content-between align-items-center">
+		<div class="logo">
+			<!-- <h1 class="text-light"><a href="index.php"><span>ZenithZone</span></a></h1> -->
+			<!-- Uncomment below if you prefer to use an image logo -->
+			<a href="index.php"><img src="view/img/logo/LogoZZWhite.png" alt="" class="img-fluid" /></a>
+			<a href="index.php"><img src="view/img/logo/LogoREWhite.png" alt="" class="img-fluid" /></a>
+		</div>
+
+		<div class="searchzone">
+			<form class="d-flex">
+				<select class="form-control me-2 d-flex selectsearch" id="search_type"></select>
+				<select class="form-control me-2 d-flex selectsearch" id="search_activity"></select>
+				<input
+					class="form-control me-2 textsearch"
+					id="search_text"
+					type="search"
+					placeholder="Search"
+					aria-label="Search" />
+				<div id="search_auto"></div>
+				<button class="btn btn-outline-success searchbutton" id="search_button" type="button">
+					<i class="fa-solid fa-magnifying-glass"></i>
+				</button>
+			</form>
+		</div>
+		<nav id="navbar" class="navbar">
+			<ul>
+				<!-- <li><a class="active" href="index.php">Home</a></li> -->
+				<li><a class="active" href="index.php?page=controller_shop&op=list">Shop &nbsp;&nbsp;&nbsp;</a></li>
+				<li>
+					<a class="active" id="useravatar" href="index.php?page=login&op=list"
+						><img class="useravatar avatar" src="" alt="UserAvatar"
+					/></a>
+				</li>
+				<li>
+					<a class="loginbutton" href="index.php?page=login&op=list">Login</a>
+				</li>
+			</ul>
+		</nav>
+		<!-- .navbar -->
+	</div>
+</header>
+<!-- End Header -->
