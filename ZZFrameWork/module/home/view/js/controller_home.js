@@ -1,7 +1,8 @@
 function carrousel_Act() {
-	ajaxPromise("module/home/controller/controller_prop.php?op=carrouselAct", "GET", "JSON")
+	ajaxPromise("index.php?module=home&op=carrouselAct", "GET", "JSON")
 		.then(function (data) {
-			// console.log(data)
+			console.log(data)
+			return
 			for (row in data) {
 				$("<div></div>")
 					.addClass(`swiper-slide`)
@@ -35,30 +36,31 @@ function carrousel_Act() {
 }
 
 function loadCategory() {
-	// console.log("hola");
-	ajaxPromise("module/home/controller/controller_prop.php?op=listCategory", "GET", "JSON")
-		.then(function (data) {
-			// console.log("HOLA");
-			for (row in data) {
-				$("<div></div>")
-					.attr("class", "col-md-2 mx-auto")
-					.attr({id: data[row].name_cat})
-					.appendTo("#containerCategories")
-					.html(
-						`<div class="article-card" id="${data[row].code_cat}">
-							<div class="content">
-								<p class="title">${data[row].name_cat}</p>
-							</div>
-							<img src="${data[row].img_cat}" alt="article-cover"/>
-						</div>`
-					)
-			}
-		})
-		.catch(function () {
-			console.log("error")
-			window.location.href = "index.php?page=503"
-			// module=ctrl_exceptions&op=503&type=503&lugar=Type_Categories HOME";
-		})
+	// console.log("hola")
+	// ajaxPromise(friendlyURL("?module=home&op=listCategory"), "GET", "JSON")
+	// 	.then(function (data) {
+	// 		console.log(data)
+	// 		return
+	// 		// for (row in data) {
+	// 		// 	$("<div></div>")
+	// 		// 		.attr("class", "col-md-2 mx-auto")
+	// 		// 		.attr({id: data[row].name_cat})
+	// 		// 		.appendTo("#containerCategories")
+	// 		// 		.html(
+	// 		// 			`<div class="article-card" id="${data[row].code_cat}">
+	// 		// 				<div class="content">
+	// 		// 					<p class="title">${data[row].name_cat}</p>
+	// 		// 				</div>
+	// 		// 				<img src="${data[row].img_cat}" alt="article-cover"/>
+	// 		// 			</div>`
+	// 		// 		)
+	// 		// }
+	// 	})
+	// 	.catch(function () {
+	// 		console.log(error)
+	// 		// window.location.href = "index.php?page=503"
+	// 		// module=ctrl_exceptions&op=503&type=503&lugar=Type_Categories HOME";
+	// 	})
 }
 
 function loadCity() {
@@ -330,12 +332,13 @@ function clicks() {
 }
 
 $(document).ready(function () {
+	// console.log("ready")
 	carrousel_Act()
-	loadCategory()
-	loadCity()
-	loadSuggest()
-	loadType()
-	loadLastvisit()
-	carrousel_Extra()
-	clicks()
+	// loadCategory()
+	// loadCity()
+	// loadSuggest()
+	// loadType()
+	// loadLastvisit()
+	// carrousel_Extra()
+	// clicks()
 })

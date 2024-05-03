@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<functions>
+    <function>
+        <name>view</name>
+        <uri>view</uri>
+    </function>
+    <function>
+        <name>carrouselAct</name>
+        <uri>carrouselAct</uri>
+    </function>
+    <!-- <function>
+        <name>listCategory</name>
+        <uri>listCategory</uri>
+    </function>
+    <function>
+        <name>listCity</name>
+        <uri>listCity</uri>
+    </function>
+    <function>
+        <name>listType</name>
+        <uri>listType</uri>
+    </function>
+    <function>
+        <name>listExtra</name>
+        <uri>listExtra</uri>
+    </function>
+    <function>
+        <name>listSuggest</name>
+        <uri>listSuggest</uri>
+    </function>
+    <function>
+        <name>listlastvisit</name>
+        <uri>listlastvisit</uri>
+    </function> -->
+</functions>

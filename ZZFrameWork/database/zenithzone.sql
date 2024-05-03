@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-04-2024 a las 22:45:28
+-- Tiempo de generación: 19-04-2024 a las 19:28:41
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,36 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `zenithzone`
 --
-
-DELIMITER $$
---
--- Procedimientos
---
-CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateLikes` (IN `p_user_name` VARCHAR(20), IN `p_code_prop` INT)   BEGIN
-    DECLARE v_exists INT;
-
-    SELECT COUNT(*) INTO v_exists
-    FROM likes
-    WHERE username = p_user_name AND code_prop = p_code_prop;
-
-    IF v_exists = 0 THEN
-        INSERT INTO likes(username, code_prop)
-        VALUES (p_user_name, p_code_prop);
-
-        UPDATE property
-        SET likes = likes + 1
-        WHERE code_prop = p_code_prop;
-    ELSE
-        DELETE FROM likes
-        WHERE username = p_user_name AND code_prop = p_code_prop;
-
-        UPDATE property
-        SET likes = likes - 1
-        WHERE code_prop = p_code_prop;
-    END IF;
-END$$
-
-DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -222,6 +192,7 @@ INSERT INTO `images` (`code_img`, `code_prop`, `img_prop`) VALUES
 (43, 9, 'view/img/property/prop9.3.webp'),
 (44, 9, 'view/img/property/prop9.4.webp'),
 (45, 9, 'view/img/property/prop9.5.webp'),
+
 (46, 10, 'view/img/property/prop10.1.webp'),
 (47, 10, 'view/img/property/prop10.2.webp'),
 (48, 10, 'view/img/property/prop10.3.webp'),
@@ -278,27 +249,8 @@ INSERT INTO `images` (`code_img`, `code_prop`, `img_prop`) VALUES
 (99, 20, 'view/img/property/prop20.4.webp'),
 (100, 20, 'view/img/property/prop20.5.webp');
 
--- --------------------------------------------------------
 
---
--- Estructura de tabla para la tabla `likes`
---
 
-CREATE TABLE `likes` (
-  `username` varchar(20) NOT NULL,
-  `code_prop` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `likes`
---
-
-INSERT INTO `likes` (`username`, `code_prop`) VALUES
-('Cain33', 1),
-('Cain33', 4),
-('Cain33', 5),
-('Salva32', 1),
-('Salva32', 6);
 
 -- --------------------------------------------------------
 
@@ -319,35 +271,23 @@ CREATE TABLE `property` (
   `code_city` int(11) DEFAULT NULL,
   `longitud` float NOT NULL,
   `latitud` float NOT NULL,
-  `last_visit` datetime DEFAULT NULL,
-  `likes` int(11) NOT NULL
+  `last_visit` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `property`
 --
 
-INSERT INTO `property` (`code_prop`, `ref_cat`, `name_prop`, `m2`, `rooms`, `baths`, `description`, `price`, `publication`, `code_city`, `longitud`, `latitud`, `last_visit`, `likes`) VALUES
-(1, '1235A', 'Spacious house with garden', 200, 4, 2, 'Enjoy the spaciousness of this 200m² house with 4 bedrooms and 2 baths, complemented by a serene garden, offering a perfect blend of comfort and tranquility', 300000, '2024-01-25', 1, -0.4063, 39.4946, '2024-04-24 20:18:05', 3),
-(2, '4567B', 'Cozy flat in the city center', 100, 2, 1, 'Nestled in the city center, this cozy 100m² flat boasts 2 bedrooms and 1 bath, promising urban convenience combined with warmth and charm.', 150000, '2024-01-25', 5, -5.9821, 37.3886, '2024-04-22 16:10:01', 1),
-(3, '8912C', 'Beautiful house with a view', 180, 3, 2, 'Revel in the beauty of this 180m² house, featuring 3 bedrooms and 2 baths, offering picturesque views that redefine the concept of home.', 250000, '2024-01-25', 2, -0.4838, 38.3452, '2024-04-19 19:09:03', 0),
-(4, '3456D', 'Large commercial space', 300, 0, 1, 'Embark on vast commercial ventures with this 300m² property, designed for expansive enterprises, promising ample space for your business aspirations.', 500000, '2024-01-25', 4, 2.1685, 41.3851, '2024-03-25 20:57:28', 1),
-(5, '6789E\r\n', 'Spacious land for development', 500, 0, 0, 'Unleash your development dreams on this 500m² expanse of land, offering endless possibilities and a canvas for your visionary projects.', 100000, '2024-01-25', 1, -0.3847, 39.5122, '2024-04-24 21:10:47', 1),
-(6, '5896F', 'Modern house with swimming pool', 220, 5, 3, 'Step into modern luxury with this 220m² house, boasting 5 bedrooms, 3 baths, and a refreshing swimming pool, promising an epitome of contemporary living.', 350000, '2024-01-25', 2, -0.5068, 38.3498, '2024-04-24 21:11:24', 1),
-(7, '1246G', 'Bright flat with balcony', 120, 2, 1, 'Illuminate your life in this bright 120m² flat, featuring 2 bedrooms and 1 bath, complemented by a charming balcony, offering a delightful urban retreat.', 180000, '2024-01-25', 3, -3.7038, 40.4168, NULL, 0),
-(8, '5789H', 'Commercial property with parking', 400, 0, 1, 'Unlock the potential of your business in this 400m² property, equipped with parking facilities, offering a strategic location for your commercial endeavors.', 600000, '2024-01-25', 4, 2.2049, 41.4168, NULL, 0),
-(9, '6485J', 'Spacious garage for multiple cars', 10, 0, 0, 'Safeguard your vehicles in this spacious 10m² garage, providing ample room for multiple cars, ensuring convenience and security for your prized possessions.', 25000, '2024-01-25', 5, -5.9651, 37.3814, '2024-04-19 20:01:11', 0),
-(10, 'ABC123', 'Modern Apartment with Sea View', 110, 3, 2, 'This modern apartment offers stunning sea views, with 3 bedrooms and 2 bathrooms, perfect for those seeking a coastal lifestyle.', 250000, '2024-04-19', 1, -0.4015, 39.4737, '2024-04-19 19:51:00', 0),
-(11, 'DEF456', 'Charming Villa with Pool', 250, 5, 3, 'Experience the charm of this villa with a private pool, featuring 5 bedrooms and 3 bathrooms, ideal for relaxation and entertainment.', 450000, '2024-04-19', 2, -0.4986, 38.3456, NULL, 0),
-(12, 'GHI789', 'Spacious Loft in the City', 150, 1, 1, 'This spacious loft in the heart of the city offers a unique living experience, with 1 bedroom and 1 bathroom, perfect for urban dwellers.', 180000, '2024-04-19', 3, -3.7025, 40.4144, NULL, 0),
-(13, 'JKL012', 'Luxury Penthouse with Terrace', 180, 4, 2, 'Indulge in luxury living with this penthouse boasting a spacious terrace, 4 bedrooms, and 2 bathrooms, offering panoramic city views.', 700000, '2024-04-19', 4, 2.1781, 41.3948, NULL, 0),
-(14, 'MNO345', 'Cozy Cottage in the Countryside', 120, 2, 1, 'Escape to the countryside in this cozy cottage, featuring 2 bedrooms and 1 bathroom, offering tranquility and nature just outside your door.', 120000, '2024-04-19', 5, -6.0123, 37.3971, NULL, 0),
-(15, 'PQR678', 'Commercial Space in Business District', 400, 0, 2, 'Invest in this commercial space located in the bustling business district, offering 400m² of opportunity for your entrepreneurial ventures.', 800000, '2024-04-19', 1, -0.4072, 39.4891, NULL, 0),
-(16, 'STU901', 'Renovated Townhouse with Garden', 180, 3, 2, 'Discover the charm of this renovated townhouse with a beautiful garden, featuring 3 bedrooms and 2 bathrooms, perfect for family living.', 320000, '2024-04-19', 2, -0.4903, 38.3558, NULL, 0),
-(17, 'VWX234', 'Industrial Warehouse with Office', 600, 0, 0, 'Unlock the potential of this industrial warehouse with an attached office space, offering 600m² of space for your business needs.', 550000, '2024-04-19', 3, -3.7045, 40.4158, NULL, 0),
-(18, 'YZA567', 'Rustic Farmhouse with Vineyard', 300, 4, 3, 'Experience rustic living in this farmhouse surrounded by vineyards, boasting 4 bedrooms and 3 bathrooms, perfect for wine enthusiasts.', 400000, '2024-04-19', 4, 2.1859, 41.3845, NULL, 0),
-(19, 'BCD890', 'Secluded Retreat in the Mountains', 200, 3, 2, 'Escape to this secluded retreat nestled in the mountains, offering 3 bedrooms and 2 bathrooms, ideal for those seeking serenity and nature.', 280000, '2024-04-19', 5, -6.0021, 37.4035, NULL, 0),
-(20, 'EFG123', 'Elegant Townhouse with Rooftop Terrace', 160, 3, 2, 'Step into elegance with this townhouse featuring a rooftop terrace, 3 bedrooms, and 2 bathrooms, offering sophistication and style.', 380000, '2024-04-19', 1, -0.4138, 39.4982, NULL, 0);
+INSERT INTO `property` (`code_prop`, `ref_cat`, `name_prop`, `m2`, `rooms`, `baths`, `description`, `price`, `publication`, `code_city`, `longitud`, `latitud`, `last_visit`) VALUES
+(1, '1235A', 'Spacious house with garden', 200, 4, 2, 'Enjoy the spaciousness of this 200m² house with 4 bedrooms and 2 baths, complemented by a serene garden, offering a perfect blend of comfort and tranquility', 300000, '2024-01-25', 1, -0.4063, 39.4946, '2024-04-19 19:07:49'),
+(2, '4567B', 'Cozy flat in the city center', 100, 2, 1, 'Nestled in the city center, this cozy 100m² flat boasts 2 bedrooms and 1 bath, promising urban convenience combined with warmth and charm.', 150000, '2024-01-25', 5, -5.9821, 37.3886, '2024-04-19 19:08:31'),
+(3, '8912C', 'Beautiful house with a view', 180, 3, 2, 'Revel in the beauty of this 180m² house, featuring 3 bedrooms and 2 baths, offering picturesque views that redefine the concept of home.', 250000, '2024-01-25', 2, -0.4838, 38.3452, '2024-04-19 19:09:03'),
+(4, '3456D', 'Large commercial space', 300, 0, 1, 'Embark on vast commercial ventures with this 300m² property, designed for expansive enterprises, promising ample space for your business aspirations.', 500000, '2024-01-25', 4, 2.1685, 41.3851, '2024-03-25 20:57:28'),
+(5, '6789E\r\n', 'Spacious land for development', 500, 0, 0, 'Unleash your development dreams on this 500m² expanse of land, offering endless possibilities and a canvas for your visionary projects.', 100000, '2024-01-25', 1, -0.3847, 39.5122, '2024-03-25 21:13:13'),
+(6, '5896F', 'Modern house with swimming pool', 220, 5, 3, 'Step into modern luxury with this 220m² house, boasting 5 bedrooms, 3 baths, and a refreshing swimming pool, promising an epitome of contemporary living.', 350000, '2024-01-25', 2, -0.5068, 38.3498, '2024-04-09 18:50:30'),
+(7, '1246G', 'Bright flat with balcony', 120, 2, 1, 'Illuminate your life in this bright 120m² flat, featuring 2 bedrooms and 1 bath, complemented by a charming balcony, offering a delightful urban retreat.', 180000, '2024-01-25', 3, -3.7038, 40.4168, NULL),
+(8, '5789H', 'Commercial property with parking', 400, 0, 1, 'Unlock the potential of your business in this 400m² property, equipped with parking facilities, offering a strategic location for your commercial endeavors.', 600000, '2024-01-25', 4, 2.2049, 41.4168, NULL),
+(9, '6485J', 'Spacious garage for multiple cars', 10, 0, 0, 'Safeguard your vehicles in this spacious 10m² garage, providing ample room for multiple cars, ensuring convenience and security for your prized possessions.', 25000, '2024-01-25', 5, -5.9651, 37.3814, '2024-03-25 21:44:18');
 
 -- --------------------------------------------------------
 
@@ -564,15 +504,54 @@ CREATE TABLE `visited` (
 --
 
 INSERT INTO `visited` (`code_visit`, `code_prop`, `visits`) VALUES
-(1, 1, 53),
-(2, 2, 58),
+(1, 1, 38),
+(2, 2, 49),
 (3, 3, 8),
 (4, 4, 1),
-(5, 5, 17),
-(6, 6, 4),
+(5, 5, 3),
+(6, 6, 2),
 (7, 7, 0),
 (8, 8, 0),
-(9, 9, 10);
+(9, 9, 9);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `likes`
+--
+
+CREATE TABLE `likes` (
+  `code_like` int(11) NOT NULL,
+  `code_user` int(11) NOT NULL,
+  `code_prop` int(11) NOT NULL,
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `likes`
+--
+
+INSERT INTO `likes` (`code_like`, `code_user`, `code_prop`) VALUES
+(1, 1, 1),
+(2, 2, 2),
+(3, 3, 3),
+(4, 4, 4),
+(5, 5, 5),
+(6, 6, 6),
+(7, 1, 7),
+(8, 2, 8),
+(9, 3, 9),
+(10, 4, 10),
+(11, 5, 11),
+(12, 6, 12),
+(13, 1, 13),
+(14, 2, 14),
+(15, 3, 15),
+(16, 4, 16),
+(17, 5, 17),
+(18, 6, 18),
+(19, 1, 19),
+(20, 2, 20);
+
 
 --
 -- Índices para tablas volcadas
@@ -609,15 +588,6 @@ ALTER TABLE `extra`
 ALTER TABLE `images`
   ADD PRIMARY KEY (`code_img`),
   ADD KEY `code_prop` (`code_prop`);
-
---
--- Indices de la tabla `likes`
---
-ALTER TABLE `likes`
-  ADD PRIMARY KEY (`username`,`code_prop`),
-  ADD KEY `code_user` (`username`),
-  ADD KEY `code_prop` (`code_prop`),
-  ADD KEY `code_user_2` (`username`,`code_prop`);
 
 --
 -- Indices de la tabla `property`
@@ -675,6 +645,15 @@ ALTER TABLE `visited`
   ADD KEY `code_prop` (`code_prop`);
 
 --
+-- Indices de la tabla `visited`
+--
+ALTER TABLE `likes`
+  ADD PRIMARY KEY (`code_like`),
+  ADD KEY `code_user` (`code_user`),
+  ADD KEY `code_prop` (`code_prop`);
+  
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -706,13 +685,13 @@ ALTER TABLE `extra`
 -- AUTO_INCREMENT de la tabla `images`
 --
 ALTER TABLE `images`
-  MODIFY `code_img` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+  MODIFY `code_img` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT de la tabla `property`
 --
 ALTER TABLE `property`
-  MODIFY `code_prop` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `code_prop` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `type`
