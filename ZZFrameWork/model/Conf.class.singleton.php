@@ -9,11 +9,11 @@ class Conf
 
     private function __construct()
     {
-        $cnfg = parse_ini_file("constantes.ini");
-        $this->_userdb = $cnfg['USERDB'];
-        $this->_passdb = $cnfg['PASSDB'];
-        $this->_hostdb = $cnfg['HOSTDB'];
-        $this->_db = $cnfg['DB'];
+        $cnfg = parse_ini_file(MODEL_PATH . "constantes.ini");
+        $this->_userdb = $cnfg['BD_USER'];
+        $this->_passdb = $cnfg['BD_PASS'];
+        $this->_hostdb = $cnfg['BD_HOST'];
+        $this->_db = $cnfg['BD_DB'];
     }
 
     private function __clone()

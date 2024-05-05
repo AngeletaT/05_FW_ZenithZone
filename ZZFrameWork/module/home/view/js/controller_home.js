@@ -1,8 +1,8 @@
 function carrousel_Act() {
-	ajaxPromise("index.php?module=home&op=carrouselAct", "GET", "JSON")
+	ajaxPromise(friendlyURL("?module=home&op=carrouselAct"), "GET", "JSON")
 		.then(function (data) {
-			console.log(data)
-			return
+			// console.log(data)
+			// return
 			for (row in data) {
 				$("<div></div>")
 					.addClass(`swiper-slide`)
@@ -37,35 +37,35 @@ function carrousel_Act() {
 
 function loadCategory() {
 	// console.log("hola")
-	// ajaxPromise(friendlyURL("?module=home&op=listCategory"), "GET", "JSON")
-	// 	.then(function (data) {
-	// 		console.log(data)
-	// 		return
-	// 		// for (row in data) {
-	// 		// 	$("<div></div>")
-	// 		// 		.attr("class", "col-md-2 mx-auto")
-	// 		// 		.attr({id: data[row].name_cat})
-	// 		// 		.appendTo("#containerCategories")
-	// 		// 		.html(
-	// 		// 			`<div class="article-card" id="${data[row].code_cat}">
-	// 		// 				<div class="content">
-	// 		// 					<p class="title">${data[row].name_cat}</p>
-	// 		// 				</div>
-	// 		// 				<img src="${data[row].img_cat}" alt="article-cover"/>
-	// 		// 			</div>`
-	// 		// 		)
-	// 		// }
-	// 	})
-	// 	.catch(function () {
-	// 		console.log(error)
-	// 		// window.location.href = "index.php?page=503"
-	// 		// module=ctrl_exceptions&op=503&type=503&lugar=Type_Categories HOME";
-	// 	})
+	ajaxPromise(friendlyURL("?module=home&op=listCategory"), "GET", "JSON")
+		.then(function (data) {
+			// console.log(data)
+			// return
+			for (row in data) {
+				$("<div></div>")
+					.attr("class", "col-md-2 mx-auto")
+					.attr({id: data[row].name_cat})
+					.appendTo("#containerCategories")
+					.html(
+						`<div class="article-card" id="${data[row].code_cat}">
+							<div class="content">
+								<p class="title">${data[row].name_cat}</p>
+							</div>
+							<img src="${data[row].img_cat}" alt="article-cover"/>
+						</div>`
+					)
+			}
+		})
+		.catch(function () {
+			console.log(error)
+			// window.location.href = "index.php?page=503"
+			// module=ctrl_exceptions&op=503&type=503&lugar=Type_Categories HOME";
+		})
 }
 
 function loadCity() {
 	// console.log("hola");
-	ajaxPromise("module/home/controller/controller_prop.php?op=listCity", "GET", "JSON")
+	ajaxPromise(friendlyURL("?module=home&op=listCity"), "GET", "JSON")
 		.then(function (data) {
 			// console.log("HOLA");
 			for (row in data) {
@@ -93,7 +93,7 @@ function loadCity() {
 
 function loadType() {
 	// console.log("hola");
-	ajaxPromise("module/home/controller/controller_prop.php?op=listType", "GET", "JSON")
+	ajaxPromise(friendlyURL("?module=home&op=listType"), "GET", "JSON")
 		.then(function (data) {
 			// console.log("HOLA");
 			for (row in data) {
@@ -121,7 +121,7 @@ function loadType() {
 
 function loadLastvisit() {
 	// console.log("hola");
-	ajaxPromise("module/home/controller/controller_prop.php?op=listlastvisit", "GET", "JSON")
+	ajaxPromise(friendlyURL("?module=home&op=listlastvisit"), "GET", "JSON")
 		.then(function (data) {
 			// console.log(data)
 			for (row in data) {
@@ -149,7 +149,7 @@ function loadLastvisit() {
 
 function loadSuggest() {
 	// console.log("hola");
-	ajaxPromise("module/home/controller/controller_prop.php?op=listSuggest", "GET", "JSON")
+	ajaxPromise(friendlyURL("?module=home&op=listSuggest"), "GET", "JSON")
 		.then(function (data) {
 			// console.log(data)
 			for (row in data) {
@@ -177,7 +177,7 @@ function loadSuggest() {
 
 function carrousel_Extra() {
 	// console.log("hola");
-	ajaxPromise("module/home/controller/controller_prop.php?op=listExtra", "GET", "JSON")
+	ajaxPromise(friendlyURL("?module=home&op=listExtra"), "GET", "JSON")
 		.then(function (data) {
 			// console.log("HOLA");
 			for (row in data) {
@@ -334,11 +334,11 @@ function clicks() {
 $(document).ready(function () {
 	// console.log("ready")
 	carrousel_Act()
-	// loadCategory()
-	// loadCity()
-	// loadSuggest()
-	// loadType()
-	// loadLastvisit()
-	// carrousel_Extra()
+	loadCategory()
+	loadCity()
+	loadType()
+	loadSuggest()
+	loadLastvisit()
+	carrousel_Extra()
 	// clicks()
 })

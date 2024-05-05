@@ -8,7 +8,7 @@
         <name>carrouselAct</name>
         <uri>carrouselAct</uri>
     </function>
-    <!-- <function>
+    <function>
         <name>listCategory</name>
         <uri>listCategory</uri>
     </function>
@@ -21,15 +21,15 @@
         <uri>listType</uri>
     </function>
     <function>
-        <name>listExtra</name>
-        <uri>listExtra</uri>
+        <name>listlastvisit</name>
+        <uri>listlastvisit</uri>
     </function>
     <function>
         <name>listSuggest</name>
         <uri>listSuggest</uri>
     </function>
     <function>
-        <name>listlastvisit</name>
-        <uri>listlastvisit</uri>
-    </function> -->
+        <name>listExtra</name>
+        <uri>listExtra</uri>
+    </function>
 </functions>

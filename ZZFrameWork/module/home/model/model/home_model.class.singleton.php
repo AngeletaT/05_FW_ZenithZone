@@ -27,32 +27,32 @@ class home_model
     public function get_category()
     {
         // echo json_encode("listCategory");
-        // return $this->bll->get_category_BLL();
+        return $this->bll->get_category_BLL();
     }
 
     public function get_city()
     {
-        // return $this->bll->get_city_BLL();
+        return $this->bll->get_city_BLL();
     }
 
     public function get_type()
     {
-        // return $this->bll->get_type_BLL();
+        return $this->bll->get_type_BLL();
     }
 
     public function get_extra()
     {
-        // return $this->bll->get_extra_BLL();
+        return $this->bll->get_extra_BLL();
     }
 
     public function get_suggest()
     {
-        // return $this->bll->get_suggest_BLL();
+        return $this->bll->get_suggest_BLL();
     }
 
     public function get_lastvisit()
     {
-        // return $this->bll->get_lastvisit_BLL();
+        return $this->bll->get_lastvisit_BLL();
     }
 
 

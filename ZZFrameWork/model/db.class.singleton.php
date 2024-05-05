@@ -52,4 +52,5 @@
             return $this -> array;
         }
 
+        // se debera crear diferentes tipos de listar para cada tipo de consulta
     }
