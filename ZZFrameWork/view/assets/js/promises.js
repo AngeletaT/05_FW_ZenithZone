@@ -93,7 +93,7 @@ function friendlyURL(url) {
 			link += "/" + aux[1]
 		}
 	}
-	return "http://localhost/angela/ZZFrameWork/" + link
+	return "http://localhost/angela/ZZFrameWork" + link
 }
 
 // Remove localstorage('page') with click in shop
