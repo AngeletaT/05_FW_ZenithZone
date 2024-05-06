@@ -1,0 +1,307 @@
+<main class="mainproperty">
+	<!-- ======= FILTERS SECTION ======= -->
+	<div class="filters" id="filters_shop">
+		<br />
+		<div class="filters-select"></div>
+	</div>
+
+	<!-- ======= MODAL FILTERS SECTION ======= -->
+	<!-- Rooms -->
+	<div
+		class="modal fade"
+		id="filtersModalRoom"
+		tabindex="-1"
+		role="dialog"
+		aria-labelledby="filtersModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog roomsmodal" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h6 class="modal-title" id="filtersModalLabel">Rooms</h6>
+				</div>
+				<div class="modal-body">
+					<!-- CONTENIDO -->
+					<div class="radio-rooms">
+						<label class="radio">
+							<input type="radio" name="rooms" value="1" />
+							<span class="name">1</span>
+						</label>
+						<label class="radio">
+							<input type="radio" name="rooms" value="2" />
+							<span class="name">2</span>
+						</label>
+						<label class="radio">
+							<input type="radio" name="rooms" value="3" />
+							<span class="name">3</span>
+						</label>
+						<label class="radio">
+							<input type="radio" name="rooms" value="4" />
+							<span class="name">4</span>
+						</label>
+						<label class="radio">
+							<input type="radio" name="rooms" value="5" />
+							<span class="name">5</span>
+						</label>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="Button_principal" id="ApplyFiltersRoom">Apply</button>
+					<button type="button" class="Button_segundario" id="CloseFiltersRoom" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Bath -->
+	<div
+		class="modal fade"
+		id="filtersModalBath"
+		tabindex="-1"
+		role="dialog"
+		aria-labelledby="filtersModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog bathmodal" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h6 class="modal-title" id="filtersModalLabel">Bathrooms</h6>
+				</div>
+				<div class="modal-body">
+					<!-- CONTENIDO -->
+					<div class="radio-bath">
+						<label class="radio">
+							<input type="radio" name="bath" value="1" />
+							<span class="name">1</span>
+						</label>
+						<label class="radio">
+							<input type="radio" name="bath" value="2" />
+							<span class="name">2</span>
+						</label>
+						<label class="radio">
+							<input type="radio" name="bath" value="3" />
+							<span class="name">3</span>
+						</label>
+						<label class="radio">
+							<input type="radio" name="bath" value="4" />
+							<span class="name">4</span>
+						</label>
+						<label class="radio">
+							<input type="radio" name="bath" value="5" />
+							<span class="name">5</span>
+						</label>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="Button_principal" id="ApplyFiltersBath">Apply</button>
+					<button type="button" class="Button_segundario" id="CloseFiltersBath" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Size -->
+	<div
+		class="modal fade"
+		id="filtersModalSize"
+		tabindex="-1"
+		role="dialog"
+		aria-labelledby="filtersModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog sizemodal" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h6 class="modal-title" id="filtersModalLabel">Size</h6>
+				</div>
+				<div class="modal-body">
+					<!-- CONTENIDO -->
+					<div class="form-group" id="sizeSlider">
+						<table style="width: 100%">
+							<tr>
+								<td style="text-align: left">100 sqm</td>
+								<td style="text-align: center">-</td>
+								<td style="text-align: right">700 sqm</td>
+							</tr>
+						</table>
+						<input
+							type="range"
+							name="size"
+							class="form-control-range"
+							id="rangeSlidersize"
+							min="100"
+							max="700"
+							value="400"
+							step="100"
+							style="width: 100%" />
+						<br />
+						<span id="selectedValuesize">400</span>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="Button_principal" id="ApplyFiltersSize">Apply</button>
+					<button type="button" class="Button_segundario" id="CloseFiltersSize" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Price -->
+	<div
+		class="modal fade"
+		id="filtersModalPrice"
+		tabindex="-1"
+		role="dialog"
+		aria-labelledby="filtersModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog pricemodal" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h6 class="modal-title" id="filtersModalLabel">Price</h6>
+				</div>
+				<div class="modal-body">
+					<!-- CONTENIDO -->
+					<div class="form-group" id="priceSlider">
+						<table style="width: 100%">
+							<tr>
+								<td style="text-align: left">100.000€</td>
+								<td style="text-align: center">-</td>
+								<td style="text-align: right">700.000€</td>
+							</tr>
+						</table>
+						<input
+							type="range"
+							name="price"
+							class="form-control-range"
+							id="rangeSliderprice"
+							min="100000"
+							max="700000"
+							value="400000"
+							step="100000"
+							style="width: 100%" />
+						<br />
+						<span id="selectedValueprice">400000</span>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="Button_principal" id="ApplyFiltersPrice">Apply</button>
+					<button type="button" class="Button_segundario" id="CloseFiltersPrice" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Extra -->
+	<div
+		class="modal fade"
+		id="filtersModalExtra"
+		tabindex="-1"
+		role="dialog"
+		aria-labelledby="filtersModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog extramodal" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h6 class="modal-title" id="filtersModalLabel">Extra</h6>
+				</div>
+				<div class="modal-body">
+					<!-- CONTENIDO -->
+					<div class="checkbox-extra">
+						<label class="checkbox">
+							<input type="checkbox" id="extra_pool" name="extra[]" value="1" />
+							<span class="name">Pool</span> </label
+						><br />
+						<label class="checkbox">
+							<input type="checkbox" id="extra_garden" name="extra[]" value="2" />
+							<span class="name">Garden </span> </label
+						><br />
+						<label class="checkbox">
+							<input type="checkbox" id="extra_terrace" name="extra[]" value="3" />
+							<span class="name">Terrace</span> </label
+						><br />
+						<label class="checkbox">
+							<input type="checkbox" id="extra_balcony" name="extra[]" value="4" />
+							<span class="name">Balcony</span> </label
+						><br />
+						<label class="checkbox">
+							<input type="checkbox" id="extra_storage" name="extra[]" value="5" />
+							<span class="name">Storage</span> </label
+						><br />
+						<label class="checkbox">
+							<input type="checkbox" id="extra_empty" name="extra[]" value="6" />
+							<span class="name">Empty</span> </label
+						><br />
+						<label class="checkbox">
+							<input type="checkbox" id="extra_furnished" name="extra[]" value="7" />
+							<span class="name">Furnished</span> </label
+						><br />
+						<label class="checkbox">
+							<input type="checkbox" id="extra_parking" name="extra[]" value="8" />
+							<span class="name">Parking</span> </label
+						><br />
+						<label class="checkbox">
+							<input type="checkbox" id="extra_lift" name="extra[]" value="9" />
+							<span class="name">Lift</span> </label
+						><br />
+						<label class="checkbox">
+							<input type="checkbox" id="extra_heating" name="extra[]" value="10" />
+							<span class="name">Heating</span>
+						</label>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="Button_principal" id="ApplyFiltersExtra">Apply</button>
+					<button type="button" class="Button_segundario" id="CloseFiltersExtra" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ======= LIST SECTION ======= -->
+	<div class="orderbyshop">
+		<h6><i class="fa-regular fa-clock"></i>&nbsp;&nbsp;&nbsp;Order By</h6>
+		&nbsp;&nbsp;&nbsp;
+		<select class="filter filter_orderby" id="filter_orderby">
+			<option value="0" selected disabled>Select an option</option>
+			<option value="1">Most Recent</option>
+			<option value="2">Most Popular</option>
+			<option value="3">Price: Low to High</option>
+			<option value="4">Price: High to Low</option>
+			<option value="5">Size: Large to Small</option>
+			<option value="6">Size: Small to Large</option>
+		</select>
+	</div>
+	<div class="shopdiv" style="display: grid; grid-template-columns: 60% 40%; width: 100%; margin-left: 150px">
+		<div style="grid-column: 1; height: 52em; overflow: hidden; overflow-y: scroll; scrollbar-width: none">
+			<div class="container_shop" id="content_shop_prop"></div>
+			<div id="pagination" class="pagination"></div>
+		</div>
+		<!-- MAPA -->
+		<div style="grid-column: 2; padding: 20px">
+			<div class="map_shop" id="map_shop" style="width: 450px; height: 790px"></div>
+		</div>
+	</div>
+
+	<!-- ======= DETAILS SECTION ======= -->
+	<div id="details-shop">
+		<div class="detail row">
+			<div class="owl-container">
+				<div class="date_img owl-details owl-carousel owl-theme" id="container-date-img"></div>
+			</div>
+		</div>
+
+		<br /><br />
+		<div class="date_prop" id="container-date-img"></div>
+		<br /><br />
+		<!-- MAPA -->
+		<div class="detail row" style="height: 300px; width: auto; margin-left: 200px; margin-right: 200px" id="mapdet">
+			<div class="map-details" id="map-details">
+				<div id="map" style="width: 200px; height: 100px"></div>
+			</div>
+		</div>
+		<br /><br />
+		<div class="suggestions-container">
+			<div class="title-suggestions" id="title-suggestions"></div>
+			<div class="suggestions" id="suggestions"></div>
+			<div class="button-suggestions" id="button-suggestions"></div>
+		</div>
+		<br /><br />
+	</div>
+</main>

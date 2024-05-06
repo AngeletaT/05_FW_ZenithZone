@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<functions>
+    <function>
+        <name>view</name>
+        <uri>view</uri>
+    </function>
+    <!-- FILTROS -->
+    <function>
+        <name>dynamic_filters_type</name>
+        <uri>dynamic_filters_type</uri>
+    </function>
+    <function>
+        <name>dynamic_filters_city</name>
+        <uri>dynamic_filters_city</uri>
+    </function>
+    <function>
+        <name>dynamic_filters_category</name>
+        <uri>dynamic_filters_category</uri>
+    </function>
+    <function>
+        <name>dynamic_filters_activity</name>
+        <uri>dynamic_filters_activity</uri>
+    </function>
+</functions>

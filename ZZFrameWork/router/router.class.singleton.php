@@ -44,7 +44,7 @@ class router
         try {
             call_user_func(array($this->loadModule(), $this->loadFunction()));
         } catch (Exception $e) {
-            echo 'error en el router';
+            echo json_encode("error en el router");
             // common::load_error();
         }
     }
@@ -76,8 +76,8 @@ class router
 
     private function loadFunction()
     {
-        // $path = MODULES_PATH . $this -> nameModule . '/resources/function.xml'; 
-        $path = 'module/home/resources/function.xml';
+        $path = MODULES_PATH . $this->nameModule . '/resources/function.xml';
+        // $path = 'module/home/resources/function.xml';
         if (file_exists($path)) {
             $functions = simplexml_load_file($path);
             foreach ($functions as $row) {

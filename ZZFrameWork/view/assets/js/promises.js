@@ -21,10 +21,10 @@ function ajaxPromise(sUrl, sType, sTData, sData = undefined) {
 
 //================LOAD-HEADER================
 function load_menu() {
-	$("<li></li>")
-		.attr({"class": "nav_item"})
-		.html('<a href="' + friendlyURL("?module=home&op=view") + '" class="nav_link">Home</a>')
-		.appendTo("#nav_list")
+	// $("<li></li>")
+	// 	.attr({"class": "nav_item"})
+	// 	.html('<a href="' + friendlyURL("?module=home&op=view") + '" class="nav_link">Home</a>')
+	// 	.appendTo("#nav_list")
 	$("<li></li>")
 		.attr({"class": "nav_item"})
 		.html('<a href="' + friendlyURL("?module=shop&op=view") + '" class="nav_link">Shop</a>')
