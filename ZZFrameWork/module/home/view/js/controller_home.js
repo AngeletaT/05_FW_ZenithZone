@@ -1,5 +1,5 @@
 function carrousel_Act() {
-	ajaxPromise(friendlyURL("?module=home&op=carrouselAct"), "GET", "JSON")
+	ajaxPromise(friendlyURL("?module=home"), "POST", "JSON", {"op": "carrouselAct"})
 		.then(function (data) {
 			// console.log(data)
 			// return
@@ -37,7 +37,7 @@ function carrousel_Act() {
 
 function loadCategory() {
 	// console.log("hola")
-	ajaxPromise(friendlyURL("?module=home&op=listCategory"), "GET", "JSON")
+	ajaxPromise(friendlyURL("?module=home"), "POST", "JSON", {"op": "listCategory"})
 		.then(function (data) {
 			// console.log(data)
 			// return
@@ -65,7 +65,7 @@ function loadCategory() {
 
 function loadCity() {
 	// console.log("hola");
-	ajaxPromise(friendlyURL("?module=home&op=listCity"), "GET", "JSON")
+	ajaxPromise(friendlyURL("?module=home"), "POST", "JSON", {"op": "listCity"})
 		.then(function (data) {
 			// console.log("HOLA");
 			for (row in data) {
@@ -93,7 +93,7 @@ function loadCity() {
 
 function loadType() {
 	// console.log("hola");
-	ajaxPromise(friendlyURL("?module=home&op=listType"), "GET", "JSON")
+	ajaxPromise(friendlyURL("?module=home"), "POST", "JSON", {"op": "listType"})
 		.then(function (data) {
 			// console.log("HOLA");
 			for (row in data) {
@@ -121,7 +121,7 @@ function loadType() {
 
 function loadLastvisit() {
 	// console.log("hola");
-	ajaxPromise(friendlyURL("?module=home&op=listlastvisit"), "GET", "JSON")
+	ajaxPromise(friendlyURL("?module=home"), "POST", "JSON", {"op": "listlastvisit"})
 		.then(function (data) {
 			// console.log(data)
 			for (row in data) {
@@ -149,7 +149,7 @@ function loadLastvisit() {
 
 function loadSuggest() {
 	// console.log("hola");
-	ajaxPromise(friendlyURL("?module=home&op=listSuggest"), "GET", "JSON")
+	ajaxPromise(friendlyURL("?module=home"), "GET", "JSON", {"op": "listSuggest"})
 		.then(function (data) {
 			// console.log(data)
 			for (row in data) {
@@ -177,7 +177,7 @@ function loadSuggest() {
 
 function carrousel_Extra() {
 	// console.log("hola");
-	ajaxPromise(friendlyURL("?module=home&op=listExtra"), "GET", "JSON")
+	ajaxPromise(friendlyURL("?module=home"), "GET", "JSON", {"op": "listExtra"})
 		.then(function (data) {
 			// console.log("HOLA");
 			for (row in data) {
@@ -340,5 +340,5 @@ $(document).ready(function () {
 	loadSuggest()
 	loadLastvisit()
 	carrousel_Extra()
-	// clicks()
+	clicks()
 })

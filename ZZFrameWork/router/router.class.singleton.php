@@ -32,11 +32,16 @@ class router
         } else {
             $this->uriModule = 'home';
         }
-        if (isset($_GET['op'])) {
-            $this->uriFunction = ($_GET['op'] === "") ? 'view' : $_GET['op'];
+        if (isset($_POST['op'])) {
+            $this->uriFunction = $_POST['op'];
         } else {
-            $this->uriFunction = 'view';
+            if (isset($_GET['op'])) {
+                $this->uriFunction = ($_GET['op'] === "") ? 'view' : $_GET['op'];
+            } else {
+                $this->uriFunction = 'view';
+            }
         }
+
     }
 
     function routingStart()

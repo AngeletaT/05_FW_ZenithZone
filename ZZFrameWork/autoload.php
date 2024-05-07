@@ -14,9 +14,26 @@ function loadClasses($className)
         $modelName = strtoupper($breakClass[1]);
     }
 
-    if (file_exists(SITE_ROOT . 'module/' . $breakClass[0] . '/model/' . $modelName . '/' . $className . '.class.singleton.php')) {
-        set_include_path('module/' . $breakClass[0] . '/model/' . $modelName . '/');
-        spl_autoload($className);
+    if ($breakClass[0] === 'home') {
+        if (file_exists(SITE_ROOT . 'module/' . $breakClass[0] . '/model/' . $modelName . '/' . $className . '.class.singleton.php')) {
+            set_include_path('module/' . $breakClass[0] . '/model/' . $modelName . '/');
+            spl_autoload($className);
+        }
+    } elseif ($breakClass[0] === 'shop') {
+        if (file_exists(SITE_ROOT . 'module/' . $breakClass[0] . '/model/' . $modelName . '/' . $className . '.class.singleton.php')) {
+            set_include_path('module/' . $breakClass[0] . '/model/' . $modelName . '/');
+            spl_autoload($className);
+        }
+    } elseif ($breakClass[0] === 'search') {
+        if (file_exists(SITE_ROOT . 'module/' . $breakClass[0] . '/model/' . $modelName . '/' . $className . '.class.singleton.php')) {
+            set_include_path('module/' . $breakClass[0] . '/model/' . $modelName . '/');
+            spl_autoload($className);
+        }
+    } elseif ($breakClass[0] === 'login') {
+        if (file_exists(SITE_ROOT . 'module/' . $breakClass[0] . '/model/' . $modelName . '/' . $className . '.class.singleton.php')) {
+            set_include_path('module/' . $breakClass[0] . '/model/' . $modelName . '/');
+            spl_autoload($className);
+        }
     } else if (file_exists(SITE_ROOT . 'model/' . $className . '.class.singleton.php')) {
         set_include_path(SITE_ROOT . 'model/');
         spl_autoload($className);
