@@ -21,4 +21,53 @@
         <name>dynamic_filters_activity</name>
         <uri>dynamic_filters_activity</uri>
     </function>
+    <!-- CARGAR PROPIEDADES -->
+    <function>
+        <name>all_prop</name>
+        <uri>all_prop</uri>
+    </function>
+    <function>
+        <name>filters_home</name>
+        <uri>filters_home</uri>
+    </function>
+    <function>
+        <name>filters_shop</name>
+        <uri>filters_shop</uri>
+    </function>
+    <!-- DETAILS PROPIEDADES -->
+    <function>
+        <name>details_prop</name>
+        <uri>details_prop</uri>
+    </function>
+    <function>
+        <name>scroll_details</name>
+        <uri>scroll_details</uri>
+    </function>
+    <!-- PAGINACION -->
+    <function>
+        <name>count</name>
+        <uri>count</uri>
+    </function>
+    <function>
+        <name>count_home</name>
+        <uri>count_home</uri>
+    </function>
+    <function>
+        <name>count_shop</name>
+        <uri>count_shop</uri>
+    </function>
+    <!-- ORDERBY -->
+    <function>
+        <name>orderby</name>
+        <uri>orderby</uri>
+    </function>
+    <!-- LIKE -->
+    <function>
+        <name>like</name>
+        <uri>like</uri>
+    </function>
+    <function>
+        <name>checklike</name>
+        <uri>checklike</uri>
+    </function>
 </functions>

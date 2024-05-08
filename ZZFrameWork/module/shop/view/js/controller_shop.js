@@ -8,13 +8,13 @@ function loadprops() {
 	// var filters_search = JSON.parse(localStorage.getItem("filters_search")) || false (funciona con filters_Shop)
 
 	if (filters_home !== false) {
-		ajaxForSearch("module/shop/controller/controller_shop.php?op=filters_home")
+		ajaxForSearch(friendlyURL("?module=shop"), "filters_home")
 		pagination()
 	} else if (filters_details !== false) {
 		// console.log(filters_details[0].property[0]);
 		loadDetails(filters_details[0].property[0])
 	} else if (filters_shop !== false) {
-		ajaxForSearch_Shop("module/shop/controller/controller_shop.php?op=filters_shop")
+		ajaxForSearch_Shop(friendlyURL("?module=shop"), "filters_shop")
 		// console.log("filtershop")
 		highlight_filters()
 		// pagination()
@@ -23,7 +23,7 @@ function loadprops() {
 		loadDetails(redirect_like)
 		localStorage.removeItem("redirect_like")
 	} else {
-		ajaxForSearch("module/shop/controller/controller_shop.php?op=all_prop")
+		ajaxForSearch(friendlyURL("?module=shop"), "all_prop")
 		// console.log("allprop")
 	}
 }
@@ -31,7 +31,7 @@ var userLiked = "no-like"
 
 // #region AJAX
 // FUNCION QUE LLAMA A SALTO HOME
-function ajaxForSearch(url, items_page = 2) {
+function ajaxForSearch(url, op, items_page = 2) {
 	var filters_home = JSON.parse(localStorage.getItem("filters_home"))
 	var acces_token = localStorage.getItem("acces_token")
 	localStorage.removeItem("filters_home")
@@ -46,9 +46,10 @@ function ajaxForSearch(url, items_page = 2) {
 	var offset = (page - 1) * items_page
 	// console.log(offset)
 
-	ajaxPromise(url, "POST", "JSON", {"filters_home": filters_home, "offset": offset, "items_page": items_page})
+	ajaxPromise(url, "POST", "JSON", {"filters_home": filters_home, "offset": offset, "items_page": items_page, "op": op})
 		.then(function (data) {
 			// console.log("Los datos del AjaxForSearch:", data)
+			// return
 			$("#content_shop_prop").empty()
 			$(".date_img" && ".date_prop").empty()
 			$("#mapdet").hide()
@@ -61,12 +62,13 @@ function ajaxForSearch(url, items_page = 2) {
 				for (var row in data) {
 					;(function (row) {
 						setTimeout(function () {
-							console.log("Row:", row)
+							// console.log("Row:", row)
 							// Crear una función para capturar el valor de row
 							if (acces_token) {
 								console.log("Existe acces_token")
 								var carousel = ""
 								data[row].images.forEach(function (image) {
+									// console.log("image:", image)
 									carousel += `<div class="item imagen"><img src="${image}" alt="property" /></div>`
 								})
 								checkLike(data[row].code_prop, acces_token)
@@ -146,9 +148,10 @@ function ajaxForSearch(url, items_page = 2) {
 										console.error("Error en checkLike:", error)
 									})
 							} else {
-								console.log("No existe acces_token")
+								// console.log("No existe acces_token")
 								var carousel = ""
 								data[row].images.forEach(function (image) {
+									// console.log("image:", image)
 									carousel += `<div class="item imagen"><img src="${image}" alt="property" /></div>`
 								})
 								$("<div></div>")
@@ -239,7 +242,7 @@ function ajaxForSearch(url, items_page = 2) {
 }
 
 // FUNCION QUE LLAMA A CARGAR SHOP
-function ajaxForSearch_Shop(url, items_page = 2) {
+function ajaxForSearch_Shop(url, op, items_page = 2) {
 	var filters_shop = JSON.parse(localStorage.getItem("filters_shop"))
 	var acces_token = localStorage.getItem("acces_token")
 
@@ -255,10 +258,10 @@ function ajaxForSearch_Shop(url, items_page = 2) {
 	var offset = (page - 1) * items_page
 	console.log(offset)
 
-	ajaxPromise(url, "POST", "JSON", {"filters_shop": filters_shop, "offset": offset, "items_page": items_page})
+	ajaxPromise(url, "POST", "JSON", {"filters_shop": filters_shop, "offset": offset, "items_page": items_page, "op": op})
 		.then(function (data) {
-			console.log("Los datos del AjaxForSearch_Shop:", data)
-
+			// console.log("Los datos del AjaxForSearch_Shop:", data)
+			// return
 			$("#content_shop_prop").empty()
 			$(".date_img" && ".date_prop").empty()
 			$("#mapdet").hide()
@@ -464,9 +467,10 @@ function loadDetails(code_prop) {
 	var acces_token = localStorage.getItem("acces_token")
 	localStorage.removeItem("filters_details")
 
-	ajaxPromise("module/shop/controller/controller_shop.php?op=details_prop&id=" + code_prop, "GET", "JSON")
+	ajaxPromise(friendlyURL("?module=shop"), "POST", "JSON", {"code_prop": code_prop, "op": "details_prop"})
 		.then(function (data) {
-			// console.log(data);
+			// console.log(data)
+			// return
 			$("#content_shop_prop").empty()
 			$("#filters_shop").empty()
 			$(".shopdiv").empty()
@@ -476,14 +480,14 @@ function loadDetails(code_prop) {
 			$("#mapdet").show()
 
 			if (acces_token) {
-				console.log(data)
+				// console.log(data)
 				checkLike(data[0].code_prop, acces_token).then(function (userLiked) {
 					// console.log("userLiked", userLiked)
-					for (row in data[1][0]) {
+					for (row in data[0].images) {
 						$("<div></div>").attr({class: "item date_img_dentro"}).appendTo(".date_img").html(`
-							<div class='detailsimg'>
-								<img src='${data[1][0][row].img_prop}'></img>
-							</div>`)
+						<div class='detailsimg'>
+							<img src='${data[0].images[row]}'></img>
+						</div>`)
 					}
 
 					$("<div></div>")
@@ -580,11 +584,14 @@ function loadDetails(code_prop) {
 					load_map_details(data[0])
 				})
 			} else {
-				for (row in data[1][0]) {
+				console.log("en el else", data)
+
+				// return
+				for (row in data[0].images) {
 					$("<div></div>").attr({class: "item date_img_dentro"}).appendTo(".date_img").html(`
-                    <div class='detailsimg'>
-                        <img src='${data[1][0][row].img_prop}'></img>
-                    </div>`)
+						<div class='detailsimg'>
+							<img src='${data[0].images[row]}'></img>
+						</div>`)
 				}
 
 				$("<div></div>")
@@ -691,13 +698,14 @@ function loadDetails(code_prop) {
 
 var limit = 3
 function loadSuggestionsDetails() {
-	console.log("loadSuggestionsDetails")
-	ajaxPromise("module/shop/controller/controller_shop.php?op=scroll_details", "POST", "JSON", {
+	// console.log("loadSuggestionsDetails")
+	ajaxPromise(friendlyURL("?module=shop"), "POST", "JSON", {
 		"limit": limit,
 		"code_prop": localStorage.getItem("code_prop"),
+		"op": "scroll_details",
 	})
 		.then(function (sdata) {
-			console.log("then:", sdata)
+			// console.log("then:", sdata)
 			$('<h2 class="cat">Properties related</h2>').appendTo("#title-suggestions")
 
 			if (sdata.length >= limit) {
@@ -791,7 +799,7 @@ function print_filters() {
 
 function print_type() {
 	console.log("print_dynamic_filters")
-	ajaxPromise(friendlyURL("?module=shop&op=dynamic_filters_type"), "GET", "JSON")
+	ajaxPromise(friendlyURL("?module=shop"), "POST", "JSON", {"op": "dynamic_filters_type"})
 		.then(function (data) {
 			// console.log(data)
 			// return
@@ -811,7 +819,7 @@ function print_type() {
 
 function print_location() {
 	// console.log("print_dynamic_filters")
-	ajaxPromise(friendlyURL("?module=shop&op=dynamic_filters_city"), "GET", "JSON")
+	ajaxPromise(friendlyURL("?module=shop"), "POST", "JSON", {"op": "dynamic_filters_city"})
 		.then(function (data) {
 			// console.log(data);
 			for (row in data) {
@@ -830,7 +838,7 @@ function print_location() {
 
 function print_category() {
 	// console.log("print_dynamic_filters")
-	ajaxPromise(friendlyURL("?module=shop&op=dynamic_filters_category"), "GET", "JSON")
+	ajaxPromise(friendlyURL("?module=shop"), "POST", "JSON", {"op": "dynamic_filters_category"})
 		.then(function (data) {
 			for (row in data) {
 				// console.log(data);
@@ -868,7 +876,7 @@ function print_category() {
 
 function print_activity() {
 	// console.log("print_dynamic_filters")
-	ajaxPromise(friendlyURL("?module=shop&op=dynamic_filters_activity"), "GET", "JSON")
+	ajaxPromise(friendlyURL("?module=shop"), "POST", "JSON", {"op": "dynamic_filters_activity"})
 		.then(function (data) {
 			for (row in data) {
 				// console.log(data);
@@ -1253,12 +1261,14 @@ function filter_orderby() {
 
 function print_orderby() {
 	// console.log("print_orderby")
-	ajaxPromise("module/shop/controller/controller_shop.php?op=orderby", "POST", "JSON", {
+	ajaxPromise(friendlyURL("?module=shop"), "POST", "JSON", {
 		"orderby": localStorage.getItem("filter_orderby"),
+		"op": "orderby",
 	})
 		.then(function (data) {
 			// console.log("dentro de then print_orderby")
 			// console.log(data)
+			// return
 			$("#content_shop_prop").empty()
 			$(".date_img" && ".date_prop").empty()
 
@@ -1284,9 +1294,8 @@ function print_orderby() {
                 				    </div>
                 				</td>
                                 <td colspan="8"><a class="titlelist" id="${data[row].code_prop}">
-									<h2>${data[row].price
-										.toString()
-										.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}&nbsp;<i class="fa-solid fa-euro-sign"></i></h2></a>
+									<h2>${data[row].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}&nbsp;
+									<i class="fa-solid fa-euro-sign"></i></h2></a>
 								</td>
                             </tr>
                             <tr>
@@ -1409,82 +1418,87 @@ function pagination() {
 	// console.log("filters_home", filters_home)
 	var filters_shop = JSON.parse(localStorage.getItem("filters_shop")) || false
 	if (filters_home !== false) {
-		var url = "module/shop/controller/controller_shop.php?op=count_home"
+		var url = friendlyURL("?module=shop")
+		var op = "count_home"
 	} else if (filters_shop !== false) {
-		var url = "module/shop/controller/controller_shop.php?op=count_shop"
+		var url = friendlyURL("?module=shop")
+		var op = "count_shop"
 	} else {
-		var url = "module/shop/controller/controller_shop.php?op=count"
+		var url = friendlyURL("?module=shop")
+		var op = "count"
 	}
-	ajaxPromise(url, "POST", "JSON", {"filters_home": filters_home, "filters_shop": filters_shop}).then(function (data) {
-		// console.log("dentro de then pagination", data)
-		var total_items = data[0].contador
-		var items_page = 2
-		var total_pages = Math.ceil(total_items / items_page)
-		// console.log("Hay estas paginas", total_pages)
-		var currentPage = parseInt(localStorage.getItem("page")) || 1
+	ajaxPromise(url, "POST", "JSON", {"filters_home": filters_home, "filters_shop": filters_shop, "op": op}).then(
+		function (data) {
+			// console.log("dentro de then pagination", data)
+			var total_items = data[0].contador
+			var items_page = 2
+			var total_pages = Math.ceil(total_items / items_page)
+			// console.log("Hay estas paginas", total_pages)
+			var currentPage = parseInt(localStorage.getItem("page")) || 1
 
-		var paginationContainer = document.getElementById("pagination")
-		paginationContainer.innerHTML = ""
+			var paginationContainer = document.getElementById("pagination")
+			paginationContainer.innerHTML = ""
 
-		if (currentPage > 1) {
-			let firstPageButton = document.createElement("button")
-			firstPageButton.innerHTML = "<<"
-			firstPageButton.classList.add("buttonpagination")
-			firstPageButton.addEventListener("click", function () {
-				localStorage.setItem("page", 1)
-				location.reload()
-			})
-			paginationContainer.appendChild(firstPageButton)
+			if (currentPage > 1) {
+				let firstPageButton = document.createElement("button")
+				firstPageButton.innerHTML = "<<"
+				firstPageButton.classList.add("buttonpagination")
+				firstPageButton.addEventListener("click", function () {
+					localStorage.setItem("page", 1)
+					location.reload()
+				})
+				paginationContainer.appendChild(firstPageButton)
 
-			let prevButton = document.createElement("button")
-			prevButton.innerHTML = "<"
-			prevButton.classList.add("buttonpagination")
-			prevButton.addEventListener("click", function () {
-				localStorage.setItem("page", currentPage - 1)
-				location.reload()
-			})
-			paginationContainer.appendChild(prevButton)
+				let prevButton = document.createElement("button")
+				prevButton.innerHTML = "<"
+				prevButton.classList.add("buttonpagination")
+				prevButton.addEventListener("click", function () {
+					localStorage.setItem("page", currentPage - 1)
+					location.reload()
+				})
+				paginationContainer.appendChild(prevButton)
+			}
+
+			for (let i = 1; i <= total_pages; i++) {
+				if (i < currentPage - 1 || i > currentPage + 1) continue
+				let button = document.createElement("button")
+				button.id = i
+				button.classList.add("buttonpagination")
+				button.innerHTML = i
+				button.addEventListener("click", function () {
+					let page = parseInt(this.id)
+					let offset = (page - 1) * items_page
+					localStorage.setItem("page", page)
+					// console.log("El page es", page)
+					// console.log("El offset es", offset)
+					// console.log("Filter es:", filter)
+					location.reload()
+					$("html, body").animate({scrollTop: $(".wrap")})
+				})
+				paginationContainer.appendChild(button)
+			}
+
+			if (currentPage < total_pages) {
+				let nextButton = document.createElement("button")
+				nextButton.innerHTML = ">"
+				nextButton.classList.add("buttonpagination")
+				nextButton.addEventListener("click", function () {
+					localStorage.setItem("page", currentPage + 1)
+					location.reload()
+				})
+				paginationContainer.appendChild(nextButton)
+
+				let lastPageButton = document.createElement("button")
+				lastPageButton.innerHTML = ">>"
+				lastPageButton.classList.add("buttonpagination")
+				lastPageButton.addEventListener("click", function () {
+					localStorage.setItem("page", total_pages)
+					location.reload()
+				})
+				paginationContainer.appendChild(lastPageButton)
+			}
 		}
-
-		for (let i = 1; i <= total_pages; i++) {
-			if (i < currentPage - 1 || i > currentPage + 1) continue
-			let button = document.createElement("button")
-			button.id = i
-			button.classList.add("buttonpagination")
-			button.innerHTML = i
-			button.addEventListener("click", function () {
-				let page = parseInt(this.id)
-				let offset = (page - 1) * items_page
-				localStorage.setItem("page", page)
-				// console.log("El page es", page)
-				// console.log("El offset es", offset)
-				// console.log("Filter es:", filter)
-				location.reload()
-				$("html, body").animate({scrollTop: $(".wrap")})
-			})
-			paginationContainer.appendChild(button)
-		}
-
-		if (currentPage < total_pages) {
-			let nextButton = document.createElement("button")
-			nextButton.innerHTML = ">"
-			nextButton.classList.add("buttonpagination")
-			nextButton.addEventListener("click", function () {
-				localStorage.setItem("page", currentPage + 1)
-				location.reload()
-			})
-			paginationContainer.appendChild(nextButton)
-
-			let lastPageButton = document.createElement("button")
-			lastPageButton.innerHTML = ">>"
-			lastPageButton.classList.add("buttonpagination")
-			lastPageButton.addEventListener("click", function () {
-				localStorage.setItem("page", total_pages)
-				location.reload()
-			})
-			paginationContainer.appendChild(lastPageButton)
-		}
-	})
+	)
 }
 
 // LIKES
@@ -1497,9 +1511,10 @@ function buttonLike() {
 			console.log("dentro de if buttonLike")
 			console.log("acces_token", acces_token)
 			console.log("code_prop", code_prop)
-			ajaxPromise("module/shop/controller/controller_shop.php?op=like", "POST", "JSON", {
+			ajaxPromise(friendlyURL("?module=shop"), "POST", "JSON", {
 				"code_prop": code_prop,
 				"acces_token": acces_token,
+				"op": "like",
 			})
 				.then(function (data) {
 					console.log("dentro de then buttonLike", data)
@@ -1519,9 +1534,10 @@ function buttonLike() {
 
 function checkLike(code_prop, acces_token) {
 	return new Promise((resolve, reject) => {
-		ajaxPromise("module/shop/controller/controller_shop.php?op=checklike", "POST", "JSON", {
+		ajaxPromise(friendlyURL("?module=shop"), "POST", "JSON", {
 			"code_prop": code_prop,
 			"acces_token": acces_token,
+			"op": "checklike",
 		})
 			.then(function (data) {
 				console.log("dentro de then checklike", data)
@@ -1541,10 +1557,10 @@ function checkLike(code_prop, acces_token) {
 $(document).ready(function () {
 	console.log("loadprops1")
 	print_filters()
-	// filter_orderby()
-	// loadprops()
-	// clicks()
-	// filters_shop()
-	// pagination()
-	// buttonLike()
+	filter_orderby()
+	loadprops()
+	clicks()
+	filters_shop()
+	pagination()
+	buttonLike()
 })

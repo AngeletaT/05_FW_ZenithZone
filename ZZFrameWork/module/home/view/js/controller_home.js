@@ -230,7 +230,7 @@ function clicks() {
 		// return false;
 
 		setTimeout(function () {
-			window.location.href = "index.php?page=controller_shop&op=list"
+			window.location.href = friendlyURL("?module=shop")
 		}, 1000)
 	})
 
@@ -246,7 +246,7 @@ function clicks() {
 		// return false;
 
 		setTimeout(function () {
-			window.location.href = "index.php?page=controller_shop&op=list"
+			window.location.href = friendlyURL("?module=shop")
 		}, 1000)
 	})
 
@@ -262,7 +262,7 @@ function clicks() {
 		// return false;
 
 		setTimeout(function () {
-			window.location.href = "index.php?page=controller_shop&op=list"
+			window.location.href = friendlyURL("?module=shop")
 		}, 1000)
 	})
 
@@ -278,7 +278,7 @@ function clicks() {
 		// return false;
 
 		setTimeout(function () {
-			window.location.href = "index.php?page=controller_shop&op=list"
+			window.location.href = friendlyURL("?module=shop")
 		}, 1000)
 	})
 
@@ -294,7 +294,7 @@ function clicks() {
 		// return false;
 
 		setTimeout(function () {
-			window.location.href = "index.php?page=controller_shop&op=list"
+			window.location.href = friendlyURL("?module=shop")
 		}, 1000)
 	})
 
@@ -310,7 +310,7 @@ function clicks() {
 		// return false;
 
 		setTimeout(function () {
-			window.location.href = "index.php?page=controller_shop&op=list"
+			window.location.href = friendlyURL("?module=shop")
 		}, 1000)
 	})
 
@@ -326,7 +326,7 @@ function clicks() {
 		// return false;
 
 		setTimeout(function () {
-			window.location.href = "index.php?page=controller_shop&op=list"
+			window.location.href = friendlyURL("?module=shop")
 		}, 1000)
 	})
 }

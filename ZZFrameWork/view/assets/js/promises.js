@@ -27,7 +27,7 @@ function load_menu() {
 	// 	.appendTo("#nav_list")
 	$("<li></li>")
 		.attr({"class": "nav_item"})
-		.html('<a href="' + friendlyURL("?module=shop&op=view") + '" class="nav_link">Shop</a>')
+		.html('<a href="' + friendlyURL("?module=shop") + '" class="nav_link">Shop</a>')
 		.appendTo("#nav_list")
 	// $("<li></li>")
 	// 	.attr({"class": "nav_item"})
@@ -46,7 +46,7 @@ function load_menu() {
 		.catch(function () {
 			$("<li></li>")
 				.attr({"class": "nav_item"})
-				.html('<a href="' + friendlyURL("?module=login&op=view") + '" class="nav_link" data-tr="Log in">Log in</a>')
+				.html('<a href="' + friendlyURL("?module=login") + '" class="nav_link" data-tr="Log in">Log in</a>')
 				.appendTo(".nav_list")
 		})
 }
