@@ -252,6 +252,26 @@ class shop_dao
         return $db->listar($stmt);
     }
 
+    public function update_visited($db, $id)
+    {
+        $sql = "UPDATE visited 
+        SET visited.visits = (visited.visits + 1) 
+        WHERE visited.code_prop = '$id'";
+
+        $db->ejecutar($sql);
+
+    }
+
+    public function update_datetimevisit($db, $id)
+    {
+        $sql = "UPDATE property p
+        SET p.last_visit = NOW()
+        WHERE p.code_prop = '$id'";
+
+        $db->ejecutar($sql);
+
+    }
+
     // PAGINACION
     public function select_data_count($db)
     {

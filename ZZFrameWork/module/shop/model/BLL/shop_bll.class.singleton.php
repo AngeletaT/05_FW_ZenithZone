@@ -59,11 +59,21 @@ class shop_bll
     // DETAILS PROPIEDADES
     public function get_details_BLL($args)
     {
-        return $this->dao->select_data_details($this->db, $args[0]);
+        $details = $this->dao->select_data_details($this->db, $args[0]);
+
+        if (!empty($details)) {
+            $this->dao->update_visited($this->db, $args[0]);
+            $this->dao->update_datetimevisit($this->db, $args[0]);
+            return $details;
+
+        } else {
+            echo json_encode("error");
+        }
     }
     public function get_scroll_details_BLL($args)
     {
         return $this->dao->select_data_scroll_details($this->db, $args[0], $args[1]);
+
     }
 
     // PAGINACION
