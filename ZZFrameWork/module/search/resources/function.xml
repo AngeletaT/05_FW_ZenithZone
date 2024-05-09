@@ -1,0 +1,18 @@
+<functions>
+    <function>
+        <name>search_type</name>
+        <uri>search_type</uri>
+    </function>
+    <function>
+        <name>search_activity_null</name>
+        <uri>search_activity_null</uri>
+    </function>
+    <function>
+        <name>search_activity</name>
+        <uri>search_activity</uri>
+    </function>
+    <function>
+        <name>autocomplete</name>
+        <uri>autocomplete</uri>
+    </function>
+</functions>

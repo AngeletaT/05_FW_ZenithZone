@@ -19,7 +19,7 @@ function load_activity_search(type) {
 	// updateFiltersShop("code_act", null);
 
 	if (type == undefined) {
-		ajaxPromise("module/search/controller/controller_search.php?op=search_activity_null", "POST", "JSON")
+		ajaxPromise(friendlyURL("?module=search"), "POST", "JSON", {"op": "search_activity_null"})
 			.then(function (data) {
 				// console.log(data)
 				$("<option>Activity</option>").attr("selected", true).attr("disabled", true).appendTo("#search_activity")
@@ -34,10 +34,11 @@ function load_activity_search(type) {
 				// window.location.href = "index.php?module=ctrl_exceptions&op=503&type=503&lugar=Print_Dynamic_Filters SHOP";
 			})
 	} else {
-		// console.log(type)
-		ajaxPromise("module/search/controller/controller_search.php?op=search_activity", "POST", "JSON", type)
+		// console.log("type:", type)
+		ajaxPromise(friendlyURL("?module=search"), "POST", "JSON", {"op": "search_activity", "type": type})
 			.then(function (data) {
 				// console.log(data)
+				// return
 				$("<option>Activity</option>").attr("selected", true).attr("disabled", true).appendTo("#search_activity")
 				for (row in data) {
 					$('<option value="' + data[row].code_act + '">' + data[row].name_act + "</option>").appendTo(
@@ -63,7 +64,7 @@ function launch_search() {
 		} else {
 			$("#search_activity").empty()
 			localStorage.removeItem("filter_activity")
-			load_activity_search({type})
+			load_activity_search(type)
 		}
 		FilterChange("filter_type", "code_type", type)
 	})
@@ -114,7 +115,7 @@ function autocomplete() {
 		}
 
 		console.log(search)
-		ajaxPromise("module/search/controller/controller_search.php?op=autocomplete", "POST", "JSON", {"search": search})
+		ajaxPromise(friendlyURL("?module=search"), "POST", "JSON", {"search": search, "op": "autocomplete"})
 			.then(function (data) {
 				// console.log("autocompletepromise")
 				// console.log(data)
