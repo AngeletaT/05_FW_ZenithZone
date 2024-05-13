@@ -1,0 +1,83 @@
+<main class="mainproperty">
+	<div class="login-wrap">
+		<div class="login-html">
+			<div class="login__radio">
+				<input id="tab-1" type="radio" name="tab" class="login" checked />
+				<input id="tab-2" type="radio" name="tab" class="register" />
+			</div>
+			<div class="login-form" id="login-form">
+				<!-- ======= LOGIN SECTION ======= -->
+				<form id="login__form" method="POST">
+					<div class="login-htm">
+						<div class="group">
+							<h2 class="title">Login</h2>
+						</div>
+						<div class="group">
+							<label for="user" class="label">Username</label>
+							<input id="username_log" type="text" class="input" name="username_log" />
+							<span id="error_username_log" class="error"></span>
+						</div>
+						<div class="group">
+							<label for="pass" class="label">Password</label>
+							<input id="passwd_log" type="password" class="input" name="passwd_log" />
+							<span id="error_passwd_log" class="error"></span>
+						</div>
+						<div class="group">
+							<input type="submit" id="login" class="button" value="Sign In" />
+						</div>
+						<div class="hr"></div>
+						<div class="text register-text">
+							<h6>Don't have an account? <a href="#tab-2">Register now</a></h6>
+						</div>
+					</div>
+				</form>
+
+				<!-- ======= REGISTER SECTION ======= -->
+				<form id="register__form" method="post">
+					<div class="register-htm">
+						<div class="group">
+							<h2 class="title">Register</h2>
+						</div>
+						<div class="group">
+							<label for="user" class="label">Username</label>
+							<input id="username_reg" type="text" class="input" name="username_reg" />
+							<span id="error_username_reg" class="error"></span>
+						</div>
+						<div class="group">
+							<label for="pass" class="label">Password</label>
+							<input id="passwd1_reg" type="password" class="input" name="passwd1_reg" />
+							<span id="error_passwd1_reg" class="error"></span>
+						</div>
+						<div class="group">
+							<label for="pass" class="label">Repeat Password</label>
+							<input id="passwd2_reg" type="password" class="input" name="passwd2_reg" />
+							<span id="error_passwd2_reg" class="error"></span>
+						</div>
+						<div class="group">
+							<label for="pass" class="label">Email Address</label>
+							<input id="email_reg" type="email" class="input" name="email_reg" />
+							<span id="error_email_reg" class="error"></span>
+						</div>
+						<div class="group">
+							<input type="submit" id="register" class="button" value="Sign Up" />
+						</div>
+						<div class="hr"></div>
+						<div class="text login-text">
+							<h6>Already have an account? <a href="#tab-1">Login now</a></h6>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div id="login-profile">
+				<div class="profile">
+					<div class="user-info">
+						<h6 id="username">Username</h6>
+						<div><img id="avatar" src="" alt="User Avatar" class="avatar" style="width: 200px; height: 200px" /></div>
+						<br />
+						<button id="logout" class="Button_red">Logout</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
