@@ -30,7 +30,7 @@ class search_dao
     {
         // return "hola dao";
 
-        $sql = "SELECT DISTINCT * 
+        $sql = "SELECT * 
                 FROM activity";
 
         $stmt = $db->ejecutar($sql);

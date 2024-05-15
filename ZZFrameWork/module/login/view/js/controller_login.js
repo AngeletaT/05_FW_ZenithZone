@@ -17,10 +17,10 @@ function login() {
 				} else if (result == "error_passwd") {
 					document.getElementById("error_passwd_log").innerHTML = "The password is incorrect"
 				} else {
-					localStorage.setItem("acces_token", result[0])
+					localStorage.setItem("access_token", result[0])
 					localStorage.setItem("refresh_token", result[1])
 
-					console.log("acces_token", result)
+					console.log("access_token", result)
 					toastr.success("Loged succesfully")
 					// Mostrar el perfil del usuario
 					document.getElementById("login-form").style.display = "none"

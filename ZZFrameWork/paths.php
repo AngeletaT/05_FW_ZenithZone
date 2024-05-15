@@ -43,10 +43,10 @@ define('JS_VIEW_HOME', SITE_PATH . 'module/home/view/js/');
 define('VIEW_PATH_HOME', SITE_ROOT . 'module/home/view/');
 
 //MODEL_SEARCH
-// define('DAO_SEARCH', SITE_ROOT . 'module/search/model/DAO/');
-// define('BLL_SEARCH', SITE_ROOT . 'module/search/model/BLL/');
-// define('MODEL_SEARCH', SITE_ROOT . 'module/search/model/model/');
-// define('JS_VIEW_SEARCH', SITE_PATH . 'module/search/view/js/');
+define('DAO_SEARCH', SITE_ROOT . 'module/search/model/DAO/');
+define('BLL_SEARCH', SITE_ROOT . 'module/search/model/BLL/');
+define('MODEL_SEARCH', SITE_ROOT . 'module/search/model/model/');
+define('JS_VIEW_SEARCH', SITE_PATH . 'module/search/view/js/');
 
 //MODEL_SHOP
 define('UTILS_SHOP', SITE_ROOT . 'module/shop/utils/');
@@ -78,12 +78,12 @@ define('VIEW_PATH_SHOP', SITE_ROOT . 'module/shop/view/');
 // define ('VIEW_PATH_CART', SITE_ROOT . 'module/cart/view/');
 
 //MODEL_LOGIN
-// define('UTILS_LOGIN', SITE_ROOT . 'module/login/utils/');
-// define('DAO_LOGIN', SITE_ROOT . 'module/login/model/DAO/');
-// define('BLL_LOGIN', SITE_ROOT . 'module/login/model/BLL/');
-// define('MODEL_LOGIN', SITE_ROOT . 'module/login/model/model/');
-// define('JS_VIEW_LOGIN', SITE_PATH . 'module/login/view/js/');
-// define('VIEW_PATH_LOGIN', SITE_ROOT . 'module/login/view/');
+define('UTILS_LOGIN', SITE_ROOT . 'module/login/utils/');
+define('DAO_LOGIN', SITE_ROOT . 'module/login/model/DAO/');
+define('BLL_LOGIN', SITE_ROOT . 'module/login/model/BLL/');
+define('MODEL_LOGIN', SITE_ROOT . 'module/login/model/model/');
+define('JS_VIEW_LOGIN', SITE_PATH . 'module/login/view/js/');
+define('VIEW_PATH_LOGIN', SITE_ROOT . 'module/login/view/');
 
 // Friendly
 define('URL_FRIENDLY', TRUE);

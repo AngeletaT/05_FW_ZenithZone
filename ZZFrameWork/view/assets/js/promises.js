@@ -34,11 +34,14 @@ function load_menu() {
 	// 	.html('<a href="' + friendlyURL("?module=contact") + '" class="nav_link">Contact us</a>')
 	// 	.appendTo("#nav_list")
 
-	ajaxPromise(friendlyURL("?module=login&op=data_user"), "POST", "JSON", {token: localStorage.getItem("token")})
+	ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", {
+		token: localStorage.getItem("access_token"),
+		op: "data_user",
+	})
 		.then(function (data) {
-			if (data[0].user_type === "admin") {
+			if (data[0].type_user === "admin") {
 				menu_admin()
-			} else if (data[0].user_type === "client") {
+			} else if (data[0].type_user === "client") {
 				menu_client()
 			}
 			click_profile(data[0])
@@ -46,9 +49,27 @@ function load_menu() {
 		.catch(function () {
 			$("<li></li>")
 				.attr({"class": "nav_item"})
-				.html('<a href="' + friendlyURL("?module=login") + '" class="nav_link" data-tr="Log in">Log in</a>')
-				.appendTo(".nav_list")
+				.html(
+					'<a class="loginbutton" href="' +
+						friendlyURL("?module=login") +
+						'" class="nav_link" data-tr="Log in">Log in</a>'
+				)
+				.appendTo("#nav_list")
 		})
+}
+
+function menu_client() {
+	$("<li></li>")
+		.html(
+			'<a class="active" id="useravatar" href="' +
+				friendlyURL("?module=login") +
+				'"><img class="useravatar avatar" src="" alt="UserAvatar"/></a>'
+		)
+		.appendTo("#nav_list")
+
+	$("<li></li>")
+		.html('<a class="loginbutton" href="' + friendlyURL("?module=login") + '">Login</a>')
+		.appendTo("#nav_list")
 }
 
 //================CLICK-LOGOUT================

@@ -18,9 +18,9 @@ class login_model
         return self::$_instance;
     }
 
-    public function get_carrusel()
+    public function get_data_user()
     {
-        // echo json_encode("carrouselAct Model");
-        return $this->bll->get_carrusel_BLL();
+        // echo json_encode("get_data_user Model");
+        return $this->bll->get_data_user_BLL();
     }
 }

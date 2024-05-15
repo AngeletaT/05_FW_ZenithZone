@@ -25,9 +25,9 @@ class common
 
     public static function load_model($model, $function = null, $args = null)
     {
-        // $dir = explode('_', $model);
-        // $path = constant('MODEL_' . strtoupper($dir[0])) . $model . '.class.singleton.php';
-        $path = "module/home/model/model/home_model.class.singleton.php";
+        $dir = explode('_', $model);
+        $path = constant('MODEL_' . strtoupper($dir[0])) . $model . '.class.singleton.php';
+        // $path = "module/home/model/model/home_model.class.singleton.php";
 
         if (file_exists($path)) {
             require_once ($path);

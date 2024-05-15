@@ -15,11 +15,9 @@ class login_dao
         return self::$_instance;
     }
 
-    public function select_data_carrusel($db)
+    public function select_data_user($db)
     {
-        // return "hola dao";
-
-        $sql = "SELECT * FROM activity";
+        $sql = 'SELECT * FROM users';
 
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);

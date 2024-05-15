@@ -14,13 +14,13 @@ class controller_login
 
     function view()
     {
-        // echo 'hola view desde el home';
-        common::load_view('top_page_login.html', VIEW_PATH_HOME . 'login-register.html');
+        // echo 'hola view desde el login';
+        common::load_view('top_page_login.html', VIEW_PATH_LOGIN . 'login-register.html');
     }
 
-    function carrouselAct()
+    function data_user()
     {
-        // echo json_encode("carrouselAct");
-        echo json_encode(common::load_model('login_model', 'get_'));
+        // echo json_encode("data_user");
+        echo json_encode(common::load_model('login_model', 'get_data_user'));
     }
 }

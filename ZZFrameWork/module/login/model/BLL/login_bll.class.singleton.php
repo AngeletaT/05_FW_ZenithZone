@@ -19,8 +19,8 @@ class login_bll
         return self::$_instance;
     }
 
-    public function get_carrusel_BLL()
+    public function get_data_user_BLL()
     {
-        return $this->dao->select_data_carrusel($this->db);
+        return $this->dao->select_data_user($this->db);
     }
 }

@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <functions>
     <function>
-        <name></name>
-        <uri></uri>
+        <name>view</name>
+        <uri>view</uri>
+    </function>
+    <function>
+        <name>data_user</name>
+        <uri>data_user</uri>
     </function>
 </functions>

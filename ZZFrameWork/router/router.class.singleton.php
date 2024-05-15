@@ -49,8 +49,8 @@ class router
         try {
             call_user_func(array($this->loadModule(), $this->loadFunction()));
         } catch (Exception $e) {
-            echo json_encode("error en el router");
-            // common::load_error();
+            // echo json_encode("error en el router");
+            common::load_error();
         }
     }
 
