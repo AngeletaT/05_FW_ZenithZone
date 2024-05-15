@@ -9,7 +9,7 @@ class Conf
 
     private function __construct()
     {
-        $cnfg = parse_ini_file(MODEL_PATH . "constantes.ini");
+        $cnfg = parse_ini_file(UTILS . "constantes.ini");
         $this->_userdb = $cnfg['BD_USER'];
         $this->_passdb = $cnfg['BD_PASS'];
         $this->_hostdb = $cnfg['BD_HOST'];
