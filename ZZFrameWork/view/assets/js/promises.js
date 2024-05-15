@@ -125,8 +125,37 @@ function friendlyURL(url) {
 // 	})
 // }
 
+// ------------------- LOAD CONTENT ------------------------ //
+function load_content() {
+	let path = window.location.pathname.split("/")
+
+	if (path[5] === "recover") {
+		window.location.href = friendlyURL("?module=login&op=recover_view")
+		localStorage.setItem("token_email", path[6])
+	} else if (path[5] === "verify") {
+		ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", {token_email: path[6], op: "verify_email"})
+			.then(function (data) {
+				// console.log(data)
+				// return
+				if (data === "verify") {
+					toastr.options.timeOut = 3000
+					toastr.success("Email verified")
+					setTimeout('window.location.href = friendlyURL("?module=home")', 1000)
+				} else {
+					console.log("Error: verify email error")
+				}
+			})
+			.catch(function () {
+				console.log("Error: verify email error")
+			})
+	} else if (path[4] === "recover_view") {
+		// load_form_new_password()
+	}
+}
+
 $(document).ready(function () {
 	load_menu()
 	click_logout()
 	// click_shop()
+	load_content()
 })

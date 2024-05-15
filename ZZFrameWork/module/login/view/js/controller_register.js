@@ -4,12 +4,14 @@ function register() {
 		var username = document.getElementById("username_reg").value
 		var email = document.getElementById("email_reg").value
 		var password = document.getElementById("passwd1_reg").value
-		data = {username: username, email: email, password: password}
+		var op = "register"
+		data = {username: username, email: email, password: password, op: op}
 		// console.log(data)
 
-		ajaxPromise("module/login/controller/controller_login.php?op=register", "POST", "JSON", data)
+		ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", data)
 			.then(function (result) {
 				console.log("Dentro del then", result)
+				return
 				if (result == "error_email") {
 					document.getElementById("error_email_reg").innerHTML = "The email is already registered"
 				} else if (result == "error_username") {
@@ -20,7 +22,7 @@ function register() {
 				} else {
 					toastr.success("User registered correctly")
 					setTimeout(function () {
-						window.location.href = "index.php?page=login&op=list"
+						window.location.href = friendlyURL("?module=login")
 					}, 3000)
 				}
 			})

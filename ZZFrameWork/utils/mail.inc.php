@@ -22,7 +22,7 @@ class mail
         $resend = parse_ini_file(UTILS . "constantes.ini");
         $api_key = $resend['MAIL_API_KEY'];
 
-        $resendClient = Resend::client($resend['MAIL_API_KEY']);
+        $resendClient = Resend::client($api_key);
 
         try {
             $result = $resendClient->emails->send([
@@ -35,9 +35,7 @@ class mail
             exit('Error: ' . $e->getMessage());
         }
 
-        echo $result->toJson();
-
-        return $result;
+        return $result->toJson();
     }
 }
 

@@ -23,4 +23,40 @@ class login_bll
     {
         return $this->dao->select_data_user($this->db);
     }
+
+    public function register_user_BLL($args)
+    {
+        $hashed_pass = password_hash($args[2], PASSWORD_DEFAULT, ['cost' => 12]);
+        $hashavatar = md5(strtolower(trim($args[1])));
+        $avatar = "https://i.pravatar.cc/500?u=$hashavatar";
+
+        $token_email = common::generate_Token_secure(20);
+
+        if (!empty($this->dao->select_user($this->db, $args[0], $args[1]))) {
+            return 'error';
+        } else {
+            $this->dao->insert_user($this->db, $args[0], $args[1], $hashed_pass, $avatar, $token_email);
+            $message = [
+                'type' => 'validate',
+                'token' => $token_email,
+                'toEmail' => $args[1]
+            ];
+            $email = json_decode(mail::send_email($message), true);
+            if (!empty($email)) {
+                return;
+            }
+        }
+
+        return $this->dao->insert_user($this->db, $args[0], $args[1], $hashed_pass, $avatar, $token_email);
+    }
+
+    public function verify_email_BLL($args)
+    {
+        if ($this->dao->select_verify_email($this->db, $args[0])) {
+            $this->dao->update_verify_email($this->db, $args[0]);
+            return 'verify';
+        } else {
+            return 'fail';
+        }
+    }
 }
