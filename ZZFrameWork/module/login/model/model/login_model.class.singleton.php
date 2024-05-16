@@ -30,6 +30,12 @@ class login_model
         return $this->bll->register_user_BLL($args);
     }
 
+    public function login_user($args)
+    {
+        // echo json_encode("login_user Model");
+        return $this->bll->login_user_BLL($args);
+    }
+
     public function verify_email($args)
     {
         // echo json_encode("verify_email Model");

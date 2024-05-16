@@ -30,9 +30,16 @@ class controller_login
         echo json_encode(common::load_model('login_model', 'register_user', [$_POST['username'], $_POST['email'], $_POST['password']]));
     }
 
-    function verify_email($token_email)
+    function login()
+    {
+        // echo json_encode("login");
+        echo json_encode(common::load_model('login_model', 'login_user', [$_POST['username'], $_POST['password']]));
+    }
+
+    function verify_email()
     {
         // echo json_encode("verify_email");
-        echo json_encode(common::load_model('login_model', 'verify_email', [$_POST['token_email']]));
+        echo json_encode(common::load_model('login_model', 'verify_email', $_POST['token_email']));
+
     }
 }

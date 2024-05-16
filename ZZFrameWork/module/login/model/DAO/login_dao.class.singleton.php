@@ -41,12 +41,12 @@ class login_dao
 
 
         $stmt = $db->ejecutar($sql);
-        return $db->listar($stmt);
+        return "insert";
     }
 
     public function select_verify_email($db, $token_email)
     {
-        $sql = "SELECT * 
+        $sql = "SELECT token_email 
         FROM users 
         WHERE token_email = '$token_email'";
 
@@ -57,7 +57,7 @@ class login_dao
     public function update_verify_email($db, $token_email)
     {
         $sql = "UPDATE `users` 
-        SET `isActive` = '1' 
+        SET `isActive` = '1', token_email = ''
         WHERE `token_email` = '$token_email'";
 
         $stmt = $db->ejecutar($sql);

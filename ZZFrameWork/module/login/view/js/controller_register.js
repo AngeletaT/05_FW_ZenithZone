@@ -10,8 +10,8 @@ function register() {
 
 		ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", data)
 			.then(function (result) {
-				console.log("Dentro del then", result)
-				return
+				// console.log("Dentro del then", result)
+				// return
 				if (result == "error_email") {
 					document.getElementById("error_email_reg").innerHTML = "The email is already registered"
 				} else if (result == "error_username") {

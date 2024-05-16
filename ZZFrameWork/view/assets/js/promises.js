@@ -128,19 +128,22 @@ function friendlyURL(url) {
 // ------------------- LOAD CONTENT ------------------------ //
 function load_content() {
 	let path = window.location.pathname.split("/")
+	console.log(path[5])
 
-	if (path[5] === "recover") {
+	if (path[4] === "recover") {
 		window.location.href = friendlyURL("?module=login&op=recover_view")
-		localStorage.setItem("token_email", path[6])
-	} else if (path[5] === "verify") {
-		ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", {token_email: path[6], op: "verify_email"})
+		localStorage.setItem("token_email", path[5])
+	} else if (path[4] === "verify") {
+		ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", {token_email: path[5], op: "verify_email"})
 			.then(function (data) {
-				// console.log(data)
-				// return
+				console.log(data)
+				return
 				if (data === "verify") {
 					toastr.options.timeOut = 3000
 					toastr.success("Email verified")
-					setTimeout('window.location.href = friendlyURL("?module=home")', 1000)
+					setTimeout(function () {
+						window.location.href = friendlyURL("?module=login")
+					}, 3000)
 				} else {
 					console.log("Error: verify email error")
 				}

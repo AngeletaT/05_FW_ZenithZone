@@ -46,14 +46,18 @@ class login_bll
                 return;
             }
         }
+    }
 
-        return $this->dao->insert_user($this->db, $args[0], $args[1], $hashed_pass, $avatar, $token_email);
+    public function login_user_BLL($args)
+    {
+
     }
 
     public function verify_email_BLL($args)
     {
-        if ($this->dao->select_verify_email($this->db, $args[0])) {
-            $this->dao->update_verify_email($this->db, $args[0]);
+        // return $args;
+        if ($this->dao->select_verify_email($this->db, $args)) {
+            $this->dao->update_verify_email($this->db, $args);
             return 'verify';
         } else {
             return 'fail';

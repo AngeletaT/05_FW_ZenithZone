@@ -2,19 +2,19 @@
 require __DIR__ . '/vendor/autoload.php';
 class mail
 {
-    public static function send_email($email)
+    public static function send_email($message)
     {
-        switch ($email['type']) {
+        switch ($message['type']) {
             case 'validate';
-                $email['inputMatter'] = 'Email verification';
-                $email['inputMessage'] = "<h2>Email verification.</h2><a href='http://localhost/angela/ZZFrameWork/login/verify/$email[token]'>Click here for verify your email.</a>";
+                $message['inputMatter'] = 'Email verification';
+                $message['inputMessage'] = "<h2>Email verification.</h2><a href='http://localhost/angela/ZZFrameWork/login/verify/$message[token]'>Click here for verify your email.</a>";
                 break;
             case 'recover';
-                $email['inputMatter'] = 'Recover password';
-                $email['inputMessage'] = "<a href='http://localhost/angela/ZZFrameWork/login/recover/$email[token]'>Click here for recover your password.</a>";
+                $message['inputMatter'] = 'Recover password';
+                $message['inputMessage'] = "<a href='http://localhost/angela/ZZFrameWork/login/recover/$message[token]'>Click here for recover your password.</a>";
                 break;
         }
-        return self::send_resend($email);
+        return self::send_resend($message);
     }
 
     public static function send_resend($values)
@@ -26,8 +26,8 @@ class mail
 
         try {
             $result = $resendClient->emails->send([
-                'from' => $values['fromEmail'],
-                'to' => [$values['toEmail']],
+                'from' => 'Acme <onboarding@resend.dev>',
+                'to' => 'angeletatb98@gmail.com',
                 'subject' => $values['inputMatter'],
                 'html' => $values['inputMessage'],
             ]);

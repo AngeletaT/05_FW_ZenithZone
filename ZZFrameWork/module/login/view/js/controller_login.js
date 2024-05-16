@@ -5,10 +5,11 @@ function login() {
 		var data = []
 		var username = document.getElementById("username_log").value
 		var password = document.getElementById("passwd_log").value
-		data = {username: username, password: password}
+		var op = "login"
+		data = {username: username, password: password, op: op}
 		console.log(data)
 
-		ajaxPromise("module/login/controller/controller_login.php?op=login", "POST", "JSON", data)
+		ajaxPromise(friendlyURL("?module=shop"), "POST", "JSON", data)
 			.then(function (result) {
 				console.log("Dentro del then", result)
 				if (result == "error_username") {
@@ -31,10 +32,14 @@ function login() {
 
 					if (localStorage.getItem("redirect_like")) {
 						// console.log("redirect_like")
-						setTimeout(' window.location.href = "index.php?page=controller_shop&op=list"; ', 500)
+						setTimeout(function () {
+							window.location.href = friendlyURL("?module=shop")
+						}, 3000)
 					} else {
 						// console.log("redirect_home")
-						setTimeout(' window.location.href = "index.php?page=controller_home&op=list"; ', 1000)
+						setTimeout(function () {
+							window.location.href = friendlyURL("?module=shop")
+						}, 3000)
 					}
 				}
 			})
