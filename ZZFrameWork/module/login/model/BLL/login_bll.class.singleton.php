@@ -32,7 +32,7 @@ class login_bll
         if (!empty($this->dao->select_user($this->db, $args[0], $args[1]))) {
             return 'error';
         } else {
-            $this->dao->insert_user($this->db, $args[0], $args[1], $hashed_pass, $avatar, $token_email);
+            $this->dao->insert_user($this->db, $args[0], $args[1], $hashed_pass, $avatar);
             $message = [
                 'type' => 'validate',
                 'token' => $token_email,
@@ -47,19 +47,28 @@ class login_bll
 
     public function verify_email_BLL($args)
     {
+        $email = middleware::decode_token_email($args);
+
+        // return $email;
         // return $args;
-        if ($this->dao->select_verify_email($this->db, $args)) {
-            $this->dao->update_verify_email($this->db, $args);
-            return 'verify';
+        if ($email['exp'] > time()) {
+            echo json_encode("Email caducado");
+            exit();
         } else {
-            return 'fail';
+            // return $args;
+            if ($this->dao->select_verify_email($this->db, $email['email'])) {
+                $this->dao->update_verify_email($this->db, $email['email']);
+                return 'verify';
+            } else {
+                return 'fail';
+            }
         }
     }
 
     // LOGIN
     public function login_user_BLL($args)
     {
-        
+
     }
 
     public function get_data_user_BLL()

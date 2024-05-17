@@ -33,32 +33,32 @@ class login_dao
         return $db->listar($stmt);
     }
 
-    public function insert_user($db, $username, $email, $hashed_pass, $avatar, $token_email)
+    public function insert_user($db, $username, $email, $hashed_pass, $avatar)
     {
         // return 'hola dao insert_user';
-        $sql = "INSERT INTO `users`(`username`, `password`, `email`, `type_user`, `avatar`, `token_email`, `isActive`) 
-        VALUES ('$username','$hashed_pass','$email','client','$avatar','$token_email','0');";
+        $sql = "INSERT INTO `users`(`username`, `password`, `email`, `type_user`, `avatar`, `isActive`) 
+        VALUES ('$username','$hashed_pass','$email','client','$avatar','0');";
 
 
         $stmt = $db->ejecutar($sql);
         return "insert";
     }
 
-    public function select_verify_email($db, $token_email)
+    public function select_verify_email($db, $email)
     {
-        $sql = "SELECT token_email 
+        $sql = "SELECT email 
         FROM users 
-        WHERE token_email = '$token_email'";
+        WHERE email = '$email'";
 
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
     }
 
-    public function update_verify_email($db, $token_email)
+    public function update_verify_email($db, $email)
     {
         $sql = "UPDATE `users` 
-        SET `isActive` = '1', token_email = ''
-        WHERE `token_email` = '$token_email'";
+        SET `isActive` = '1'
+        WHERE `email` = '$email'";
 
         $stmt = $db->ejecutar($sql);
         return "update";

@@ -128,7 +128,9 @@ function friendlyURL(url) {
 // ------------------- LOAD CONTENT ------------------------ //
 function load_content() {
 	let path = window.location.pathname.split("/")
-	// console.log([path[1], path[2], path[3], path[4], path[5]])
+	console.log("load_content")
+	console.log([path[1], path[2], path[3], path[4], path[5]])
+	console.log("token_email", path[5])
 
 	if (path[4] === "recover") {
 		window.location.href = friendlyURL("?module=login&op=recover_view")
@@ -145,11 +147,11 @@ function load_content() {
 						window.location.href = friendlyURL("?module=login")
 					}, 3000)
 				} else {
-					console.log("Error: verify email error")
+					console.log("Then Error: verify email error")
 				}
 			})
 			.catch(function () {
-				console.log("Error: verify email error")
+				console.log("Catch Error: verify email error")
 			})
 	} else if (path[4] === "recover_view") {
 		// load_form_new_password()

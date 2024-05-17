@@ -18,22 +18,11 @@ class controller_login
         common::load_view('top_page_login.html', VIEW_PATH_LOGIN . 'login-register.html');
     }
 
-    function data_user()
-    {
-        // echo json_encode("data_user");
-        echo json_encode(common::load_model('login_model', 'get_data_user'));
-    }
-
+    // REGISTER
     function register()
     {
         // echo json_encode("register");
         echo json_encode(common::load_model('login_model', 'register_user', [$_POST['username'], $_POST['email'], $_POST['password']]));
-    }
-
-    function login()
-    {
-        // echo json_encode("login");
-        echo json_encode(common::load_model('login_model', 'login_user', [$_POST['username'], $_POST['password']]));
     }
 
     function verify_email()
@@ -41,5 +30,17 @@ class controller_login
         // echo json_encode("verify_email");
         echo json_encode(common::load_model('login_model', 'verify_email', $_POST['token_email']));
 
+    }
+
+    // LOGIN
+    function login()
+    {
+        // echo json_encode("login");
+        echo json_encode(common::load_model('login_model', 'login_user', [$_POST['username'], $_POST['password']]));
+    }
+    function data_user()
+    {
+        // echo json_encode("data_user");
+        echo json_encode(common::load_model('login_model', 'get_data_user'));
     }
 }

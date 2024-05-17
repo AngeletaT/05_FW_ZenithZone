@@ -11,7 +11,19 @@ class middleware
         $token_dec = $JWT->decode($token, $secret);
 
         $rt_token = json_decode($token_dec, TRUE);
-        return $rt_token["username"];
+        return $rt_token;
+    }
+
+    public static function decode_token_email($token)
+    {
+        $jwt = parse_ini_file(UTILS . "constantes.ini");
+        $secret = $jwt['JWT_SECRET'];
+
+        $JWT = new JWT;
+        $token_dec = $JWT->decode($token, $secret);
+
+        $rt_token = json_decode($token_dec, TRUE);
+        return $rt_token;
     }
 
     public static function create_token($username)
@@ -19,7 +31,7 @@ class middleware
         $jwt = parse_ini_file(UTILS . "constantes.ini");
         $header = $jwt['JWT_HEADER'];
         $secret = $jwt['JWT_SECRET'];
-        $payload = '{"iat":"' . time() . '","exp":"' . time() + (600) . '","username":"' . $username . '"}';
+        $payload = '{"iat":"' . time() . '","exp":"' . time() + (6000) . '","username":"' . $username . '"}';
 
         $JWT = new JWT;
         $token = $JWT->encode($header, $payload, $secret);
@@ -31,7 +43,7 @@ class middleware
         $jwt = parse_ini_file(UTILS . "constantes.ini");
         $header = $jwt['JWT_HEADER'];
         $secret = $jwt['JWT_SECRET'];
-        $payload = '{"iat":"' . time() . '","exp":"' . time() + (800) . '","username":"' . $username . '"}';
+        $payload = '{"iat":"' . time() . '","exp":"' . time() + (8000) . '","username":"' . $username . '"}';
 
         $JWT = new JWT;
         $token = $JWT->encode($header, $payload, $secret);
@@ -43,7 +55,7 @@ class middleware
         $jwt = parse_ini_file(UTILS . "constantes.ini");
         $header = $jwt['JWT_HEADER'];
         $secret = $jwt['JWT_SECRET'];
-        $payload = '{"iat":"' . time() . '","exp":"' . time() + (600) . '","email":"' . $email . '"}';
+        $payload = '{"iat":"' . time() . '","exp":"' . time() + (6000) . '","email":"' . $email . '"}';
         $JWT = new JWT;
         $token = $JWT->encode($header, $payload, $secret);
         return $token;
