@@ -12,7 +12,7 @@ function login() {
 		ajaxPromise(friendlyURL("?module=shop"), "POST", "JSON", data)
 			.then(function (result) {
 				console.log("Dentro del then", result)
-			
+
 				if (result == "error_username") {
 					document.getElementById("error_username_log").innerHTML =
 						"The user does not exist, make sure you have written it correctly"
@@ -99,21 +99,44 @@ function validate_login() {
 		return 0
 	}
 }
+// RECOVERY PASSWORD
+function recovery_password(){
+	
+}
+
+function key_recovery() {
+	$("#recovery").keypress(function (e) {
+		var code = e.keyCode ? e.keyCode : e.which
+		if (code == 13) {
+			e.preventDefault()
+			recovery_password()
+		}
+	})
+}
+
+function button_recovery() {
+	$("#recovery").on("click", function (e) {
+		e.preventDefault()
+		recovery_password()
+	})
+}
 
 // Cambiar entre formularios
 function switchform() {
 	// Oculta el formulario de registro cuando se carga la página
-	$("#register__form").css("display", "none")
 	$(".login__radio").hide()
-	$("#login-profile").css("display", "none")
+	$("#register__form").css("display", "none")
+	$("#password_recovery_form").css("display", "none")
 
 	// Cambiar del formulario de inicio de sesion al de registro
 	$(".login-form .register-text a").click(function (event) {
 		event.preventDefault()
-		$("#login__form").css("display", "none")
 		$("#register__form").css("display", "block")
+		$("#login__form").css("display", "none")
+		$("#password_recovery_form").css("display", "none")
 		$("#tab-1").prop("checked", false)
 		$("#tab-2").prop("checked", true)
+		$("#tab-3").prop("checked", false)
 	})
 
 	// Cambiar del formulario de registro al de inicio de sesion
@@ -121,8 +144,21 @@ function switchform() {
 		event.preventDefault()
 		$("#register__form").css("display", "none")
 		$("#login__form").css("display", "block")
+		$("#password_recovery_form").css("display", "none")
 		$("#tab-2").prop("checked", false)
 		$("#tab-1").prop("checked", true)
+		$("#tab-3").prop("checked", false)
+	})
+
+	// Cambiar al formulario de recuperación de contraseña
+	$(".text.password-recovery-text a").click(function (event) {
+		event.preventDefault()
+		$("#login__form").css("display", "none")
+		$("#register__form").css("display", "none")
+		$("#password_recovery_form").css("display", "block")
+		$("#tab-1").prop("checked", false)
+		$("#tab-2").prop("checked", false)
+		$("#tab-3").prop("checked", true)
 	})
 }
 

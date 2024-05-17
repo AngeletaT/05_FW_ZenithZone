@@ -1272,7 +1272,8 @@ td {
 }
 
 #login__form,
-#register__form {
+#register__form,
+#password_recovery_form {
 	display: block;
 }
 

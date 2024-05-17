@@ -4,6 +4,7 @@
 			<div class="login__radio">
 				<input id="tab-1" type="radio" name="tab" class="login" checked />
 				<input id="tab-2" type="radio" name="tab" class="register" />
+				<input id="tab-3" type="radio" name="tab" class="password-recovery" />
 			</div>
 
 			<div class="login-form" id="login-form">
@@ -23,8 +24,8 @@
 							<input id="passwd_log" type="password" class="input" name="passwd_log" />
 							<span id="error_passwd_log" class="error"></span>
 						</div>
-						<div class="group">
-							<h6>Forgot your password? <a href="#forgot-password">Click here to recover</a></h6>
+						<div class="text password-recovery-text">
+							<h6>Forgot your password? <a href="#tab-3">Click here to recover</a></h6>
 						</div>
 						<br />
 						<div class="group">
@@ -91,16 +92,26 @@
 						</div>
 					</div>
 				</form>
-			</div>
-			<div id="login-profile">
-				<div class="profile">
-					<div class="user-info">
-						<h6 id="username">Username</h6>
-						<div><img id="avatar" src="" alt="User Avatar" class="avatar" style="width: 200px; height: 200px" /></div>
-						<br />
-						<button id="logout" class="Button_red">Logout</button>
+				<!-- ======= PASSWORD RECOVERY SECTION ======= -->
+				<form id="password_recovery_form" method="post">
+					<div class="password-recovery-htm">
+						<div class="group">
+							<h2 class="title">Password Recovery</h2>
+						</div>
+						<div class="group">
+							<label for="email" class="label">Email Address</label>
+							<input id="email_recovery" type="email" class="input" name="email_recovery" />
+							<span id="error_email_recovery" class="error"></span>
+						</div>
+						<div class="group">
+							<input type="submit" id="recover" class="button" value="Recover Password" />
+						</div>
+						<div class="hr"></div>
+						<div class="text login-text">
+							<h6>Remember your password? <a href="#tab-1">Login now</a></h6>
+						</div>
 					</div>
-				</div>
+				</form>
 			</div>
 		</div>
 	</div>
