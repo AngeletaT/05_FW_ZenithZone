@@ -100,24 +100,64 @@ function validate_login() {
 	}
 }
 // RECOVERY PASSWORD
-function recovery_password(){
-	
+function send_recover_password() {
+	if (validate_recover_password() != 0) {
+		var email = document.getElementById("email_recovery").value
+		var op = "send_recover_email"
+		var data = {email: email, op: op}
+		ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", data)
+			.then(function (data) {
+				// console.log(data)
+				// return
+				if (data == "error") {
+					$("#error_email_forg").html("The email doesn't exist")
+				} else {
+					toastr.options.timeOut = 3000
+					toastr.success("Email sended")
+					setTimeout('window.location.href = friendlyURL("?module=login&op=view")', 1000)
+				}
+			})
+			.catch(function (e) {
+				console.log("Error: Recover password error")
+			})
+	}
+}
+
+function validate_recover_password() {
+	var mail_exp = /^[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+$/
+	var error = false
+
+	if (document.getElementById("email_recovery").value.length === 0) {
+		document.getElementById("error_email_recovery").innerHTML = "Tienes que escribir un correo"
+		error = true
+	} else {
+		if (!mail_exp.test(document.getElementById("email_recovery").value)) {
+			document.getElementById("error_email_recovery").innerHTML = "El formato del mail es invalido"
+			error = true
+		} else {
+			document.getElementById("error_email_recovery").innerHTML = ""
+		}
+	}
+
+	if (error == true) {
+		return 0
+	}
 }
 
 function key_recovery() {
-	$("#recovery").keypress(function (e) {
+	$("#recover").keypress(function (e) {
 		var code = e.keyCode ? e.keyCode : e.which
 		if (code == 13) {
 			e.preventDefault()
-			recovery_password()
+			send_recover_password()
 		}
 	})
 }
 
 function button_recovery() {
-	$("#recovery").on("click", function (e) {
+	$("#recover").on("click", function (e) {
 		e.preventDefault()
-		recovery_password()
+		send_recover_password()
 	})
 }
 
@@ -166,4 +206,6 @@ $(document).ready(function () {
 	key_login()
 	button_login()
 	switchform()
+	key_recovery()
+	button_recovery()
 })

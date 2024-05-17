@@ -15,24 +15,7 @@ class login_dao
         return self::$_instance;
     }
 
-    public function select_data_user($db)
-    {
-        $sql = 'SELECT * FROM users';
-
-        $stmt = $db->ejecutar($sql);
-        return $db->listar($stmt);
-    }
-
-    public function select_user($db, $username, $email)
-    {
-        $sql = "SELECT * 
-        FROM users 
-        WHERE username = '$username' OR email = '$email'";
-
-        $stmt = $db->ejecutar($sql);
-        return $db->listar($stmt);
-    }
-
+    // REGISTER
     public function insert_user($db, $username, $email, $hashed_pass, $avatar)
     {
         // return 'hola dao insert_user';
@@ -58,6 +41,46 @@ class login_dao
     {
         $sql = "UPDATE `users` 
         SET `isActive` = '1'
+        WHERE `email` = '$email'";
+
+        $stmt = $db->ejecutar($sql);
+        return "update";
+    }
+
+    // LOGIN
+    public function select_data_user($db)
+    {
+        $sql = 'SELECT * FROM users';
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
+
+    public function select_user($db, $username, $email)
+    {
+        $sql = "SELECT * 
+        FROM users 
+        WHERE username = '$username' OR email = '$email'";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
+
+    // RECOVER PASSWORD
+    public function select_recover_password($db, $email)
+    {
+        $sql = "SELECT email 
+        FROM users 
+        WHERE email = '$email' AND password NOT LIKE ('')";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
+
+    public function update_recover_password($db, $email, $token_email)
+    {
+        $sql = "UPDATE `users` 
+        SET `token_email` = '$token_email'
         WHERE `email` = '$email'";
 
         $stmt = $db->ejecutar($sql);

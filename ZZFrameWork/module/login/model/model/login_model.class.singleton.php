@@ -41,4 +41,10 @@ class login_model
         return $this->bll->get_data_user_BLL();
     }
 
+    // RECOVER PASSWORD
+    public function send_recover_email($args)
+    {
+        // echo json_encode("send_recover_email Model");
+        return $this->bll->send_recover_email_BLL($args);
+    }
 }

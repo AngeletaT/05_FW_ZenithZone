@@ -43,4 +43,18 @@ class controller_login
         // echo json_encode("data_user");
         echo json_encode(common::load_model('login_model', 'get_data_user'));
     }
+
+    // RECOVER PASSWORD
+    function send_recover_email()
+    {
+        // echo json_encode("send_recover_email");
+        echo json_encode(common::load_model('login_model', 'send_recover_email', $_POST['email']));
+    }
+
+    function recover_view()
+    {
+        // echo 'hola view desde el recover';
+        common::load_view('top_page_login.html', VIEW_PATH_LOGIN . 'recover_pass.html');
+    }
+
 }
