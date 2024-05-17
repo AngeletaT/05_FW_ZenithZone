@@ -12,6 +12,7 @@ function login() {
 		ajaxPromise(friendlyURL("?module=shop"), "POST", "JSON", data)
 			.then(function (result) {
 				console.log("Dentro del then", result)
+			
 				if (result == "error_username") {
 					document.getElementById("error_username_log").innerHTML =
 						"The user does not exist, make sure you have written it correctly"

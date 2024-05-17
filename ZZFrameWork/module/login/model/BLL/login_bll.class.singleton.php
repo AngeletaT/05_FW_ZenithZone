@@ -19,18 +19,15 @@ class login_bll
         return self::$_instance;
     }
 
-    public function get_data_user_BLL()
-    {
-        return $this->dao->select_data_user($this->db);
-    }
-
+    // REGISTER
     public function register_user_BLL($args)
     {
         $hashed_pass = password_hash($args[2], PASSWORD_DEFAULT, ['cost' => 12]);
         $hashavatar = md5(strtolower(trim($args[1])));
         $avatar = "https://i.pravatar.cc/500?u=$hashavatar";
 
-        $token_email = common::generate_Token_secure(20);
+        $token_email = middleware::create_token_email($args[1]);
+
 
         if (!empty($this->dao->select_user($this->db, $args[0], $args[1]))) {
             return 'error';
@@ -48,11 +45,6 @@ class login_bll
         }
     }
 
-    public function login_user_BLL($args)
-    {
-
-    }
-
     public function verify_email_BLL($args)
     {
         // return $args;
@@ -62,5 +54,16 @@ class login_bll
         } else {
             return 'fail';
         }
+    }
+
+    // LOGIN
+    public function login_user_BLL($args)
+    {
+        
+    }
+
+    public function get_data_user_BLL()
+    {
+        return $this->dao->select_data_user($this->db);
     }
 }

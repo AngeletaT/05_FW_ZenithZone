@@ -128,7 +128,7 @@ function friendlyURL(url) {
 // ------------------- LOAD CONTENT ------------------------ //
 function load_content() {
 	let path = window.location.pathname.split("/")
-	console.log(path[5])
+	// console.log([path[1], path[2], path[3], path[4], path[5]])
 
 	if (path[4] === "recover") {
 		window.location.href = friendlyURL("?module=login&op=recover_view")
@@ -136,8 +136,8 @@ function load_content() {
 	} else if (path[4] === "verify") {
 		ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", {token_email: path[5], op: "verify_email"})
 			.then(function (data) {
-				console.log(data)
-				return
+				// console.log(data)
+				// return
 				if (data === "verify") {
 					toastr.options.timeOut = 3000
 					toastr.success("Email verified")
