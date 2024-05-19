@@ -1,3 +1,4 @@
+// LOGIN
 function login() {
 	console.log("login")
 	// console.log("validate_login", validate_login())
@@ -99,6 +100,7 @@ function validate_login() {
 		return 0
 	}
 }
+
 // RECOVERY PASSWORD
 function send_recover_password() {
 	if (validate_recover_password() != 0) {
@@ -161,7 +163,93 @@ function button_recovery() {
 	})
 }
 
-// Cambiar entre formularios
+function load_form_new_password() {
+	token_email = localStorage.getItem("token_email")
+	console.log("token_email", token_email)
+	localStorage.removeItem("token_email")
+	ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", {token_email: token_email, op: "verify_token"})
+		.then(function (data) {
+			console.log("loadform", data)
+			// return
+			if (data == "verify") {
+				key_password(token_email)
+				button_password(token_email)
+			} else {
+				console.log("Then error")
+			}
+		})
+		.catch(function (e) {
+			console.error("Catch error: ", e)
+		})
+}
+
+function key_password(token_email) {
+	$("#button_set_pass").keypress(function (e) {
+		var code = e.keyCode ? e.keyCode : e.which
+		if (code == 13) {
+			e.preventDefault()
+			send_new_password(token_email)
+		}
+	})
+}
+
+function button_password(token_email) {
+	$("#button_set_pass").on("click", function (e) {
+		e.preventDefault()
+		send_new_password(token_email)
+	})
+}
+
+function validate_new_password() {
+	var error = false
+
+	if (document.getElementById("pass_rec").value.length === 0) {
+		document.getElementById("error_password_rec").innerHTML = "You have to write a password"
+		error = true
+	} else {
+		if (document.getElementById("pass_rec").value.length < 8) {
+			document.getElementById("error_password_rec").innerHTML = "The password must be longer than 8 characters"
+			error = true
+		} else {
+			document.getElementById("error_password_rec").innerHTML = ""
+		}
+	}
+
+	if (document.getElementById("pass_rec_2").value != document.getElementById("pass_rec").value) {
+		document.getElementById("error_password_rec_2").innerHTML = "Passwords don't match"
+		error = true
+	} else {
+		document.getElementById("error_password_rec_2").innerHTML = ""
+	}
+
+	if (error == true) {
+		return 0
+	}
+}
+
+function send_new_password(token_email) {
+	if (validate_new_password() != 0) {
+		var data = {token_email: token_email, password: $("#pass_rec").val(), op: "new_password"}
+		ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", data)
+			.then(function (data) {
+				// console.log("new pass", data)
+				// return
+				if (data == "update") {
+					toastr.options.timeOut = 3000
+					toastr.success("New password changed")
+					setTimeout('window.location.href = friendlyURL("?module=login")', 1000)
+				} else {
+					toastr.options.timeOut = 3000
+					toastr.error("Error setting new password")
+				}
+			})
+			.catch(function (e) {
+				console.error("Catch error: ", e)
+			})
+	}
+}
+
+// FORMULARIOS
 function switchform() {
 	// Oculta el formulario de registro cuando se carga la página
 	$(".login__radio").hide()
@@ -202,10 +290,44 @@ function switchform() {
 	})
 }
 
+// LOAD CONTENT
+function load_content() {
+	let path = window.location.pathname.split("/")
+	// console.log("load_content")
+	// console.log([path[1], path[2], path[3], path[4], path[5]])
+	// console.log("token_email", path[5])
+
+	if (path[4] === "recover") {
+		window.location.href = friendlyURL("?module=login&op=recover_view")
+		localStorage.setItem("token_email", path[5])
+	} else if (path[4] === "verify") {
+		ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", {token_email: path[5], op: "verify_email"})
+			.then(function (data) {
+				// console.log(data)
+				// return
+				if (data === "verify") {
+					toastr.options.timeOut = 3000
+					toastr.success("Email verified")
+					setTimeout(function () {
+						window.location.href = friendlyURL("?module=login")
+					}, 3000)
+				} else {
+					console.log("Then Error: verify email error")
+				}
+			})
+			.catch(function () {
+				console.log("Catch Error: verify email error")
+			})
+	} else if (path[4] === "recover_view") {
+		load_form_new_password()
+	}
+}
+
 $(document).ready(function () {
 	key_login()
 	button_login()
 	switchform()
 	key_recovery()
 	button_recovery()
+	load_content()
 })

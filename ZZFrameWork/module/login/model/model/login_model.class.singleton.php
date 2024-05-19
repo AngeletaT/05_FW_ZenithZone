@@ -47,4 +47,16 @@ class login_model
         // echo json_encode("send_recover_email Model");
         return $this->bll->send_recover_email_BLL($args);
     }
+
+    public function verify_token($args)
+    {
+        // echo json_encode("verify_token Model");
+        return $this->bll->verify_token_BLL($args);
+    }
+
+    public function new_password($args)
+    {
+        // echo json_encode("new_password Model");
+        return $this->bll->new_password_BLL($args);
+    }
 }

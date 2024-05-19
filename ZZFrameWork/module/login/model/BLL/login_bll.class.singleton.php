@@ -97,4 +97,37 @@ class login_bll
             return 'error';
         }
     }
+
+    public function verify_token_BLL($args)
+    {
+        $email = middleware::decode_token_email($args);
+
+        if ($email['exp'] < time()) {
+            echo json_encode("Email caducado");
+            exit();
+        } else {
+            if ($this->dao->select_verify_email($this->db, $email['email'])) {
+                return 'verify';
+            } else {
+                return 'fail';
+            }
+        }
+    }
+
+    public function new_password_BLL($args)
+    {
+        $email = middleware::decode_token_email($args[0]);
+        $hashed_pass = password_hash($args[1], PASSWORD_DEFAULT, ['cost' => 12]);
+
+        if ($email['exp'] < time()) {
+            echo json_encode("Email caducado");
+            exit();
+        } else {
+            if ($this->dao->update_new_password($this->db, $email['email'], $hashed_pass)) {
+                return 'update';
+            } else {
+                return 'fail';
+            }
+        }
+    }
 }

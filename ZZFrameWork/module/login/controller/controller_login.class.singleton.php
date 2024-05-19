@@ -57,4 +57,16 @@ class controller_login
         common::load_view('top_page_login.html', VIEW_PATH_LOGIN . 'recover_pass.html');
     }
 
+    function verify_token()
+    {
+        // echo json_encode("verify_token");
+        echo json_encode(common::load_model('login_model', 'verify_token', $_POST['token_email']));
+    }
+
+    function new_password()
+    {
+        // echo json_encode("new_password");
+        echo json_encode(common::load_model('login_model', 'new_password', [$_POST['token_email'], $_POST['password']]));
+    }
+
 }

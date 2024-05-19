@@ -31,7 +31,7 @@ class login_dao
     {
         $sql = "SELECT email 
         FROM users 
-        WHERE email = '$email'";
+        WHERE email = '$email' AND isActive = '0'";
 
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
@@ -80,7 +80,17 @@ class login_dao
     public function update_recover_password($db, $email, $token_email)
     {
         $sql = "UPDATE `users` 
-        SET `token_email` = '$token_email'
+        SET `token_email` = '$token_email', `isActive` = '0'
+        WHERE `email` = '$email'";
+
+        $stmt = $db->ejecutar($sql);
+        return "update";
+    }
+
+    public function update_new_password($db, $email, $hashed_pass)
+    {
+        $sql = "UPDATE `users` 
+        SET `password` = '$hashed_pass', `isActive` = '1', `token_email` = ''
         WHERE `email` = '$email'";
 
         $stmt = $db->ejecutar($sql);
