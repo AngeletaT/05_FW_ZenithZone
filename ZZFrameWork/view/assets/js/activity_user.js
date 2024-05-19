@@ -1,13 +1,16 @@
 function protecturl() {
-	var acces_token = localStorage.getItem("acces_token")
-	ajaxPromise("module/login/controller/controller_login.php?op=controluser", "POST", "JSON", {
-		"acces_token": acces_token,
+	var access_token = localStorage.getItem("access_token")
+	var refresh_token = localStorage.getItem("refresh_token")
+	ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", {
+		"access_token": access_token,
+		"refresh_token": refresh_token,
+		"op": "controluser",
 	})
 		.then(function (data) {
 			if (data == "Correct_User") {
 				console.log("CORRECT--> The user matches the session")
 			} else if (data == "Wrong_User") {
-				console.log("INCORRECT--> Someone is trying to access an account")
+				console.log("INCORRECT--> Someone is trying to accesss an account")
 				logout()
 			}
 		})
@@ -17,9 +20,9 @@ function protecturl() {
 }
 
 function control_activity() {
-	var acces_token = localStorage.getItem("acces_token")
-	if (acces_token) {
-		ajaxPromise("module/login/controller/controller_login.php?op=actividad", "POST", "JSON").then(function (response) {
+	var access_token = localStorage.getItem("access_token")
+	if (access_token) {
+		ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", {op: "actividad"}).then(function (response) {
 			if (response == "inactivo") {
 				console.log("usuario INACTIVO")
 				logout()
@@ -33,28 +36,26 @@ function control_activity() {
 }
 
 // function refresh_token() {
-// 	var acces_token = localStorage.getItem("acces_token")
-// 	if (acces_token) {
+// 	var access_token = localStorage.getItem("access_token")
+// 	if (access_token) {
 // 		ajaxPromise("module/login/controller/controller_login.php?op=refresh_token", "POST", "JSON", {
-// 			"acces_token": acces_token,
+// 			"access_token": access_token,
 // 		}).then(function (data_token) {
-// 			console.log("Refresh acces_token correctly")
-// 			localStorage.setItem("acces_token", data_token)
+// 			console.log("Refresh access_token correctly")
+// 			localStorage.setItem("access_token", data_token)
 // 			load_menu()
 // 		})
 // 	}
 // }
 
 function refresh_cookie() {
-	ajaxPromise("module/login/controller/controller_login.php?op=refresh_cookie", "POST", "JSON").then(function (
-		response
-	) {
+	ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", {op: "refresh_cookie"}).then(function (response) {
 		console.log("Refresh cookie correctly")
 	})
 }
 
 // function logout_auto() {
-//     localStorage.removeItem('acces_token');
+//     localStorage.removeItem('access_token');
 //     toastr.warning("Se ha cerrado la cuenta por seguridad!!");
 //     setTimeout('window.location.href = "index.php?module=ctrl_login&op=login-register_view";', 2000);
 // }

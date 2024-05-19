@@ -64,4 +64,21 @@ class login_model
         // echo json_encode("new_password Model");
         return $this->bll->new_password_BLL($args);
     }
+
+    // ACTIVITY USER
+    public function control_user($args)
+    {
+        // echo json_encode("control_user Model");
+        return $this->bll->control_user_BLL($args);
+    }
+    public function actividad()
+    {
+        // echo json_encode("actividad Model");
+        return $this->bll->actividad_BLL();
+    }
+    public function refresh_cookie()
+    {
+        // echo json_encode("refresh_cookie Model");
+        return $this->bll->refresh_cookie_BLL();
+    }
 }

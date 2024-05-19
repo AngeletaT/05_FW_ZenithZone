@@ -1,4 +1,5 @@
 <?php
+@session_start();
 class login_bll
 {
     private $dao;
@@ -44,7 +45,6 @@ class login_bll
             }
         }
     }
-
     public function verify_email_BLL($args)
     {
         $email = middleware::decode_token_email($args);
@@ -72,12 +72,12 @@ class login_bll
             $user = $this->dao->select_user($this->db, $args[0], $args[0]);
             // return $user;
             if (password_verify($args[1], $user[0]['password']) && $user[0]['isActive'] == 1) {
-                $acces_token = middleware::create_token($user[0]["username"]);
+                $access_token = middleware::create_token($user[0]["username"]);
                 $refresh_token = middleware::create_refresh_token($user[0]["username"]);
                 $_SESSION['username'] = $user[0]['username'];
                 $_SESSION['tiempo'] = time();
 
-                return json_encode([$acces_token, $refresh_token]);
+                return json_encode([$access_token, $refresh_token]);
             } else if (password_verify($args[1], $user[0]['password']) && $user[0]['isActive'] == 0) {
                 return 'inactive_user';
             } else {
@@ -87,7 +87,6 @@ class login_bll
             return 'error_username';
         }
     }
-
     public function get_data_user_BLL($args)
     {
         $username = middleware::decode_token($args);
@@ -95,7 +94,6 @@ class login_bll
 
         return $this->dao->select_data_user($this->db, $username['username']);
     }
-
     public function logout_user_BLL()
     {
         unset($_SESSION['username']);
@@ -124,7 +122,6 @@ class login_bll
             return 'error';
         }
     }
-
     public function verify_token_BLL($args)
     {
         $email = middleware::decode_token_email($args);
@@ -140,7 +137,6 @@ class login_bll
             }
         }
     }
-
     public function new_password_BLL($args)
     {
         $email = middleware::decode_token_email($args[0]);
@@ -156,5 +152,52 @@ class login_bll
                 return 'fail';
             }
         }
+    }
+
+    // ACTIVITY USER
+    public function control_user_BLL($args)
+    {
+        $access_token = middleware::decode_token($args[0]);
+        $refresh_token = middleware::decode_token($args[1]);
+
+        if ($access_token['exp'] < time()) {
+            if ($refresh_token['exp'] < time()) {
+                echo json_encode("Wrong_User");
+                exit();
+            } else {
+                $old_access_token = middleware::decode_token($args[0]);
+                $new_access_token = middleware::create_token($old_access_token['username']);
+                echo json_encode($new_access_token);
+                exit();
+            }
+        }
+
+        if (isset($_SESSION['username']) && ($_SESSION['username']) == $access_token['username']) {
+            echo json_encode("Correct_User");
+            exit();
+        } else {
+            echo json_encode("Wrong_User");
+
+        }
+    }
+    public function actividad_BLL()
+    {
+        if (!isset($_SESSION["tiempo"])) {
+            echo json_encode("inactivo");
+            exit();
+        } else {
+            if ((time() - $_SESSION["tiempo"]) >= 1800) { //1800s=30min
+                echo json_encode("inactivo");
+                exit();
+            } else {
+                echo json_encode("activo");
+
+            }
+        }
+    }
+    public function refresh_cookie_BLL()
+    {
+        session_regenerate_id();
+        echo json_encode("Done");
     }
 }

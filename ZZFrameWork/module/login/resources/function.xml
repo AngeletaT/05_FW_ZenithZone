@@ -43,4 +43,17 @@
         <name>new_password</name>
         <uri>new_password</uri>
     </function>
+    <!-- ACTIVITY -->
+    <function>
+        <name>controluser</name>
+        <uri>controluser</uri>
+    </function>
+    <function>
+        <name>actividad</name>
+        <uri>actividad</uri>
+    </function>
+    <function>
+        <name>refresh_cookie</name>
+        <uri>refresh_cookie</uri>
+    </function>
 </functions>

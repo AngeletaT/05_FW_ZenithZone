@@ -24,7 +24,6 @@ class controller_login
         // echo json_encode("register");
         echo json_encode(common::load_model('login_model', 'register_user', [$_POST['username'], $_POST['email'], $_POST['password']]));
     }
-
     function verify_email()
     {
         // echo json_encode("verify_email");
@@ -55,23 +54,36 @@ class controller_login
         // echo json_encode("send_recover_email");
         echo json_encode(common::load_model('login_model', 'send_recover_email', $_POST['email']));
     }
-
     function recover_view()
     {
         // echo 'hola view desde el recover';
         common::load_view('top_page_login.html', VIEW_PATH_LOGIN . 'recover_pass.html');
     }
-
     function verify_token()
     {
         // echo json_encode("verify_token");
         echo json_encode(common::load_model('login_model', 'verify_token', $_POST['token_email']));
     }
-
     function new_password()
     {
         // echo json_encode("new_password");
         echo json_encode(common::load_model('login_model', 'new_password', [$_POST['token_email'], $_POST['password']]));
     }
 
+    // ACTIVITY USER
+    function controluser()
+    {
+        // echo json_encode("controluser");
+        echo json_encode(common::load_model('login_model', 'control_user', [$_POST['access_token'], $_POST['refresh_token']]));
+    }
+    function actividad()
+    {
+        // echo json_encode("controluser");
+        echo json_encode(common::load_model('login_model', 'actividad'));
+    }
+    function refresh_cookie()
+    {
+        // echo json_encode("refresh_cookie");
+        echo json_encode(common::load_model('login_model', 'refresh_cookie'));
+    }
 }
