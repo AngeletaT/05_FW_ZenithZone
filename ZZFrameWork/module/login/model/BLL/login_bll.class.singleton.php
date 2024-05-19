@@ -68,12 +68,39 @@ class login_bll
     // LOGIN
     public function login_user_BLL($args)
     {
+        if (!empty($this->dao->select_user($this->db, $args[0], $args[0]))) {
+            $user = $this->dao->select_user($this->db, $args[0], $args[0]);
+            // return $user;
+            if (password_verify($args[1], $user[0]['password']) && $user[0]['isActive'] == 1) {
+                $acces_token = middleware::create_token($user[0]["username"]);
+                $refresh_token = middleware::create_refresh_token($user[0]["username"]);
+                $_SESSION['username'] = $user[0]['username'];
+                $_SESSION['tiempo'] = time();
 
+                return json_encode([$acces_token, $refresh_token]);
+            } else if (password_verify($args[1], $user[0]['password']) && $user[0]['isActive'] == 0) {
+                return 'inactive_user';
+            } else {
+                return 'error_passwd';
+            }
+        } else {
+            return 'error_username';
+        }
     }
 
-    public function get_data_user_BLL()
+    public function get_data_user_BLL($args)
     {
-        return $this->dao->select_data_user($this->db);
+        $username = middleware::decode_token($args);
+        // return $username;
+
+        return $this->dao->select_data_user($this->db, $username['username']);
+    }
+
+    public function logout_user_BLL()
+    {
+        unset($_SESSION['username']);
+        unset($_SESSION['tiempo']);
+        return 'logout';
     }
 
     // RECOVER PASSWORD

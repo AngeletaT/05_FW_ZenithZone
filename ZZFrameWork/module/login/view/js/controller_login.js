@@ -8,22 +8,28 @@ function login() {
 		var password = document.getElementById("passwd_log").value
 		var op = "login"
 		data = {username: username, password: password, op: op}
-		console.log(data)
+		// console.log(data)
 
-		ajaxPromise(friendlyURL("?module=shop"), "POST", "JSON", data)
+		ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", data)
 			.then(function (result) {
-				console.log("Dentro del then", result)
+				// console.log("Dentro del then", result)
+				// return
 
 				if (result == "error_username") {
 					document.getElementById("error_username_log").innerHTML =
 						"The user does not exist, make sure you have written it correctly"
 				} else if (result == "error_passwd") {
 					document.getElementById("error_passwd_log").innerHTML = "The password is incorrect"
+				} else if (result == "inactive_user") {
+					toastr.error("Inactive user, please verify your email")
 				} else {
-					localStorage.setItem("access_token", result[0])
-					localStorage.setItem("refresh_token", result[1])
+					var tokens = JSON.parse(result)
+					// console.log("tokens", tokens)
+					// console.log("access_token", tokens[0])
+					// console.log("refresh_token", tokens[1])
+					localStorage.setItem("access_token", tokens[0])
+					localStorage.setItem("refresh_token", tokens[1])
 
-					console.log("access_token", result)
 					toastr.success("Loged succesfully")
 					// Mostrar el perfil del usuario
 					document.getElementById("login-form").style.display = "none"

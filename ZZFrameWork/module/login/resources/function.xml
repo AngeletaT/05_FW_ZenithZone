@@ -22,6 +22,10 @@
         <name>data_user</name>
         <uri>data_user</uri>
     </function>
+    <function>
+        <name>logout</name>
+        <uri>logout</uri>
+    </function>
     <!-- RECOVER PASS -->
     <function>
         <name>send_recover_email</name>

@@ -48,9 +48,11 @@ class login_dao
     }
 
     // LOGIN
-    public function select_data_user($db)
+    public function select_data_user($db, $username)
     {
-        $sql = 'SELECT * FROM users';
+        $sql = "SELECT * 
+        FROM users 
+        WHERE username = '$username'";
 
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);

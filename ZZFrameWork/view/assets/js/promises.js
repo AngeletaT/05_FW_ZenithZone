@@ -34,19 +34,36 @@ function load_menu() {
 	// 	.html('<a href="' + friendlyURL("?module=contact") + '" class="nav_link">Contact us</a>')
 	// 	.appendTo("#nav_list")
 
+	var access_token = localStorage.getItem("access_token")
+	// console.log(access_token)
 	ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", {
-		token: localStorage.getItem("access_token"),
+		access_token: access_token,
 		op: "data_user",
 	})
 		.then(function (data) {
+			// console.log(data)
+			// return
 			if (data[0].type_user === "admin") {
 				menu_admin()
 			} else if (data[0].type_user === "client") {
-				menu_client()
+				// console.log("menu_client")
+				$("<li></li>")
+					.html(
+						'<a class="active" id="useravatar" href="' +
+							friendlyURL("?module=login") +
+							'"><img class="useravatar avatar" src="' +
+							data[0].avatar +
+							'" alt="UserAvatar"/></a>'
+					)
+					.appendTo("#nav_list")
+
+				$("<li></li>")
+					.html('<a class="Button_red" id="logout" href="' + friendlyURL("?module=login") + '">Log out</a>')
+					.appendTo("#nav_list")
 			}
-			click_profile(data[0])
 		})
 		.catch(function () {
+			console.log("Log in")
 			$("<li></li>")
 				.attr({"class": "nav_item"})
 				.html(
@@ -56,20 +73,6 @@ function load_menu() {
 				)
 				.appendTo("#nav_list")
 		})
-}
-
-function menu_client() {
-	$("<li></li>")
-		.html(
-			'<a class="active" id="useravatar" href="' +
-				friendlyURL("?module=login") +
-				'"><img class="useravatar avatar" src="" alt="UserAvatar"/></a>'
-		)
-		.appendTo("#nav_list")
-
-	$("<li></li>")
-		.html('<a class="loginbutton" href="' + friendlyURL("?module=login") + '">Login</a>')
-		.appendTo("#nav_list")
 }
 
 //================CLICK-LOGOUT================
@@ -84,14 +87,18 @@ function click_logout() {
 
 //================LOG-OUT================
 function logout() {
-	ajaxPromise("module/login/controller/controller_login.php?op=logout", "POST", "JSON")
+	ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", {op: "logout"})
 		.then(function (data) {
-			console.log("Borrando acces_token")
-			localStorage.removeItem("acces_token")
-			localStorage.removeItem("refresh_token")
-			toastr.warning("The account has been closed for security!!")
-			$(".useravatar").hide()
-			window.location.href = "index.php?module=controller_home&op=list"
+			if (data == "logout") {
+				console.log("Borrando acces_token")
+				localStorage.removeItem("access_token")
+				localStorage.removeItem("refresh_token")
+				toastr.warning("The account has been closed for security!!")
+				$(".useravatar").hide()
+				window.location.href = friendlyURL("?module=login")
+			} else {
+				console.log("Error")
+			}
 		})
 		.catch(function (e) {
 			console.error("Catch error: ", e)

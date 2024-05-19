@@ -28,17 +28,22 @@ class login_model
         // echo json_encode("verify_email Model");
         return $this->bll->verify_email_BLL($args);
     }
-    
+
     // LOGIN
     public function login_user($args)
     {
         // echo json_encode("login_user Model");
         return $this->bll->login_user_BLL($args);
     }
-    public function get_data_user()
+    public function get_data_user($args)
     {
         // echo json_encode("get_data_user Model");
-        return $this->bll->get_data_user_BLL();
+        return $this->bll->get_data_user_BLL($args);
+    }
+    public function logout_user()
+    {
+        // echo json_encode("logout_user Model");
+        return $this->bll->logout_user_BLL();
     }
 
     // RECOVER PASSWORD
