@@ -110,6 +110,67 @@ function validate_login() {
 	}
 }
 
+// SOCIAL LOGIN
+function social_login(param) {
+	authService = firebase_config()
+	authService
+		.signInWithPopup(provider_config(param))
+		.then(function (result) {
+			console.log("Hemos autenticado al usuario ", result.user)
+			email_name = result.user.email
+			let username = email_name.split("@")
+			console.log(username[0])
+
+			social_user = {id: result.user.uid, username: username[0], email: result.user.email, avatar: result.user.photoURL}
+			if (result) {
+				ajaxPromise(friendlyURL("?module=login&op=social_login"), "POST", "JSON", social_user)
+					.then(function (data) {
+						localStorage.setItem("token", data)
+						toastr.options.timeOut = 3000
+						toastr.success("Inicio de sesión realizado")
+						if (localStorage.getItem("likes") == null) {
+							setTimeout('window.location.href = friendlyURL("?module=home&op=view")', 1000)
+						} else {
+							setTimeout('window.location.href = friendlyURL("?module=shop&op=view")', 1000)
+						}
+					})
+					.catch(function () {
+						console.log("Error: Social login error")
+					})
+			}
+		})
+		.catch(function (error) {
+			var errorCode = error.code
+			console.log(errorCode)
+			var errorMessage = error.message
+			console.log(errorMessage)
+			var email = error.email
+			console.log(email)
+			var credential = error.credential
+			console.log(credential)
+		})
+}
+
+function firebase_config() {
+	// usando config_sl como variable global con las credenciales.
+	if (!firebase.apps.length) {
+		firebase.initializeApp(config_sl)
+	} else {
+		firebase.app()
+	}
+	return (authService = firebase.auth())
+}
+
+function provider_config(param) {
+	if (param === "google") {
+		var provider = new firebase.auth.GoogleAuthProvider()
+		provider.addScope("email")
+		return provider
+	} else if (param === "github") {
+		return (provider = new firebase.auth.GithubAuthProvider())
+	}
+}
+
 // RECOVERY PASSWORD
 function send_recover_password() {
 	if (validate_recover_password() != 0) {

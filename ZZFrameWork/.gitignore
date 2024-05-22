@@ -1,3 +1,4 @@
 *.ini
 composer.lock
 vendor/
+constantes.js
