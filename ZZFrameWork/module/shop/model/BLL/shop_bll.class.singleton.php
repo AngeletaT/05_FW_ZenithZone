@@ -101,12 +101,18 @@ class shop_bll
     // LIKE
     public function get_like_BLL($args)
     {
-        return $this->dao->select_data_like($this->db, $args[0], $args[1]);
+        $username = middleware::decode_token($args[1]);
+
+        return $this->dao->select_data_like($this->db, $args[0], $username["username"]);
+
     }
 
     public function get_checklike_BLL($args)
     {
-        return $this->dao->select_data_checklike($this->db, $args[0], $args[1]);
+        $username = middleware::decode_token($args[1]);
+
+        return $this->dao->select_data_checklike($this->db, $args[0], $username["username"]);
+
     }
 }
 ?>

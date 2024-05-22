@@ -436,12 +436,12 @@ class shop_dao
         $sql = "CALL UpdateLikes('$username', '$code_prop')";
 
         $stmt = $db->ejecutar($sql);
-        return $db->listar($stmt);
+        return;
     }
 
     public function select_data_checklike($db, $code_prop, $username)
     {
-        // return "hola dao";
+        // return $code_prop . $username;
 
         $sql = "SELECT * 
         FROM `likes` 

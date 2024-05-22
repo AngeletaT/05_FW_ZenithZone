@@ -95,7 +95,7 @@ function logout() {
 				localStorage.removeItem("refresh_token")
 				toastr.warning("The account has been closed for security!!")
 				$(".useravatar").hide()
-				window.location.href = friendlyURL("?module=login")
+				window.location.href = friendlyURL("?module=home")
 			} else {
 				console.log("Error")
 			}

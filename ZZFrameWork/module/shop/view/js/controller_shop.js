@@ -33,7 +33,7 @@ var userLiked = "no-like"
 // FUNCION QUE LLAMA A SALTO HOME
 function ajaxForSearch(url, op, items_page = 2) {
 	var filters_home = JSON.parse(localStorage.getItem("filters_home"))
-	var acces_token = localStorage.getItem("acces_token")
+	var access_token = localStorage.getItem("access_token")
 	localStorage.removeItem("filters_home")
 	// console.log("filters home:", filters_home)
 	// console.log(url)
@@ -64,16 +64,17 @@ function ajaxForSearch(url, op, items_page = 2) {
 						setTimeout(function () {
 							// console.log("Row:", row)
 							// Crear una función para capturar el valor de row
-							if (acces_token) {
-								console.log("Existe acces_token")
+							if (access_token) {
+								console.log("Existe access_token")
 								var carousel = ""
 								data[row].images.forEach(function (image) {
 									// console.log("image:", image)
 									carousel += `<div class="item imagen"><img src="${image}" alt="property" /></div>`
 								})
-								checkLike(data[row].code_prop, acces_token)
+								checkLike(data[row].code_prop, access_token)
 									.then(function (userLiked) {
-										console.log("userLiked", userLiked)
+										// console.log("userLiked", userLiked)
+										// return
 										$("<div></div>")
 											.attr({"id": data[row].code_prop, "class": "propertytable"})
 											.appendTo("#content_shop_prop").html(`
@@ -148,7 +149,7 @@ function ajaxForSearch(url, op, items_page = 2) {
 										console.error("Error en checkLike:", error)
 									})
 							} else {
-								// console.log("No existe acces_token")
+								// console.log("No existe access_token")
 								var carousel = ""
 								data[row].images.forEach(function (image) {
 									// console.log("image:", image)
@@ -244,7 +245,7 @@ function ajaxForSearch(url, op, items_page = 2) {
 // FUNCION QUE LLAMA A CARGAR SHOP
 function ajaxForSearch_Shop(url, op, items_page = 2) {
 	var filters_shop = JSON.parse(localStorage.getItem("filters_shop"))
-	var acces_token = localStorage.getItem("acces_token")
+	var access_token = localStorage.getItem("access_token")
 
 	// console.log(filters_shop)
 
@@ -277,13 +278,13 @@ function ajaxForSearch_Shop(url, op, items_page = 2) {
 						setTimeout(function () {
 							console.log("Row:", row)
 							// Crear una función para capturar el valor de row
-							if (acces_token) {
-								console.log("Existe acces_token")
+							if (access_token) {
+								console.log("Existe access_token")
 								var carousel = ""
 								data[row].images.forEach(function (image) {
 									carousel += `<div class="item imagen"><img src="${image}" alt="property" /></div>`
 								})
-								checkLike(data[row].code_prop, acces_token)
+								checkLike(data[row].code_prop, access_token)
 									.then(function (userLiked) {
 										console.log("userLiked", userLiked)
 										$("<div></div>")
@@ -360,7 +361,7 @@ function ajaxForSearch_Shop(url, op, items_page = 2) {
 										console.error("Error en checkLike:", error)
 									})
 							} else {
-								console.log("No existe acces_token")
+								console.log("No existe access_token")
 								var carousel = ""
 								data[row].images.forEach(function (image) {
 									carousel += `<div class="item imagen"><img src="${image}" alt="property" /></div>`
@@ -464,7 +465,7 @@ function clicks() {
 }
 
 function loadDetails(code_prop) {
-	var acces_token = localStorage.getItem("acces_token")
+	var access_token = localStorage.getItem("access_token")
 	localStorage.removeItem("filters_details")
 
 	ajaxPromise(friendlyURL("?module=shop"), "POST", "JSON", {"code_prop": code_prop, "op": "details_prop"})
@@ -479,9 +480,9 @@ function loadDetails(code_prop) {
 			$(".orderbyshop").empty()
 			$("#mapdet").show()
 
-			if (acces_token) {
+			if (access_token) {
 				// console.log(data)
-				checkLike(data[0].code_prop, acces_token).then(function (userLiked) {
+				checkLike(data[0].code_prop, access_token).then(function (userLiked) {
 					// console.log("userLiked", userLiked)
 					for (row in data[0].images) {
 						$("<div></div>").attr({class: "item date_img_dentro"}).appendTo(".date_img").html(`
@@ -1505,19 +1506,17 @@ function pagination() {
 function buttonLike() {
 	$(document).one("click", ".like-review", function (e) {
 		var code_prop = $(this).attr("id")
-		var acces_token = localStorage.getItem("acces_token")
-		localStorage.setItem("redirect_like", code_prop)
-		if (acces_token) {
+		var access_token = localStorage.getItem("access_token")
+		if (access_token) {
 			console.log("dentro de if buttonLike")
-			console.log("acces_token", acces_token)
+			console.log("access_token", access_token)
 			console.log("code_prop", code_prop)
 			ajaxPromise(friendlyURL("?module=shop"), "POST", "JSON", {
 				"code_prop": code_prop,
-				"acces_token": acces_token,
+				"access_token": access_token,
 				"op": "like",
 			})
 				.then(function (data) {
-					console.log("dentro de then buttonLike", data)
 					$(this).children(".fa-heart").addClass("animate-like")
 					$(this).css("background", "#ed2553")
 					location.reload()
@@ -1527,16 +1526,17 @@ function buttonLike() {
 					// window.location.href = "index.php?module=ctrl_exceptions&op=503&type=503&lugar=ButtonLike SHOP";
 				})
 		} else {
-			window.location.href = "index.php?page=login&op=list"
+			localStorage.setItem("redirect_like", code_prop)
+			window.location.href = friendlyURL("?module=login")
 		}
 	})
 }
 
-function checkLike(code_prop, acces_token) {
+function checkLike(code_prop, access_token) {
 	return new Promise((resolve, reject) => {
 		ajaxPromise(friendlyURL("?module=shop"), "POST", "JSON", {
 			"code_prop": code_prop,
-			"acces_token": acces_token,
+			"access_token": access_token,
 			"op": "checklike",
 		})
 			.then(function (data) {

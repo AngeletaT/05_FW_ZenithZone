@@ -105,13 +105,13 @@ class controller_shop
     function like()
     {
         // echo json_encode("like");
-        echo json_encode(common::load_model('shop_model', 'get_like', [$_POST['code_prop'], $_POST['acces_token']]));
+        echo json_encode(common::load_model('shop_model', 'get_like', [$_POST['code_prop'], $_POST['access_token']]));
     }
 
     function checklike()
     {
         // echo json_encode("checklike");
-        echo json_encode(common::load_model('shop_model', 'get_checklike', [$_POST['code_prop'], $_POST['acces_token']]));
+        echo json_encode(common::load_model('shop_model', 'get_checklike', [$_POST['code_prop'], $_POST['access_token']]));
     }
 }
 ?>
