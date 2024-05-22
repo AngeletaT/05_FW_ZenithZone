@@ -12,7 +12,7 @@ function login() {
 
 		ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", data)
 			.then(function (result) {
-				// console.log("Dentro del then", result)
+				console.log("Dentro del then", result)
 				// return
 
 				if (result == "error_username") {
@@ -22,6 +22,9 @@ function login() {
 					document.getElementById("error_passwd_log").innerHTML = "The password is incorrect"
 				} else if (result == "inactive_user") {
 					toastr.error("Inactive user, please verify your email")
+				} else if (result == "otp") {
+					$("#login__form").css("display", "none")
+					$("#otp__form").css("display", "block")
 				} else {
 					var tokens = JSON.parse(result)
 					// console.log("tokens", tokens)
@@ -255,12 +258,55 @@ function send_new_password(token_email) {
 	}
 }
 
+// OTP
+function button_otp() {
+	$("#submit_otp").on("click", function (e) {
+		e.preventDefault()
+		validateotp()
+	})
+}
+
+function key_otp() {
+	$("#submit_otp").keypress(function (e) {
+		var code = e.keyCode ? e.keyCode : e.which
+		if (code == 13) {
+			e.preventDefault()
+			validateotp()
+		}
+	})
+}
+
+function validateotp() {
+	var otp = document.getElementById("otp").value
+	var username = document.getElementById("username_otp").value
+	ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", {username: username, otp: otp, op: "validate_otp"})
+		.then(function (data) {
+			console.log(data)
+			// return
+			if (data === "valid") {
+				toastr.success("OTP validated")
+				document.getElementById("otp__form").style.display = "none"
+				document.getElementById("login__form").style.display = "block"
+			} else if (data === "error_otp") {
+				document.getElementById("error_otp").innerHTML = "The code is incorrect"
+				console.log("Then Error: OTP validation failed")
+			} else if (data === "error_username_otp") {
+				document.getElementById("error_username_otp").innerHTML = "The username does not exist"
+				console.log("Then Error: OTP validation failed")
+			}
+		})
+		.catch(function () {
+			console.log("Catch Error: OTP validation error")
+		})
+}
+
 // FORMULARIOS
 function switchform() {
 	// Oculta el formulario de registro cuando se carga la página
 	$(".login__radio").hide()
 	$("#register__form").css("display", "none")
 	$("#password_recovery_form").css("display", "none")
+	$("#otp__form").css("display", "none")
 
 	// Cambiar del formulario de inicio de sesion al de registro
 	$(".login-form .register-text a").click(function (event) {
@@ -271,6 +317,7 @@ function switchform() {
 		$("#tab-1").prop("checked", false)
 		$("#tab-2").prop("checked", true)
 		$("#tab-3").prop("checked", false)
+		$("#tab-4").prop("checked", false)
 	})
 
 	// Cambiar del formulario de registro al de inicio de sesion
@@ -282,6 +329,7 @@ function switchform() {
 		$("#tab-2").prop("checked", false)
 		$("#tab-1").prop("checked", true)
 		$("#tab-3").prop("checked", false)
+		$("#tab-4").prop("checked", false)
 	})
 
 	// Cambiar al formulario de recuperación de contraseña
@@ -293,6 +341,7 @@ function switchform() {
 		$("#tab-1").prop("checked", false)
 		$("#tab-2").prop("checked", false)
 		$("#tab-3").prop("checked", true)
+		$("#tab-4").prop("checked", false)
 	})
 }
 
@@ -336,4 +385,6 @@ $(document).ready(function () {
 	key_recovery()
 	button_recovery()
 	load_content()
+	button_otp()
+	key_otp()
 })

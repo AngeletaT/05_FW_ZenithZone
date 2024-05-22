@@ -43,6 +43,11 @@
         <name>new_password</name>
         <uri>new_password</uri>
     </function>
+    <!-- OTP -->
+    <function>
+        <name>validate_otp</name>
+        <uri>validate_otp</uri>
+    </function>
     <!-- ACTIVITY -->
     <function>
         <name>controluser</name>

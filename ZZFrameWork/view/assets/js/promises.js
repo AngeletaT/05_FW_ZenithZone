@@ -34,45 +34,57 @@ function load_menu() {
 	// 	.html('<a href="' + friendlyURL("?module=contact") + '" class="nav_link">Contact us</a>')
 	// 	.appendTo("#nav_list")
 
-	var access_token = localStorage.getItem("access_token")
-	// console.log(access_token)
-	ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", {
-		access_token: access_token,
-		op: "data_user",
-	})
-		.then(function (data) {
-			// console.log(data)
-			// return
-			if (data[0].type_user === "admin") {
-				menu_admin()
-			} else if (data[0].type_user === "client") {
-				// console.log("menu_client")
+	if (localStorage.getItem("access_token")) {
+		var access_token = localStorage.getItem("access_token")
+		console.log(access_token)
+		ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", {
+			access_token: access_token,
+			op: "data_user",
+		})
+			.then(function (data) {
+				// console.log(data)
+				// return
+				if (data[0].type_user === "admin") {
+					menu_admin()
+				} else if (data[0].type_user === "client") {
+					// console.log("menu_client")
+					$("<li></li>")
+						.html(
+							'<a class="active" id="useravatar" href="' +
+								friendlyURL("?module=login") +
+								'"><img class="useravatar avatar" src="' +
+								data[0].avatar +
+								'" alt="UserAvatar"/></a>'
+						)
+						.appendTo("#nav_list")
+
+					$("<li></li>")
+						.html('<a class="Button_red" id="logout" href="' + friendlyURL("?module=login") + '">Log out</a>')
+						.appendTo("#nav_list")
+				}
+			})
+			.catch(function () {
+				console.log("Log in")
 				$("<li></li>")
+					.attr({"class": "nav_item"})
 					.html(
-						'<a class="active" id="useravatar" href="' +
+						'<a class="loginbutton" href="' +
 							friendlyURL("?module=login") +
-							'"><img class="useravatar avatar" src="' +
-							data[0].avatar +
-							'" alt="UserAvatar"/></a>'
+							'" class="nav_link" data-tr="Log in">Log in</a>'
 					)
 					.appendTo("#nav_list")
-
-				$("<li></li>")
-					.html('<a class="Button_red" id="logout" href="' + friendlyURL("?module=login") + '">Log out</a>')
-					.appendTo("#nav_list")
-			}
-		})
-		.catch(function () {
-			console.log("Log in")
-			$("<li></li>")
-				.attr({"class": "nav_item"})
-				.html(
-					'<a class="loginbutton" href="' +
-						friendlyURL("?module=login") +
-						'" class="nav_link" data-tr="Log in">Log in</a>'
-				)
-				.appendTo("#nav_list")
-		})
+			})
+	} else {
+		var access_token = ""
+		$("<li></li>")
+			.attr({"class": "nav_item"})
+			.html(
+				'<a class="loginbutton" href="' +
+					friendlyURL("?module=login") +
+					'" class="nav_link" data-tr="Log in">Log in</a>'
+			)
+			.appendTo("#nav_list")
+	}
 }
 
 //================CLICK-LOGOUT================

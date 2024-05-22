@@ -26,8 +26,8 @@ class mail
 
         try {
             $result = $resendClient->emails->send([
-                'from' => 'Acme <onboarding@resend.dev>',
-                'to' => 'angeletatb98@gmail.com',
+                'from' => $resend['MAIL_FROM'],
+                'to' => $resend['MAIL_TO'],
                 'subject' => $values['inputMatter'],
                 'html' => $values['inputMessage'],
             ]);

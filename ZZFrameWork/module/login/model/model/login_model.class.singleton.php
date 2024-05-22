@@ -46,6 +46,12 @@ class login_model
         return $this->bll->logout_user_BLL();
     }
 
+    public function validate_otp($args)
+    {
+        // echo json_encode("validate_otp Model");
+        return $this->bll->validate_otp_BLL($args);
+    }
+
     // RECOVER PASSWORD
     public function send_recover_email($args)
     {

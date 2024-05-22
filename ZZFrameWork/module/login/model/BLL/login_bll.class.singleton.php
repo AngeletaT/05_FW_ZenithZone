@@ -68,25 +68,63 @@ class login_bll
     // LOGIN
     public function login_user_BLL($args)
     {
-        if (!empty($this->dao->select_user($this->db, $args[0], $args[0]))) {
-            $user = $this->dao->select_user($this->db, $args[0], $args[0]);
-            // return $user;
-            if (password_verify($args[1], $user[0]['password']) && $user[0]['isActive'] == 1) {
-                $access_token = middleware::create_token($user[0]["username"]);
-                $refresh_token = middleware::create_refresh_token($user[0]["username"]);
-                $_SESSION['username'] = $user[0]['username'];
-                $_SESSION['tiempo'] = time();
+        $attempts = $this->dao->select_login_attempts($this->db, $args[0]);
+        $otp_token = common::generate_token_secure(5);
+        if ($attempts[0]['login_attempts'] >= 3) {
+            if ($this->dao->insert_otp_token($this->db, $args[0], $otp_token)) {
+                $message = [
+                    'type' => 'fail_login',
+                    'token' => $otp_token,
+                    'toPhone' => $attempts[0]['phone_number']
+                ];
+                $phone_code = json_decode(otp::send_message($message));
+                if (!empty($phone_code)) {
+                    return 'otp';
+                } else {
+                    return 'error_attempts';
+                }
 
-                return json_encode([$access_token, $refresh_token]);
-            } else if (password_verify($args[1], $user[0]['password']) && $user[0]['isActive'] == 0) {
-                return 'inactive_user';
             } else {
-                return 'error_passwd';
+                return 'error_attempts';
             }
         } else {
-            return 'error_username';
+            if (!empty($this->dao->select_user($this->db, $args[0], $args[0]))) {
+                $user = $this->dao->select_user($this->db, $args[0], $args[0]);
+                // return $user;
+                if (password_verify($args[1], $user[0]['password']) && $user[0]['isActive'] == 1) {
+                    $access_token = middleware::create_token($user[0]["username"]);
+                    $refresh_token = middleware::create_refresh_token($user[0]["username"]);
+                    $_SESSION['username'] = $user[0]['username'];
+                    $_SESSION['tiempo'] = time();
+
+                    return json_encode([$access_token, $refresh_token]);
+                } else if (password_verify($args[1], $user[0]['password']) && $user[0]['isActive'] == 0) {
+                    return 'inactive_user';
+                } else {
+                    $this->dao->update_login_attempts($this->db, $args[0]);
+                    return 'error_passwd';
+                }
+            } else {
+                return 'error_username';
+            }
         }
     }
+
+    public function validate_otp_BLL($args)
+    {
+        // return $args;
+        if ($this->dao->select_user($this->db, $args[0], $args[0])) {
+            if ($this->dao->select_otp_token($this->db, $args[0], $args[1])) {
+                $this->dao->update_otp_token($this->db, $args[0]);
+                return 'valid';
+            } else {
+                return 'error_otp';
+            }
+        } else {
+            return 'error_username_otp';
+        }
+    }
+
     public function get_data_user_BLL($args)
     {
         $username = middleware::decode_token($args);

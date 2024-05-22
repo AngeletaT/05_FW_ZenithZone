@@ -58,6 +58,56 @@ class login_dao
         return $db->listar($stmt);
     }
 
+    public function select_login_attempts($db, $username)
+    {
+        $sql = "SELECT * 
+        FROM users 
+        WHERE username = '$username'";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
+
+    public function update_login_attempts($db, $username)
+    {
+        $sql = "UPDATE `users` 
+        SET `login_attempts` = login_attempts + 1
+        WHERE `username` = '$username'";
+
+        $stmt = $db->ejecutar($sql);
+        return "update";
+    }
+
+    public function insert_otp_token($db, $username, $otp_token)
+    {
+        $sql = "UPDATE `users` 
+        SET `token_otp` = '$otp_token'
+        WHERE `username` = '$username'";
+
+        $stmt = $db->ejecutar($sql);
+        return "update";
+    }
+
+    public function select_otp_token($db, $username, $otp_token)
+    {
+        $sql = "SELECT * 
+        FROM users 
+        WHERE username = '$username' AND token_otp = '$otp_token'";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
+
+    public function update_otp_token($db, $username)
+    {
+        $sql = "UPDATE `users` 
+        SET `token_otp` = '', login_attempts = 0
+        WHERE `username` = '$username'";
+
+        $stmt = $db->ejecutar($sql);
+        return "update";
+    }
+
     public function select_user($db, $username, $email)
     {
         $sql = "SELECT * 
