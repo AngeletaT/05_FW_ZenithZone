@@ -53,6 +53,12 @@ class controller_login
         // echo json_encode("validate_otp");
         echo json_encode(common::load_model('login_model', 'validate_otp', [$_POST['username'], $_POST['otp']]));
     }
+    // SOCIAL LOGIN
+    function social_login()
+    {
+        // echo json_encode("social_login");
+        echo json_encode(common::load_model('login_model', 'social_login', $_POST['social_user']));
+    }
 
     // RECOVER PASSWORD
     function send_recover_email()

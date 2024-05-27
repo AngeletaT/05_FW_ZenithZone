@@ -1,3 +1,74 @@
+function click_login() {
+	// LOGIN
+	$("#login").keypress(function (e) {
+		console.log("keypress_login")
+		var code = e.keyCode ? e.keyCode : e.which
+		if (code == 13) {
+			e.preventDefault()
+			login()
+		}
+	})
+
+	$("#login").on("click", function (e) {
+		console.log("click_login")
+		e.preventDefault()
+		login()
+	})
+
+	// SOCIAL LOGIN
+	$("#google").on("click", function (e) {
+		e.preventDefault()
+		social_login("google")
+	})
+
+	$("#github").on("click", function (e) {
+		e.preventDefault()
+		social_login("github")
+	})
+
+	// RECOVERY PASSWORD
+	$("#recover").keypress(function (e) {
+		var code = e.keyCode ? e.keyCode : e.which
+		if (code == 13) {
+			e.preventDefault()
+			send_recover_password()
+		}
+	})
+
+	$("#recover").on("click", function (e) {
+		e.preventDefault()
+		send_recover_password()
+	})
+
+	// NEW PASSWORD
+	$("#button_set_pass").keypress(function (e) {
+		var code = e.keyCode ? e.keyCode : e.which
+		if (code == 13) {
+			e.preventDefault()
+			send_new_password(token_email)
+		}
+	})
+
+	$("#button_set_pass").on("click", function (e) {
+		e.preventDefault()
+		send_new_password(token_email)
+	})
+
+	// OTP
+	$("#submit_otp").keypress(function (e) {
+		var code = e.keyCode ? e.keyCode : e.which
+		if (code == 13) {
+			e.preventDefault()
+			validateotp()
+		}
+	})
+
+	$("#submit_otp").on("click", function (e) {
+		e.preventDefault()
+		validateotp()
+	})
+}
+
 // LOGIN
 function login() {
 	console.log("login")
@@ -61,27 +132,6 @@ function login() {
 	}
 }
 
-function key_login() {
-	// console.log("key_login")
-	$("#login").keypress(function (e) {
-		console.log("keypress_login")
-		var code = e.keyCode ? e.keyCode : e.which
-		if (code == 13) {
-			e.preventDefault()
-			login()
-		}
-	})
-}
-
-function button_login() {
-	// console.log("button_login")
-	$("#login").on("click", function (e) {
-		console.log("click_login")
-		e.preventDefault()
-		login()
-	})
-}
-
 function validate_login() {
 	// console.log("validate_login")
 	var error = false
@@ -111,27 +161,46 @@ function validate_login() {
 }
 
 // SOCIAL LOGIN
-function social_login(param) {
+function social_login(provider) {
 	authService = firebase_config()
 	authService
-		.signInWithPopup(provider_config(param))
+		.signInWithPopup(provider_config(provider))
 		.then(function (result) {
 			console.log("Hemos autenticado al usuario ", result.user)
+			console.log(result)
 			email_name = result.user.email
-			let username = email_name.split("@")
+			var username = email_name.split("@")
 			console.log(username[0])
 
-			social_user = {id: result.user.uid, username: username[0], email: result.user.email, avatar: result.user.photoURL}
+			social_user = {
+				id: result.user.uid,
+				username: username[0],
+				email: result.user.email,
+				avatar: result.user.photoURL,
+				provider: provider,
+			}
+			console.log(social_user)
+			// return
 			if (result) {
-				ajaxPromise(friendlyURL("?module=login&op=social_login"), "POST", "JSON", social_user)
+				ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", {social_user: social_user, op: "social_login"})
 					.then(function (data) {
-						localStorage.setItem("token", data)
-						toastr.options.timeOut = 3000
-						toastr.success("Inicio de sesión realizado")
-						if (localStorage.getItem("likes") == null) {
-							setTimeout('window.location.href = friendlyURL("?module=home&op=view")', 1000)
+						// console.log(data)
+						// return
+						if (data == "error") {
+							toastr.error("This email is already registered in the database")
 						} else {
-							setTimeout('window.location.href = friendlyURL("?module=shop&op=view")', 1000)
+							var tokens = JSON.parse(data)
+							localStorage.setItem("access_token", tokens[0])
+							localStorage.setItem("refresh_token", tokens[1])
+							console.log("access:", tokens[0])
+							console.log("refresh:", tokens[1])
+							toastr.options.timeOut = 3000
+							toastr.success("Login successful")
+							if (localStorage.getItem("likes") == null) {
+								setTimeout('window.location.href = friendlyURL("?module=home")', 1000)
+							} else {
+								setTimeout('window.location.href = friendlyURL("?module=shop")', 1000)
+							}
 						}
 					})
 					.catch(function () {
@@ -161,12 +230,12 @@ function firebase_config() {
 	return (authService = firebase.auth())
 }
 
-function provider_config(param) {
-	if (param === "google") {
+function provider_config(provider) {
+	if (provider === "google") {
 		var provider = new firebase.auth.GoogleAuthProvider()
 		provider.addScope("email")
 		return provider
-	} else if (param === "github") {
+	} else if (provider === "github") {
 		return (provider = new firebase.auth.GithubAuthProvider())
 	}
 }
@@ -179,10 +248,10 @@ function send_recover_password() {
 		var data = {email: email, op: op}
 		ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", data)
 			.then(function (data) {
-				// console.log(data)
+				console.log(data)
 				// return
 				if (data == "error") {
-					$("#error_email_forg").html("The email doesn't exist")
+					$("#error_email_recovery").html("The email doesn't exist")
 				} else {
 					toastr.options.timeOut = 3000
 					toastr.success("Email sended")
@@ -216,23 +285,6 @@ function validate_recover_password() {
 	}
 }
 
-function key_recovery() {
-	$("#recover").keypress(function (e) {
-		var code = e.keyCode ? e.keyCode : e.which
-		if (code == 13) {
-			e.preventDefault()
-			send_recover_password()
-		}
-	})
-}
-
-function button_recovery() {
-	$("#recover").on("click", function (e) {
-		e.preventDefault()
-		send_recover_password()
-	})
-}
-
 function load_form_new_password() {
 	token_email = localStorage.getItem("token_email")
 	console.log("token_email", token_email)
@@ -251,23 +303,6 @@ function load_form_new_password() {
 		.catch(function (e) {
 			console.error("Catch error: ", e)
 		})
-}
-
-function key_password(token_email) {
-	$("#button_set_pass").keypress(function (e) {
-		var code = e.keyCode ? e.keyCode : e.which
-		if (code == 13) {
-			e.preventDefault()
-			send_new_password(token_email)
-		}
-	})
-}
-
-function button_password(token_email) {
-	$("#button_set_pass").on("click", function (e) {
-		e.preventDefault()
-		send_new_password(token_email)
-	})
 }
 
 function validate_new_password() {
@@ -320,23 +355,6 @@ function send_new_password(token_email) {
 }
 
 // OTP
-function button_otp() {
-	$("#submit_otp").on("click", function (e) {
-		e.preventDefault()
-		validateotp()
-	})
-}
-
-function key_otp() {
-	$("#submit_otp").keypress(function (e) {
-		var code = e.keyCode ? e.keyCode : e.which
-		if (code == 13) {
-			e.preventDefault()
-			validateotp()
-		}
-	})
-}
-
 function validateotp() {
 	var otp = document.getElementById("otp").value
 	var username = document.getElementById("username_otp").value
@@ -440,12 +458,7 @@ function load_content() {
 }
 
 $(document).ready(function () {
-	key_login()
-	button_login()
 	switchform()
-	key_recovery()
-	button_recovery()
 	load_content()
-	button_otp()
-	key_otp()
+	click_login()
 })

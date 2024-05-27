@@ -139,6 +139,49 @@ class login_bll
         return 'logout';
     }
 
+    // SOCIAL LOGIN
+    public function social_login_BLL($args)
+    {
+        // return 'hola desde social login bll';
+        // return $args;
+
+        $id_user = $args['id'];
+        $username = $args['username'];
+        $email = $args['email'];
+        $avatar = $args['avatar'];
+        $login_type = $args['provider'];
+
+        if (empty($this->dao->check_email_exists($this->db, $email))) {
+            // Si el usuario no existe
+            $this->dao->insert_social_login($this->db, $id_user, $username, $email, $login_type, $avatar);
+
+            $access_token = middleware::create_token($username);
+            $refresh_token = middleware::create_refresh_token($username);
+            $_SESSION['username'] = $username;
+            $_SESSION['tiempo'] = time();
+
+            return json_encode([$access_token, $refresh_token]);
+
+        } else {
+            // Si el usuario ya existe
+            $user = $this->dao->select_user($this->db, $username, $email);
+            if ($user[0]['login_type'] !== $login_type) {
+                // Si el usuario ya existe pero no con el mismo login_type
+                return 'error';
+            } else {
+                // Si el usuario ya existe y con el mismo login_type
+                $access_token = middleware::create_token($user[0]["username"]);
+                $refresh_token = middleware::create_refresh_token($user[0]["username"]);
+                $_SESSION['username'] = $user[0]['username'];
+                $_SESSION['tiempo'] = time();
+
+                return json_encode([$access_token, $refresh_token]);
+            }
+        }
+
+
+    }
+
     // RECOVER PASSWORD
     public function send_recover_email_BLL($args)
     {

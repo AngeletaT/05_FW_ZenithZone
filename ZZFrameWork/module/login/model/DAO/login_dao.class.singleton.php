@@ -78,6 +78,7 @@ class login_dao
         return "update";
     }
 
+    // OTP
     public function insert_otp_token($db, $username, $otp_token)
     {
         $sql = "UPDATE `users` 
@@ -108,14 +109,35 @@ class login_dao
         return "update";
     }
 
+    // SOCIAL LOGIN
     public function select_user($db, $username, $email)
     {
         $sql = "SELECT * 
         FROM users 
-        WHERE username = '$username' OR email = '$email'";
+        WHERE username = '$username' OR email = '$email' AND isActive = '1'";
 
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
+    }
+
+    // SOCIAL LOGIN
+    public function check_email_exists($db, $email)
+    {
+        $sql = "SELECT * 
+        FROM users 
+        WHERE email = '$email' AND login_type = 'local'";
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
+
+    public function insert_social_login($db, $id_user, $username, $email, $login_type, $avatar)
+    {
+        $sql = "INSERT INTO `users`(`id_user`, `username`, `password`, `email`, `type_user`, `avatar`, `phone_number`, `login_attempts`, `token_email`, `token_otp`, `isActive`, `login_type`) 
+        VALUES ('$id_user','$username','','$email','client','$avatar','','','','','0','$login_type');";
+
+        $stmt = $db->ejecutar($sql);
+        return "insert";
+
     }
 
     // RECOVER PASSWORD
@@ -123,7 +145,7 @@ class login_dao
     {
         $sql = "SELECT email 
         FROM users 
-        WHERE email = '$email' AND password NOT LIKE ('')";
+        WHERE email = '$email' AND password NOT LIKE ('') AND isActive = '1'";
 
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);

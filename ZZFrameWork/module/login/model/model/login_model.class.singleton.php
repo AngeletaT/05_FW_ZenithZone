@@ -51,6 +51,12 @@ class login_model
         // echo json_encode("validate_otp Model");
         return $this->bll->validate_otp_BLL($args);
     }
+    // SOCIAL LOGIN
+    public function social_login($args)
+    {
+        // echo json_encode("social_login Model");
+        return $this->bll->social_login_BLL($args);
+    }
 
     // RECOVER PASSWORD
     public function send_recover_email($args)

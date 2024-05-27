@@ -26,6 +26,11 @@
         <name>logout</name>
         <uri>logout</uri>
     </function>
+    <!-- SOCIAL LOGIN -->
+    <function>
+        <name>social_login</name>
+        <uri>social_login</uri>
+    </function>
     <!-- RECOVER PASS -->
     <function>
         <name>send_recover_email</name>
