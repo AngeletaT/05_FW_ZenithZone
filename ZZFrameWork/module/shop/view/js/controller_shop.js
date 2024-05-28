@@ -53,6 +53,7 @@ function ajaxForSearch(url, op, items_page = 2) {
 			$("#content_shop_prop").empty()
 			$(".date_img" && ".date_prop").empty()
 			$("#mapdet").hide()
+			$("#container-cart").hide()
 
 			if (data === "error") {
 				$("<div></div>")
@@ -119,9 +120,14 @@ function ajaxForSearch(url, op, items_page = 2) {
                 	    					                <button id='${data[row].code_prop}' 
 															class='more_info_list Button_principal'>More Info</button>
                 	    					            </td>
-														<td colspan='4' class="like-content">
+														<td>
+															<button id='${data[row].code_prop}' class="carrito Button_segundario">
+																<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+															</button>
+														</td>
+														<td class="like-content">
 															<button id='${data[row].code_prop}'class="${userLiked}">
-															<i class="fa fa-heart" aria-hidden="true"></i>${data[row].likes}</button>
+															<i class="fa fa-heart" aria-hidden="true"></i>${data[row].likes}
 														</td>
 													</tr>
                 	    					    </table>
@@ -199,7 +205,12 @@ function ajaxForSearch(url, op, items_page = 2) {
                 	        			            <button id='${data[row].code_prop}' 
 													class='more_info_list Button_principal'>More Info</button>
                 	        			        </td>
-												<td colspan='4' class="like-content">
+												<td>
+													<button id='${data[row].code_prop}' class="carrito Button_segundario">
+														<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+													</button>
+												</td>
+												<td class="like-content">
 													<button id='${data[row].code_prop}'class="like-review Button_segundario">
 													<i class="fa fa-heart" aria-hidden="true"></i>${data[row].likes}</button>
 												</td>
@@ -266,6 +277,7 @@ function ajaxForSearch_Shop(url, op, items_page = 2) {
 			$("#content_shop_prop").empty()
 			$(".date_img" && ".date_prop").empty()
 			$("#mapdet").hide()
+			$("#container-cart").hide()
 
 			if (data === "error") {
 				$("<div></div>")
@@ -331,13 +343,18 @@ function ajaxForSearch_Shop(url, op, items_page = 2) {
                 	    			                <button id='${data[row].code_prop}' 
 													class='more_info_list Button_principal'>More Info</button>
                 	    			            </td>
-												<td colspan='4' class="like-content">
+												<td>
+													<button id='${data[row].code_prop}' class="carrito Button_segundario">
+														<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+													</button>
+												</td>
+												<td class="like-content">
 													<button id='${data[row].code_prop}'class="${userLiked}">
 													<i class="fa fa-heart" aria-hidden="true"></i>${data[row].likes}</button>
 												</td>
 											</tr>
                 	    			    </table>
-									`)
+											`)
 										$(".owl-list").owlCarousel({
 											loop: true,
 											autoplay: true,
@@ -410,7 +427,12 @@ function ajaxForSearch_Shop(url, op, items_page = 2) {
                 	        			            <button id='${data[row].code_prop}' 
 													class='more_info_list Button_principal'>More Info</button>
                 	        			        </td>
-												<td colspan='4' class="like-content">
+												<td>
+													<button id='${data[row].code_prop}' class="carrito Button_segundario">
+														<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+													</button>
+												</td>
+												<td class="like-content">
 													<button id='${data[row].code_prop}'class="like-review Button_segundario">
 													<i class="fa fa-heart" aria-hidden="true"></i>${data[row].likes}</button>
 												</td>
@@ -460,6 +482,15 @@ function clicks() {
 		localStorage.setItem("code_prop", code_prop)
 		// console.log(code_prop);
 		loadDetails(code_prop)
+		loadCarrito(code_prop)
+		loadSuggestionsDetails()
+	})
+	$(document).on("click", ".carrito", function () {
+		var code_prop = this.getAttribute("id")
+		localStorage.setItem("code_prop", code_prop)
+		// console.log(code_prop);
+		loadDetails(code_prop)
+		loadCarrito(code_prop)
 		loadSuggestionsDetails()
 	})
 }
@@ -479,6 +510,7 @@ function loadDetails(code_prop) {
 			$(".date_prop_dentro").empty()
 			$(".orderbyshop").empty()
 			$("#mapdet").show()
+			$("#container-cart").show()
 
 			if (access_token) {
 				// console.log(data)
@@ -585,7 +617,7 @@ function loadDetails(code_prop) {
 					load_map_details(data[0])
 				})
 			} else {
-				console.log("en el else", data)
+				// console.log("en el else", data)
 
 				// return
 				for (row in data[0].images) {
@@ -741,6 +773,13 @@ $(document).on("click", "#load_more_props", function () {
 	loadSuggestionsDetails()
 })
 
+// CARRITO
+function loadCarrito(code_prop) {
+	console.log("loadCarrito", code_prop)
+
+	$("#container-cart").append(cartTable)
+}
+
 // #region FILTROS
 // FUNCION QUE IMPRIME LOS FILTROS
 function print_filters() {
@@ -799,7 +838,7 @@ function print_filters() {
 }
 
 function print_type() {
-	console.log("print_dynamic_filters")
+	// console.log("print_dynamic_filters")
 	ajaxPromise(friendlyURL("?module=shop"), "POST", "JSON", {"op": "dynamic_filters_type"})
 		.then(function (data) {
 			// console.log(data)
@@ -1555,7 +1594,7 @@ function checkLike(code_prop, access_token) {
 }
 
 $(document).ready(function () {
-	console.log("loadprops1")
+	// console.log("loadprops1")
 	print_filters()
 	filter_orderby()
 	loadprops()
