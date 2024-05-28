@@ -114,21 +114,13 @@ class login_dao
     {
         $sql = "SELECT * 
         FROM users 
-        WHERE username = '$username' OR email = '$email' AND isActive = '1'";
+        WHERE username = '$username' OR email = '$email'";
 
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
     }
 
     // SOCIAL LOGIN
-    public function check_email_exists($db, $email)
-    {
-        $sql = "SELECT * 
-        FROM users 
-        WHERE email = '$email' AND login_type = 'local'";
-        $stmt = $db->ejecutar($sql);
-        return $db->listar($stmt);
-    }
 
     public function insert_social_login($db, $id_user, $username, $email, $login_type, $avatar)
     {
@@ -138,6 +130,18 @@ class login_dao
         $stmt = $db->ejecutar($sql);
         return "insert";
 
+    }
+
+    public function select_user_social($db, $username, $email, $login_type)
+    {
+        $sql = "SELECT * 
+        FROM users 
+        WHERE username = '$username' 
+        OR email = '$email' 
+        AND login_type LIKE ('$login_type')";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
     }
 
     // RECOVER PASSWORD

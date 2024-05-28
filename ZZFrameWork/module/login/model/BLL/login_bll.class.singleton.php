@@ -151,8 +151,19 @@ class login_bll
         $avatar = $args['avatar'];
         $login_type = $args['provider'];
 
-        if (empty($this->dao->check_email_exists($this->db, $email))) {
-            // Si el usuario no existe
+        if ($this->dao->select_user_social($this->db, $username, $email, $login_type)) {
+            $user = $this->dao->select_user_social($this->db, $username, $email, $login_type);
+            if ($user[0]['login_type'] == $login_type) {
+                $access_token = middleware::create_token($username);
+                $refresh_token = middleware::create_refresh_token($username);
+                $_SESSION['username'] = $username;
+                $_SESSION['tiempo'] = time();
+
+                return [$access_token, $refresh_token];
+            } else {
+                return 'error';
+            }
+        } else {
             $this->dao->insert_social_login($this->db, $id_user, $username, $email, $login_type, $avatar);
 
             $access_token = middleware::create_token($username);
@@ -160,23 +171,7 @@ class login_bll
             $_SESSION['username'] = $username;
             $_SESSION['tiempo'] = time();
 
-            return json_encode([$access_token, $refresh_token]);
-
-        } else {
-            // Si el usuario ya existe
-            $user = $this->dao->select_user($this->db, $username, $email);
-            if ($user[0]['login_type'] !== $login_type) {
-                // Si el usuario ya existe pero no con el mismo login_type
-                return 'error';
-            } else {
-                // Si el usuario ya existe y con el mismo login_type
-                $access_token = middleware::create_token($user[0]["username"]);
-                $refresh_token = middleware::create_refresh_token($user[0]["username"]);
-                $_SESSION['username'] = $user[0]['username'];
-                $_SESSION['tiempo'] = time();
-
-                return json_encode([$access_token, $refresh_token]);
-            }
+            return [$access_token, $refresh_token];
         }
 
 

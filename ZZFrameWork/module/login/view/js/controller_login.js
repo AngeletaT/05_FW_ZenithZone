@@ -184,22 +184,27 @@ function social_login(provider) {
 			if (result) {
 				ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", {social_user: social_user, op: "social_login"})
 					.then(function (data) {
-						// console.log(data)
+						console.log(data)
 						// return
 						if (data == "error") {
 							toastr.error("This email is already registered in the database")
 						} else {
-							var tokens = JSON.parse(data)
-							localStorage.setItem("access_token", tokens[0])
-							localStorage.setItem("refresh_token", tokens[1])
-							console.log("access:", tokens[0])
-							console.log("refresh:", tokens[1])
+							localStorage.setItem("access_token", data[0])
+							localStorage.setItem("refresh_token", data[1])
+							console.log("access:", data[0])
+							console.log("refresh:", data[1])
 							toastr.options.timeOut = 3000
 							toastr.success("Login successful")
-							if (localStorage.getItem("likes") == null) {
-								setTimeout('window.location.href = friendlyURL("?module=home")', 1000)
+							if (localStorage.getItem("redirect_like")) {
+								// console.log("redirect_like")
+								setTimeout(function () {
+									window.location.href = friendlyURL("?module=shop")
+								}, 3000)
 							} else {
-								setTimeout('window.location.href = friendlyURL("?module=shop")', 1000)
+								// console.log("redirect_home")
+								setTimeout(function () {
+									window.location.href = friendlyURL("?module=shop")
+								}, 3000)
 							}
 						}
 					})
