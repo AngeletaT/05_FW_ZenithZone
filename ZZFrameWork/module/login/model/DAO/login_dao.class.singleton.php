@@ -16,11 +16,11 @@ class login_dao
     }
 
     // REGISTER
-    public function insert_user($db, $username, $email, $hashed_pass, $avatar)
+    public function insert_user($db, $id_user, $username, $email, $hashed_pass, $avatar)
     {
         // return 'hola dao insert_user';
-        $sql = "INSERT INTO `users`(`username`, `password`, `email`, `type_user`, `avatar`, `isActive`) 
-        VALUES ('$username','$hashed_pass','$email','client','$avatar','0');";
+        $sql = "INSERT INTO `users`(`id_user`, `username`, `password`, `email`, `type_user`, `avatar`, `isActive`) 
+        VALUES ('$id_user','$username','$hashed_pass','$email','client','$avatar','0');";
 
 
         $stmt = $db->ejecutar($sql);

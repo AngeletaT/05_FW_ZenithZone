@@ -26,6 +26,7 @@ class login_bll
         $hashed_pass = password_hash($args[2], PASSWORD_DEFAULT, ['cost' => 12]);
         $hashavatar = md5(strtolower(trim($args[1])));
         $avatar = "https://i.pravatar.cc/500?u=$hashavatar";
+        $id_user = common::generate_token_secure(5);
 
         $token_email = middleware::create_token_email($args[1]);
 
@@ -33,7 +34,7 @@ class login_bll
         if (!empty($this->dao->select_user($this->db, $args[0], $args[1]))) {
             return 'error';
         } else {
-            $this->dao->insert_user($this->db, $args[0], $args[1], $hashed_pass, $avatar);
+            $this->dao->insert_user($this->db, $id_user, $args[0], $args[1], $hashed_pass, $avatar);
             $message = [
                 'type' => 'validate',
                 'token' => $token_email,
