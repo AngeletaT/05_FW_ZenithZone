@@ -26,5 +26,11 @@ class controller_cart
 
     }
 
+    function modify_cart()
+    {
+        // echo json_encode("modifycart");
+        echo json_encode(common::load_model('cart_model', 'modify_cart', [$_POST['code_prod'], $_POST['action'], $_POST['access_token']]));
+    }
+
 }
 ?>

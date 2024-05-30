@@ -5,7 +5,7 @@ function loadprops() {
 	var filters_details = JSON.parse(localStorage.getItem("filters_details")) || false
 	var filters_shop = JSON.parse(localStorage.getItem("filters_shop")) || false
 	var redirect_like = localStorage.getItem("redirect_like") || false
-	// var filters_search = JSON.parse(localStorage.getItem("filters_search")) || false (funciona con filters_Shop)
+	var redirect_product = localStorage.getItem("redirect_product") || false
 
 	if (filters_home !== false) {
 		ajaxForSearch(friendlyURL("?module=shop"), "filters_home")
@@ -13,15 +13,25 @@ function loadprops() {
 	} else if (filters_details !== false) {
 		// console.log(filters_details[0].property[0]);
 		loadDetails(filters_details[0].property[0])
+		loadCarrito(filters_details[0].property[0])
+		loadSuggestionsDetails()
 	} else if (filters_shop !== false) {
 		ajaxForSearch_Shop(friendlyURL("?module=shop"), "filters_shop")
 		// console.log("filtershop")
 		highlight_filters()
 		// pagination()
 	} else if (redirect_like !== false) {
-		console.log("LOADPROPS redirect_like")
+		// console.log("LOADPROPS redirect_like")
 		loadDetails(redirect_like)
+		loadCarrito(redirect_like)
+		loadSuggestionsDetails()
 		localStorage.removeItem("redirect_like")
+	} else if (redirect_product !== false) {
+		// console.log("LOADPROPS redirect_product")
+		loadDetails(redirect_product)
+		loadCarrito(redirect_product)
+		loadSuggestionsDetails()
+		localStorage.removeItem("redirect_product")
 	} else {
 		ajaxForSearch(friendlyURL("?module=shop"), "all_prop")
 		// console.log("allprop")
@@ -66,7 +76,7 @@ function ajaxForSearch(url, op, items_page = 2) {
 							// console.log("Row:", row)
 							// Crear una función para capturar el valor de row
 							if (access_token) {
-								console.log("Existe access_token")
+								// console.log("Existe access_token")
 								var carousel = ""
 								data[row].images.forEach(function (image) {
 									// console.log("image:", image)
@@ -501,9 +511,26 @@ function clicks() {
 		$("#suggestions").empty()
 		loadSuggestionsDetails()
 	})
+	$(document)
+		.off("click", ".add_product")
+		.on("click", ".add_product", function () {
+			console.log("add_prod")
+			var code_prod = this.getAttribute("id")
+			var add = "add"
+			modifyCart(code_prod, add)
+		})
+	$(document)
+		.off("click", ".del_product")
+		.on("click", ".del_product", function () {
+			console.log("del_prod")
+			var code_prod = this.getAttribute("id")
+			var del = "del"
+			modifyCart(code_prod, del)
+		})
 }
 
 function loadDetails(code_prop) {
+	clicks()
 	var access_token = localStorage.getItem("access_token")
 	localStorage.removeItem("filters_details")
 
@@ -783,6 +810,45 @@ function loadSuggestionsDetails() {
 }
 
 // CARRITO
+function modifyCart(code_prod, action) {
+	console.log("modifyCart", code_prod)
+	var code_prop = localStorage.getItem("code_prop")
+	var access_token = localStorage.getItem("access_token")
+	// return
+	if (access_token) {
+		ajaxPromise(friendlyURL("?module=cart"), "POST", "JSON", {
+			"code_prod": code_prod,
+			"action": action,
+			"access_token": access_token,
+			"op": "modify_cart",
+		})
+			.then(function (data) {
+				console.log(data)
+				return
+				if (data === "added") {
+					console.log("Producto añadido al carrito")
+					var cartCount = parseInt($(".cart-count").text())
+					$(".cart-count").text(cartCount + 1)
+				} else if (data === "updated") {
+					console.log("Producto ya existe en el carrito")
+				} else if (data === "deleted") {
+					console.log("Producto eliminado del carrito")
+					var cartCount = parseInt($(".cart-count").text())
+					$(".cart-count").text(cartCount - 1)
+				} else {
+					console.log("Error en la modificación del carrito")
+				}
+			})
+			.catch(function (error) {
+				console.error(error)
+			})
+	} else {
+		// console.log("No existe access_token")
+		localStorage.setItem("redirect_product", code_prop)
+		window.location.href = friendlyURL("?module=login")
+	}
+}
+
 function loadCarrito(code_prop) {
 	console.log("loadCarrito", code_prop)
 	ajaxPromise(friendlyURL("?module=cart"), "POST", "JSON", {"code_prop": code_prop, "op": "cart_products"})
@@ -794,8 +860,8 @@ function loadCarrito(code_prop) {
 					<tr>
 						<td style="width: 800px;"><b>${data[row].name_prod}</b></td>
 						<td style="width: 150px; text-align: center">${data[row].price_prod}€</td>
-						<td style="width: 20px;"><button class="btn Button_principal"><i class="fas fa-shopping-cart"></i></button></td>
-						<td style="width: 20px;"><button class="btn Button_principal"><i class="fas fa-trash"></i></button></td>
+						<td style="width: 20px;"><button class="add_product Button_principal" id="${data[row].code_prod}"><i class="fas fa-shopping-cart"></i></button></td>
+						<td style="width: 20px;"><button class="del_product Button_principal"id="${data[row].code_prod}"><i class="fas fa-trash"></i></button></td>
 					</tr>
 				`)
 			}
@@ -1573,9 +1639,9 @@ function buttonLike() {
 		var code_prop = $(this).attr("id")
 		var access_token = localStorage.getItem("access_token")
 		if (access_token) {
-			console.log("dentro de if buttonLike")
-			console.log("access_token", access_token)
-			console.log("code_prop", code_prop)
+			// console.log("dentro de if buttonLike")
+			// console.log("access_token", access_token)
+			// console.log("code_prop", code_prop)
 			ajaxPromise(friendlyURL("?module=shop"), "POST", "JSON", {
 				"code_prop": code_prop,
 				"access_token": access_token,
@@ -1605,7 +1671,7 @@ function checkLike(code_prop, access_token) {
 			"op": "checklike",
 		})
 			.then(function (data) {
-				console.log("dentro de then checklike", data)
+				// console.log("dentro de then checklike", data)
 				if (data === "ExisteLike") {
 					resolve("like-review Button_segundario active")
 				} else {

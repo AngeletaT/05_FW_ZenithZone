@@ -23,5 +23,11 @@ class cart_model
         // echo json_encode("get_products model");
         return $this->bll->get_products_BLL($args);
     }
+
+    public function modify_cart($args)
+    {
+        // echo json_encode("modify_cart model");
+        return $this->bll->modify_cart_BLL($args);
+    }
 }
 ?>

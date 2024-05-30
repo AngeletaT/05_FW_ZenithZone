@@ -29,5 +29,46 @@ class cart_dao
         return $db->listar($stmt);
     }
 
+    public function check_product($db, $code_prod, $username)
+    {
+        $sql = "SELECT * 
+        FROM `cart` 
+        WHERE `name_user`='$username' 
+        AND `code_prod`='$code_prod'";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
+
+    public function update_product($db, $code_prod, $username)
+    {
+        $sql = "UPDATE `cart` 
+        SET `quantity`=`quantity`+1 
+        WHERE `name_user`='$username' 
+        AND `code_prod`='$code_prod'";
+
+        $stmt = $db->ejecutar($sql);
+        return 'updated';
+    }
+    public function add_product($db, $code_prod, $username)
+    {
+        $sql = "INSERT INTO `cart`(`name_user`, `code_prod`, `quantity`) VALUES 
+        ('$username','$code_prod','1')";
+
+        $stmt = $db->ejecutar($sql);
+        return 'added';
+    }
+
+    public function remove_product($db, $code_prod, $username)
+    {
+        $sql = "UPDATE `cart` 
+        SET `quantity`=`quantity`-1 
+        WHERE `name_user`='$username' 
+        AND `code_prod`='$code_prod'";
+
+        $stmt = $db->ejecutar($sql);
+        return 'deleted';
+    }
+
 }
 ?>

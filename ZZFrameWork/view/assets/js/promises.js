@@ -29,10 +29,14 @@ function load_menu() {
 		.attr({"class": "nav_item"})
 		.html('<a href="' + friendlyURL("?module=shop") + '" class="nav_link">Shop</a>')
 		.appendTo("#nav_list")
-	// $("<li></li>")
-	// 	.attr({"class": "nav_item"})
-	// 	.html('<a href="' + friendlyURL("?module=contact") + '" class="nav_link">Contact us</a>')
-	// 	.appendTo("#nav_list")
+	$("<li></li>")
+		.attr({"class": "nav_item"})
+		.html(
+			'<a href="' +
+				friendlyURL("?module=cart") +
+				'" class="nav_link"><i class="fas fa-shopping-cart"></i>(<span id="cart-count">0</span>)</a>'
+		)
+		.appendTo("#nav_list")
 
 	if (localStorage.getItem("access_token")) {
 		var access_token = localStorage.getItem("access_token")

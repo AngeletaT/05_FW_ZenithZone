@@ -24,5 +24,25 @@ class cart_bll
         return $this->dao->select_products($this->db, $args[0]);
     }
 
+    public function modify_cart_BLL($args)
+    {
+        $username = middleware::decode_token($args[2]);
+
+        if ($args[1] === 'add') {
+            if ($this->dao->check_product($this->db, $args[0], $username['username'])) {
+                $this->dao->update_product($this->db, $args[0], $username['username']);
+                return 'updated';
+            } else {
+                $this->dao->add_product($this->db, $args[0], $username['username']);
+                return 'added';
+            }
+        } else if ($args[1] === 'del') {
+            $this->dao->remove_product($this->db, $args[0], $username['username']);
+            return 'removed';
+        } else {
+            return 'error';
+        }
+    }
+
 }
 ?>
