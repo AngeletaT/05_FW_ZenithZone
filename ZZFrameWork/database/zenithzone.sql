@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-05-2024 a las 13:10:38
+-- Tiempo de generación: 29-05-2024 a las 19:25:45
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -73,6 +73,19 @@ INSERT INTO `activity` (`code_act`, `name_act`, `img_act`) VALUES
 (3, 'Pilates', 'view/img/activity/act_pilates.webp'),
 (4, 'Salon', 'view/img/activity/act_salon.webp'),
 (5, 'Yoga', 'view/img/activity/act_yoga.webp');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cart`
+--
+
+CREATE TABLE `cart` (
+  `id_cart` int(11) NOT NULL,
+  `id_user` varchar(255) NOT NULL,
+  `id_prod` varchar(255) NOT NULL,
+  `cantidad` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -303,6 +316,39 @@ INSERT INTO `likes` (`username`, `code_prop`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `products`
+--
+
+CREATE TABLE `products` (
+  `id_prod` int(11) NOT NULL,
+  `name_prod` varchar(255) NOT NULL,
+  `price_prod` int(255) NOT NULL,
+  `stock` int(11) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `products`
+--
+
+INSERT INTO `products` (`id_prod`, `name_prod`, `price_prod`, `stock`) VALUES
+(1, 'Clases de Ballet', 20, 100),
+(2, 'Clases de Hip Hop', 20, 100),
+(3, 'Clases de Pilates', 20, 100),
+(4, 'Clases de Bailes de Salón', 25, 100),
+(5, 'Clases de Yoga', 25, 100),
+(6, 'Membresía de gimnasio', 50, 100),
+(7, 'Entrenador personal a domicilio', 60, 100),
+(8, 'Equipo de deporte en casa', 200, 100),
+(9, 'Instalación de vigilancia', 100, 150),
+(10, 'Instalación de internet', 75, 100),
+(11, 'Servicios de Streaming', 10, 100),
+(12, 'Mudanza', 100, 100),
+(13, 'Servicio de reparaciones', 50, 100),
+(14, 'Servicio de limpieza', 25, 100);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `property`
 --
 
@@ -328,8 +374,8 @@ CREATE TABLE `property` (
 --
 
 INSERT INTO `property` (`code_prop`, `ref_cat`, `name_prop`, `m2`, `rooms`, `baths`, `description`, `price`, `publication`, `code_city`, `longitud`, `latitud`, `last_visit`, `likes`) VALUES
-(1, '1235A', 'Spacious house with garden', 200, 4, 2, 'Enjoy the spaciousness of this 200m² house with 4 bedrooms and 2 baths, complemented by a serene garden, offering a perfect blend of comfort and tranquility', 300000, '2024-01-25', 1, -0.4063, 39.4946, '2024-05-22 11:57:36', 2),
-(2, '4567B', 'Cozy flat in the city center', 100, 2, 1, 'Nestled in the city center, this cozy 100m² flat boasts 2 bedrooms and 1 bath, promising urban convenience combined with warmth and charm.', 150000, '2024-01-25', 5, -5.9821, 37.3886, '2024-05-20 21:13:35', 2),
+(1, '1235A', 'Spacious house with garden', 200, 4, 2, 'Enjoy the spaciousness of this 200m² house with 4 bedrooms and 2 baths, complemented by a serene garden, offering a perfect blend of comfort and tranquility', 300000, '2024-01-25', 1, -0.4063, 39.4946, '2024-05-29 19:24:31', 2),
+(2, '4567B', 'Cozy flat in the city center', 100, 2, 1, 'Nestled in the city center, this cozy 100m² flat boasts 2 bedrooms and 1 bath, promising urban convenience combined with warmth and charm.', 150000, '2024-01-25', 5, -5.9821, 37.3886, '2024-05-29 19:23:56', 2),
 (3, '8912C', 'Beautiful house with a view', 180, 3, 2, 'Revel in the beauty of this 180m² house, featuring 3 bedrooms and 2 baths, offering picturesque views that redefine the concept of home.', 250000, '2024-01-25', 2, -0.4838, 38.3452, '2024-04-19 19:09:03', 0),
 (4, '3456D', 'Large commercial space', 300, 0, 1, 'Embark on vast commercial ventures with this 300m² property, designed for expansive enterprises, promising ample space for your business aspirations.', 500000, '2024-01-25', 4, 2.1685, 41.3851, '2024-03-25 20:57:28', 1),
 (5, '6789E\r\n', 'Spacious land for development', 500, 0, 0, 'Unleash your development dreams on this 500m² expanse of land, offering endless possibilities and a canvas for your visionary projects.', 100000, '2024-01-25', 1, -0.3847, 39.5122, '2024-04-24 21:10:47', 1),
@@ -352,6 +398,147 @@ INSERT INTO `property` (`code_prop`, `ref_cat`, `name_prop`, `m2`, `rooms`, `bat
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `property_product`
+--
+
+CREATE TABLE `property_product` (
+  `code_prop` int(11) NOT NULL,
+  `code_prod` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `property_product`
+--
+
+INSERT INTO `property_product` (`code_prop`, `code_prod`) VALUES
+(1,1), 
+(6,1),
+(11,1),
+(16,1),
+(2,2),
+(7,2),
+(12,2),
+(17,2),
+(3,3),
+(8,3),
+(13,3),
+(18,3),
+(4,4),
+(9,4),
+(14,4),
+(19,4),
+(5,5),
+(10,5),
+(15,5),
+(20,5),
+(1,6),
+(2,6),
+(3,6),
+(4,6),
+(5,6),
+(6,6),
+(7,6),
+(8,6),
+(9,6),
+(10,6),
+(11,6),
+(12,6),
+(13,6),
+(14,6),
+(15,6),
+(16,6),
+(17,6),
+(18,6),
+(19,6),
+(20,6),
+(2,7),
+(7,7),
+(11,7),
+(15,7),
+(19,7),
+(1,8),
+(3,8),
+(6,8),
+(10,8),
+(14,8),
+(18,8),
+(1,9),
+(2,9),
+(3,9),
+(4,9),
+(6,9),
+(7,9),
+(8,9),
+(10,9),
+(11,9),
+(12,9),
+(14,9),
+(15,9),
+(16,9),
+(18,9),
+(19,9),
+(20,9),
+(1,10),
+(2,10),
+(3,10),
+(4,10),
+(6,10),
+(7,10),
+(8,10),
+(10,10),
+(11,10),
+(12,10),
+(14,10),
+(15,10),
+(16,10),
+(18,10),
+(19,10),
+(20,10),
+(1,11),
+(3,11),
+(6,11),
+(10,11),
+(14,11),
+(18,11),
+(2,11),
+(7,11),
+(11,11),
+(15,11),
+(19,11),
+(1,12),
+(2,12),
+(3,12),
+(6,12),
+(10,12),
+(14,12),
+(18,12),
+(7,12),
+(11,12),
+(15,12),
+(19,12),
+(2,13),
+(7,13),
+(11,13),
+(15,13),
+(19,13),
+(4,13),
+(8,13),
+(12,13),
+(16,13),
+(20,13),
+(5,13),
+(13,13),
+(17,13),
+(4,14),
+(8,14),
+(12,14),
+(16,14),
+(20,14);
+
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `property_activity`
 --
 
@@ -365,26 +552,27 @@ CREATE TABLE `property_activity` (
 --
 
 INSERT INTO `property_activity` (`code_prop`, `code_act`) VALUES
-(1, 1),
-(2, 2),
-(3, 3),
-(4, 4),
-(5, 5),
-(6, 1),
-(7, 2),
-(8, 3),
-(9, 4),
-(10, 5),
-(11, 1),
-(12, 2),
-(13, 3),
-(14, 4),
-(15, 5),
-(16, 1),
-(17, 2),
-(18, 3),
-(19, 4),
-(20, 5);
+(1, 1), -- Spacious house with garden -> Ballet
+(2, 2), -- Cozy flat in the city center -> HipHop
+(3, 3), -- Beautiful house with a view -> Pilates
+(4, 4), -- Large commercial space -> Salon
+(5, 5), -- Spacious land for development -> Yoga
+(6, 1), -- Modern house with swimming pool -> Ballet
+(7, 2), -- Bright flat with balcony -> HipHop
+(8, 3), -- Commercial property with parking -> Pilates
+(9, 5), -- Spacious garage for multiple cars -> Yoga
+(10, 1), -- Modern Apartment with Sea View -> Ballet
+(11, 2), -- Charming Villa with Pool -> HipHop
+(12, 3), -- Spacious Loft in the City -> Pilates
+(13, 4), -- Luxury Penthouse with Terrace -> Salon
+(14, 5), -- Cozy Cottage in the Countryside -> Yoga
+(15, 1), -- Commercial Space in Business District -> Ballet
+(16, 2), -- Renovated Townhouse with Garden -> HipHop
+(17, 3), -- Industrial Warehouse with Office -> Pilates
+(18, 4), -- Rustic Farmhouse with Vineyard -> Salon
+(19, 5), -- Secluded Retreat in the Mountains -> Yoga
+(20, 1); -- Elegant Townhouse with Rooftop Terrace -> Ballet
+
 
 -- --------------------------------------------------------
 
@@ -402,26 +590,26 @@ CREATE TABLE `property_category` (
 --
 
 INSERT INTO `property_category` (`code_prop`, `code_cat`) VALUES
-(1, 1),
-(2, 2),
-(3, 1),
-(4, 3),
-(5, 4),
-(6, 1),
-(7, 2),
-(8, 3),
-(9, 5),
-(10, 1),
-(11, 2),
-(12, 3),
-(13, 4),
-(14, 1),
-(15, 2),
-(16, 3),
-(17, 4),
-(18, 1),
-(19, 2),
-(20, 3);
+(1, 1), -- Spacious house with garden -> FOR SALE
+(2, 2), -- Cozy flat in the city center -> FOR RENT
+(3, 1), -- Beautiful house with a view -> FOR SALE
+(4, 3), -- Large commercial space -> FOR SHARE
+(5, 4), -- Spacious land for development -> A ROOM
+(6, 1), -- Modern house with swimming pool -> FOR SALE
+(7, 2), -- Bright flat with balcony -> FOR RENT
+(8, 3), -- Commercial property with parking -> FOR SHARE
+(9, 5), -- Spacious garage for multiple cars -> NEW BUILD
+(10, 1), -- Modern Apartment with Sea View -> FOR SALE
+(11, 2), -- Charming Villa with Pool -> FOR RENT
+(12, 3), -- Spacious Loft in the City -> FOR SHARE
+(13, 4), -- Luxury Penthouse with Terrace -> A ROOM
+(14, 1), -- Cozy Cottage in the Countryside -> FOR SALE
+(15, 2), -- Commercial Space in Business District -> FOR RENT
+(16, 3), -- Renovated Townhouse with Garden -> FOR SHARE
+(17, 4), -- Industrial Warehouse with Office -> A ROOM
+(18, 1), -- Rustic Farmhouse with Vineyard -> FOR SALE
+(19, 2), -- Secluded Retreat in the Mountains -> FOR RENT
+(20, 3); -- Elegant Townhouse with Rooftop Terrace -> FOR SHARE
 
 -- --------------------------------------------------------
 
@@ -439,26 +627,26 @@ CREATE TABLE `property_extras` (
 --
 
 INSERT INTO `property_extras` (`code_prop`, `code_extra`) VALUES
-(1, 1),
-(2, 2),
-(3, 1),
-(4, 3),
-(5, 4),
-(6, 1),
-(7, 2),
-(8, 3),
-(9, 5),
-(10, 1),
-(11, 2),
-(12, 3),
-(13, 4),
-(14, 1),
-(15, 2),
-(16, 3),
-(17, 4),
-(18, 1),
-(19, 2),
-(20, 3);
+(1, 2), -- Spacious house with garden -> Garden
+(2, 7), -- Cozy flat in the city center -> Furnished
+(3, 3), -- Beautiful house with a view -> Terrace
+(4, 8), -- Large commercial space -> Parking
+(5, 6), -- Spacious land for development -> Empty
+(6, 1), -- Modern house with swimming pool -> Pool
+(7, 4), -- Bright flat with balcony -> Balcony
+(8, 8), -- Commercial property with parking -> Parking
+(9, 8), -- Spacious garage for multiple cars -> Parking
+(10, 3), -- Modern Apartment with Sea View -> Terrace
+(11, 1), -- Charming Villa with Pool -> Pool
+(12, 6), -- Spacious Loft in the City -> Empty
+(13, 3), -- Luxury Penthouse with Terrace -> Terrace
+(14, 2), -- Cozy Cottage in the Countryside -> Garden
+(15, 8), -- Commercial Space in Business District -> Parking
+(16, 2), -- Renovated Townhouse with Garden -> Garden
+(17, 8), -- Industrial Warehouse with Office -> Parking
+(18, 2), -- Rustic Farmhouse with Vineyard -> Garden
+(19, 2), -- Secluded Retreat in the Mountains -> Garden
+(20, 3); -- Elegant Townhouse with Rooftop Terrace -> Terrace
 
 -- --------------------------------------------------------
 
@@ -476,26 +664,42 @@ CREATE TABLE `property_type` (
 --
 
 INSERT INTO `property_type` (`code_prop`, `code_type`) VALUES
-(1, 1),
-(2, 2),
-(3, 1),
-(4, 3),
-(5, 4),
-(6, 1),
-(7, 2),
-(8, 3),
-(9, 5),
-(10, 1),
-(11, 2),
-(12, 3),
-(13, 4),
-(14, 1),
-(15, 2),
-(16, 3),
-(17, 4),
-(18, 1),
-(19, 2),
-(20, 3);
+(1, 1), -- Spacious house with garden -> House
+(2, 2), -- Cozy flat in the city center -> Flat
+(3, 1), -- Beautiful house with a view -> House
+(4, 3), -- Large commercial space -> Business
+(5, 4), -- Spacious land for development -> Terrain
+(6, 1), -- Modern house with swimming pool -> House
+(7, 2), -- Bright flat with balcony -> Flat
+(8, 3), -- Commercial property with parking -> Business
+(9, 5), -- Spacious garage for multiple cars -> Garage
+(10, 2), -- Modern Apartment with Sea View -> Flat
+(11, 1), -- Charming Villa with Pool -> House
+(12, 2), -- Spacious Loft in the City -> Flat
+(13, 3), -- Luxury Penthouse with Terrace -> Business
+(14, 1), -- Cozy Cottage in the Countryside -> House
+(15, 2), -- Commercial Space in Business District -> Flat
+(16, 3), -- Renovated Townhouse with Garden -> Business
+(17, 4), -- Industrial Warehouse with Office -> Terrain
+(18, 1), -- Rustic Farmhouse with Vineyard -> House
+(19, 2), -- Secluded Retreat in the Mountains -> Flat
+(20, 3); -- Elegant Townhouse with Rooftop Terrace -> Business
+
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `purchase`
+--
+
+CREATE TABLE `purchase` (
+  `id_purchase` int(11) NOT NULL,
+  `id_user` varchar(255) NOT NULL,
+  `id_prod` varchar(255) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `price` int(11) NOT NULL,
+  `date_purchase` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -527,7 +731,7 @@ INSERT INTO `type` (`code_type`, `name_type`, `img_type`) VALUES
 --
 
 CREATE TABLE `users` (
-  `id_user` int(30) NOT NULL,
+  `id_user` varchar(100) NOT NULL,
   `username` varchar(25) DEFAULT NULL,
   `password` varchar(100) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
@@ -537,25 +741,28 @@ CREATE TABLE `users` (
   `login_attempts` int(11) NOT NULL,
   `token_email` varchar(1000) NOT NULL,
   `token_otp` varchar(20) NOT NULL,
-  `isActive` tinyint(1) NOT NULL
+  `isActive` tinyint(1) NOT NULL DEFAULT 0,
+  `login_type` enum('local','google','github') NOT NULL DEFAULT 'local'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`id_user`, `username`, `password`, `email`, `type_user`, `avatar`, `phone_number`, `login_attempts`, `token_email`, `token_otp`, `isActive`) VALUES
-(1, 'Angela24', '$2y$12$qjen7QF.pQ4S6CLAR/WzuuuI1uvhSTpnK.lpNnaq0VUsX0EKKRXQi', 'angela24@gmail.com', 'admin', 'https://robohash.org/bcad65cbb7e72b2c3eb99b8f4a4d41ee', '', 0, '', '', 1),
-(2, 'Carlos29', '$2y$12$DUmul1bagMdxtsqur.jNK.u01rZ.sKC3nBfs58PmUwgBZm.pxV.Wi', 'carlos29@gmail.com', 'client', 'https://robohash.org/db1e0a3750e0399df3eeee808187d9b4', '', 0, '', '', 1),
-(3, 'Carla29 ', '$2y$12$ArMAmb7UPHEbzxo9so1BWOSjCzgBhqL0TtgzZJgmmy42q7UuJi4LO', 'carla29@gmail.com', 'client', 'https://i.pravatar.cc/400?u=62779a64d5b24b7fd3d5026977b7a87a', '', 0, '', '', 1),
-(4, 'Juan29', '$2y$12$dbwGopIYSRfpSu5qRkF.3uLq1kQUxSMmVbjUBSdJqGjJOr.hhaxfi', 'juan29@gmail.com', 'client', 'https://i.pravatar.cc/500?u=7038663cc684aa330956752c7e6fe7d4', '', 0, '', '', 1),
-(8, 'Salva32', '$2y$12$HuhpFdE6TZ6R4dSixiYwLOoqU9YIhyk/Vpqguu0wlpBnGBvcASQmS', 'salva32@gmail.com', 'client', 'https://i.pravatar.cc/500?u=3f7c577fb8d1d26e0bccaa5efb593184', '', 0, '', '', 1),
-(9, 'Cain33', '$2y$12$1i399bzacg67obsHMuNSZeYBZ/f5/Kvet23tn3OdWWYu/RIQVwzvO', 'cain33@gmail.com', 'client', 'https://i.pravatar.cc/500?u=3bb21b792c59e0c1d535902d3ea213e1', '', 0, '', '', 1),
-(10, 'Alvaro74', '$2y$12$9Yl2wNh5hjRJr2c2SaNDkuW54avtOPyX6A3j08i61WZGcAYIlFT6u', 'alvaro74@gmail.com', 'client', 'https://i.pravatar.cc/500?u=438ae20f700cb35f02b4dc03e80c07e6', '+345687466', 0, '', '', 1),
-(16, 'Ainhoa22', '$2y$12$HTGQ.0KY4c8TNxRjCXPqoeP3LZogd4zEpoHNjAyb0rsrzxG17BrjK', 'ainhoa22@gmail.com', 'client', 'https://i.pravatar.cc/500?u=1314951436582657f9c3e6d3ddde1911', '', 0, '', '', 1),
-(17, 'paco79', '$2y$12$7kAiWI6IcjtNcXSBESSaneZfId8KqvfVkxbk9G/uvpwvyZKyUz9bq', 'paco79@gmail.com', 'client', 'https://i.pravatar.cc/500?u=cd03520894abd001149c0ad0491c1d04', '', 0, '', '', 1),
-(18, 'guille14', '$2y$12$9KQBpg8Tf33dNN174kNnnOdPeb/vhFT4sVmSfL68pqcIn4L4lPZ8i', 'guille14@gmail.com', 'client', 'https://i.pravatar.cc/500?u=ade40bb1a8734c244cb961d1f5287582', '', 0, '', '', 1),
-(19, 'Laura56', '$2y$12$nyJ1WKnz9yw3HdCNOxAIK.yWg5DbL8nn4bfchol1iW8/c05zRcp/m', 'laura56@gmail.com', 'client', 'https://i.pravatar.cc/500?u=f6a5735eb29501cce7904c2894432542', '', 0, '', '', 1);
+INSERT INTO `users` (`id_user`, `username`, `password`, `email`, `type_user`, `avatar`, `phone_number`, `login_attempts`, `token_email`, `token_otp`, `isActive`, `login_type`) VALUES
+('0069a', 'Salva32', '$2y$12$HuhpFdE6TZ6R4dSixiYwLOoqU9YIhyk/Vpqguu0wlpBnGBvcASQmS', 'salva32@gmail.com', 'client', 'https://i.pravatar.cc/500?u=3f7c577fb8d1d26e0bccaa5efb593184', '', 0, '', '', 1, 'local'),
+('1044v', 'Juan29', '$2y$12$dbwGopIYSRfpSu5qRkF.3uLq1kQUxSMmVbjUBSdJqGjJOr.hhaxfi', 'juan29@gmail.com', 'client', 'https://i.pravatar.cc/500?u=7038663cc684aa330956752c7e6fe7d4', '', 0, '', '', 1, 'local'),
+('1316a', 'guille14', '$2y$12$9KQBpg8Tf33dNN174kNnnOdPeb/vhFT4sVmSfL68pqcIn4L4lPZ8i', 'guille14@gmail.com', 'client', 'https://i.pravatar.cc/500?u=ade40bb1a8734c244cb961d1f5287582', '', 0, '', '', 1, 'local'),
+('2i9GDBf7SSdb0i06kTcKTYqRIvQ2', 'angeletatb98', '', 'angeletatb98@gmail.com', 'client', 'https://avatars.githubusercontent.com/u/170969127?v=4', '', 0, '', '', 0, 'github'),
+('471ca', 'Laura56', '$2y$12$nyJ1WKnz9yw3HdCNOxAIK.yWg5DbL8nn4bfchol1iW8/c05zRcp/m', 'laura56@gmail.com', 'client', 'https://i.pravatar.cc/500?u=f6a5735eb29501cce7904c2894432542', '', 0, '', '', 1, 'local'),
+('6bdb7', 'paco79', '$2y$12$7kAiWI6IcjtNcXSBESSaneZfId8KqvfVkxbk9G/uvpwvyZKyUz9bq', 'paco79@gmail.com', 'client', 'https://i.pravatar.cc/500?u=cd03520894abd001149c0ad0491c1d04', '', 0, '', '', 1, 'local'),
+('8dcb4', 'Cain33', '$2y$12$1i399bzacg67obsHMuNSZeYBZ/f5/Kvet23tn3OdWWYu/RIQVwzvO', 'cain33@gmail.com', 'client', 'https://i.pravatar.cc/500?u=3bb21b792c59e0c1d535902d3ea213e1', '', 0, '', '', 1, 'local'),
+('9d8df', 'Angela24', '$2y$12$qjen7QF.pQ4S6CLAR/WzuuuI1uvhSTpnK.lpNnaq0VUsX0EKKRXQi', 'angela24@gmail.com', 'admin', 'https://robohash.org/bcad65cbb7e72b2c3eb99b8f4a4d41ee', '', 0, '', '', 1, 'local'),
+('b0a0j', 'Alvaro74', '$2y$12$9Yl2wNh5hjRJr2c2SaNDkuW54avtOPyX6A3j08i61WZGcAYIlFT6u', 'alvaro74@gmail.com', 'client', 'https://i.pravatar.cc/500?u=438ae20f700cb35f02b4dc03e80c07e6', '+345687466', 0, '', '', 1, 'local'),
+('c9c15', 'Carla29 ', '$2y$12$ArMAmb7UPHEbzxo9so1BWOSjCzgBhqL0TtgzZJgmmy42q7UuJi4LO', 'carla29@gmail.com', 'client', 'https://i.pravatar.cc/400?u=62779a64d5b24b7fd3d5026977b7a87a', '', 0, '', '', 1, 'local'),
+('f138a', 'Carlos29', '$2y$12$DUmul1bagMdxtsqur.jNK.u01rZ.sKC3nBfs58PmUwgBZm.pxV.Wi', 'carlos29@gmail.com', 'client', 'https://robohash.org/db1e0a3750e0399df3eeee808187d9b4', '', 0, '', '', 1, 'local'),
+('f6e8r', 'Ainhoa22', '$2y$12$HTGQ.0KY4c8TNxRjCXPqoeP3LZogd4zEpoHNjAyb0rsrzxG17BrjK', 'ainhoa22@gmail.com', 'client', 'https://i.pravatar.cc/500?u=1314951436582657f9c3e6d3ddde1911', '', 0, '', '', 1, 'local'),
+('rFz4mONvFVUa1F5rCEI25SGj0Fl1', 'angeletatorro98', '', 'angeletatorro98@gmail.com', 'client', 'https://lh3.googleusercontent.com/a/ACg8ocICFaUywok03hRKF3BLUiKBRdEjcsKFA_MLPllpjXPlBShY5fGN=s96-c', '', 0, '', '', 0, 'google');
 
 -- --------------------------------------------------------
 
@@ -574,8 +781,8 @@ CREATE TABLE `visited` (
 --
 
 INSERT INTO `visited` (`code_visit`, `code_prop`, `visits`) VALUES
-(1, 1, 58),
-(2, 2, 64),
+(1, 1, 96),
+(2, 2, 85),
 (3, 3, 8),
 (4, 4, 1),
 (5, 5, 17),
@@ -594,6 +801,12 @@ INSERT INTO `visited` (`code_visit`, `code_prop`, `visits`) VALUES
 ALTER TABLE `activity`
   ADD PRIMARY KEY (`code_act`),
   ADD UNIQUE KEY `name_act` (`name_act`);
+
+--
+-- Indices de la tabla `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`id_cart`);
 
 --
 -- Indices de la tabla `category`
@@ -628,6 +841,12 @@ ALTER TABLE `likes`
   ADD KEY `code_user` (`username`),
   ADD KEY `code_prop` (`code_prop`),
   ADD KEY `code_user_2` (`username`,`code_prop`);
+
+--
+-- Indices de la tabla `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id_prod`);
 
 --
 -- Indices de la tabla `property`
@@ -666,6 +885,12 @@ ALTER TABLE `property_type`
   ADD KEY `code_type` (`code_type`);
 
 --
+-- Indices de la tabla `purchase`
+--
+ALTER TABLE `purchase`
+  ADD PRIMARY KEY (`id_purchase`);
+
+--
 -- Indices de la tabla `type`
 --
 ALTER TABLE `type`
@@ -696,6 +921,12 @@ ALTER TABLE `activity`
   MODIFY `code_act` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT de la tabla `cart`
+--
+ALTER TABLE `cart`
+  MODIFY `id_cart` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `category`
 --
 ALTER TABLE `category`
@@ -720,22 +951,28 @@ ALTER TABLE `images`
   MODIFY `code_img` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
+-- AUTO_INCREMENT de la tabla `products`
+--
+ALTER TABLE `products`
+  MODIFY `id_prod` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
 -- AUTO_INCREMENT de la tabla `property`
 --
 ALTER TABLE `property`
   MODIFY `code_prop` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
+-- AUTO_INCREMENT de la tabla `purchase`
+--
+ALTER TABLE `purchase`
+  MODIFY `id_purchase` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `type`
 --
 ALTER TABLE `type`
   MODIFY `code_type` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT de la tabla `users`
---
-ALTER TABLE `users`
-  MODIFY `id_user` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Restricciones para tablas volcadas
