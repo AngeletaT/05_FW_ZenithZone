@@ -19,10 +19,9 @@ class cart_bll
         return self::$_instance;
     }
 
-    // FILTROS DINAMICOS
-    public function get_products_BLL()
+    public function get_products_BLL($args)
     {
-        return $this->dao->select_products();
+        return $this->dao->select_products($this->db, $args[0]);
     }
 
 }

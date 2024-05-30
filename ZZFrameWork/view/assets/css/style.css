@@ -1051,15 +1051,38 @@ td {
 	font-family: "Roboto", sans-serif;
 }
 
-.detail .row {
-	width: 100%;
-	height: 500px;
-}
-
 .detailstable .tablebuttons {
 	text-align: center;
 	width: 100%;
 	border-collapse: collapse;
+}
+.detail .row {
+	/* width: 100%; */
+	height: 500px;
+	margin-left: 200px;
+	margin-right: 200px;
+}
+.cart-table {
+	/* border: 1px solid black; */
+	/* padding: 20px; */
+	align-items: center;
+	/* max-height: 300px; */
+	overflow-y: auto;
+	background: #0000000a;
+}
+
+.cart-table th {
+	/* border: 1px solid black; */
+	text-align: center;
+	color: #68a4c4;
+	padding: 16px;
+	font-size: 20px;
+	border-bottom: 2px solid #7aafcb;
+}
+.cart-table td {
+	/* border: 1px solid black; */
+	padding: 4px;
+	text-align: left;
 }
 
 .suggestions-container {

@@ -18,11 +18,10 @@ class cart_model
         return self::$_instance;
     }
 
-    // FILTROS DINAMICOS
-    public function get_products()
+    public function get_products($args)
     {
-        // echo json_encode("filters_type Model");
-        return $this->bll->get_products_BLL();
+        // echo json_encode("get_products model");
+        return $this->bll->get_products_BLL($args);
     }
 }
 ?>

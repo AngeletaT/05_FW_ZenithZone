@@ -19,10 +19,10 @@ class controller_cart
     }
 
     // FILTROS DINAMICOS
-    function get_products()
+    function cart_products()
     {
         // echo json_encode("get_products");
-        echo json_encode(common::load_model('cart_model', 'get_products'));
+        echo json_encode(common::load_model('cart_model', 'get_products', $_POST['code_prop']));
 
     }
 

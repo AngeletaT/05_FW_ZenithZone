@@ -493,6 +493,14 @@ function clicks() {
 		loadCarrito(code_prop)
 		loadSuggestionsDetails()
 	})
+	$(document).on("click", "#load_more_props", function () {
+		limit += 3
+		console.log("limit:", limit)
+		$("#title-suggestions").empty()
+		$("#button-suggestions").empty()
+		$("#suggestions").empty()
+		loadSuggestionsDetails()
+	})
 }
 
 function loadDetails(code_prop) {
@@ -670,6 +678,16 @@ function loadDetails(code_prop) {
 										</td>
 										<td class="text">${data[0].name_extra}</td>
 									</tr>
+									<tr>
+										<td class="icon">
+											<i class="fa-solid fa-person-running fa-2xl"></i>
+										</td>
+										<td class="text">${data[0].name_act}</td>
+										<td class="icon">
+											<i id="col-ico" class="fa-solid fa-map-marker-alt fa-2xl"></i>
+										</td>
+										<td class="text">${data[0].name_city}</td>
+									</tr>
 								</table>
 								<br />
 								<h3>
@@ -764,20 +782,28 @@ function loadSuggestionsDetails() {
 		})
 }
 
-$(document).on("click", "#load_more_props", function () {
-	limit += 3
-	console.log("limit:", limit)
-	$("#title-suggestions").empty()
-	$("#button-suggestions").empty()
-	$("#suggestions").empty()
-	loadSuggestionsDetails()
-})
-
 // CARRITO
 function loadCarrito(code_prop) {
 	console.log("loadCarrito", code_prop)
-
-	$("#container-cart").append(cartTable)
+	ajaxPromise(friendlyURL("?module=cart"), "POST", "JSON", {"code_prop": code_prop, "op": "cart_products"})
+		.then(function (data) {
+			console.log(data)
+			// return
+			for (var row in data) {
+				$(".cart-table").append(`
+					<tr>
+						<td style="width: 800px;"><b>${data[row].name_prod}</b></td>
+						<td style="width: 150px; text-align: center">${data[row].price_prod}€</td>
+						<td style="width: 20px;"><button class="btn Button_principal"><i class="fas fa-shopping-cart"></i></button></td>
+						<td style="width: 20px;"><button class="btn Button_principal"><i class="fas fa-trash"></i></button></td>
+					</tr>
+				`)
+			}
+		})
+		.catch(function (error) {
+			console.error(error)
+			// window.location.href = "index.php?module=ctrl_exceptions&op=503&type=503&lugar=Load_Carrito SHOP";
+		})
 }
 
 // #region FILTROS

@@ -15,12 +15,16 @@ class cart_dao
         return self::$_instance;
     }
 
-    // FILTROS DINAMICOS
-    public function select_products($db)
+    public function select_products($db, $code_prop)
     {
         // return "hola dao";
 
-        $sql = "SELECT * FROM products";
+        $sql = "SELECT * 
+        FROM products p JOIN property_product pp JOIN property prop
+        WHERE p.code_prod=pp.code_prod
+        AND pp.code_prop=prop.code_prop
+        AND prop.code_prop=$code_prop;";
+
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
     }

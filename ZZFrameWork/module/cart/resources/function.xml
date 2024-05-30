@@ -5,7 +5,7 @@
         <uri>view</uri>
     </function>
     <function>
-        <name>get_products</name>
-        <uri>get_products</uri>
+        <name>cart_products</name>
+        <uri>cart_products</uri>
     </function>
 </functions>
