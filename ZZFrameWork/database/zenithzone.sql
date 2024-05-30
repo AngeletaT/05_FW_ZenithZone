@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-05-2024 a las 19:25:45
+-- Tiempo de generación: 30-05-2024 a las 12:14:16
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,36 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `zenithzone`
 --
-
-DELIMITER $$
---
--- Procedimientos
---
-CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateLikes` (IN `p_user_name` VARCHAR(20), IN `p_code_prop` INT)   BEGIN
-    DECLARE v_exists INT;
-
-    SELECT COUNT(*) INTO v_exists
-    FROM likes
-    WHERE username = p_user_name AND code_prop = p_code_prop;
-
-    IF v_exists = 0 THEN
-        INSERT INTO likes(username, code_prop)
-        VALUES (p_user_name, p_code_prop);
-
-        UPDATE property
-        SET likes = likes + 1
-        WHERE code_prop = p_code_prop;
-    ELSE
-        DELETE FROM likes
-        WHERE username = p_user_name AND code_prop = p_code_prop;
-
-        UPDATE property
-        SET likes = likes - 1
-        WHERE code_prop = p_code_prop;
-    END IF;
-END$$
-
-DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -375,166 +345,25 @@ CREATE TABLE `property` (
 
 INSERT INTO `property` (`code_prop`, `ref_cat`, `name_prop`, `m2`, `rooms`, `baths`, `description`, `price`, `publication`, `code_city`, `longitud`, `latitud`, `last_visit`, `likes`) VALUES
 (1, '1235A', 'Spacious house with garden', 200, 4, 2, 'Enjoy the spaciousness of this 200m² house with 4 bedrooms and 2 baths, complemented by a serene garden, offering a perfect blend of comfort and tranquility', 300000, '2024-01-25', 1, -0.4063, 39.4946, '2024-05-29 19:24:31', 2),
-(2, '4567B', 'Cozy flat in the city center', 100, 2, 1, 'Nestled in the city center, this cozy 100m² flat boasts 2 bedrooms and 1 bath, promising urban convenience combined with warmth and charm.', 150000, '2024-01-25', 5, -5.9821, 37.3886, '2024-05-29 19:23:56', 2),
+(2, '4567B', 'Cozy flat in the city center', 100, 2, 1, 'Nestled in the city center, this cozy 100m² flat boasts 2 bedrooms and 1 bath, promising urban convenience combined with warmth and charm.', 1200, '2024-01-25', 5, -5.9821, 37.3886, '2024-05-29 19:23:56', 2),
 (3, '8912C', 'Beautiful house with a view', 180, 3, 2, 'Revel in the beauty of this 180m² house, featuring 3 bedrooms and 2 baths, offering picturesque views that redefine the concept of home.', 250000, '2024-01-25', 2, -0.4838, 38.3452, '2024-04-19 19:09:03', 0),
-(4, '3456D', 'Large commercial space', 300, 0, 1, 'Embark on vast commercial ventures with this 300m² property, designed for expansive enterprises, promising ample space for your business aspirations.', 500000, '2024-01-25', 4, 2.1685, 41.3851, '2024-03-25 20:57:28', 1),
-(5, '6789E\r\n', 'Spacious land for development', 500, 0, 0, 'Unleash your development dreams on this 500m² expanse of land, offering endless possibilities and a canvas for your visionary projects.', 100000, '2024-01-25', 1, -0.3847, 39.5122, '2024-04-24 21:10:47', 1),
+(4, '3456D', 'Large commercial space', 300, 0, 1, 'Embark on vast commercial ventures with this 300m² property, designed for expansive enterprises, promising ample space for your business aspirations.', 1500, '2024-01-25', 4, 2.1685, 41.3851, '2024-03-25 20:57:28', 1),
+(5, '6789E\r\n', 'Spacious land for development', 500, 0, 0, 'Unleash your development dreams on this 500m² expanse of land, offering endless possibilities and a canvas for your visionary projects.', 500, '2024-01-25', 1, -0.3847, 39.5122, '2024-04-24 21:10:47', 1),
 (6, '5896F', 'Modern house with swimming pool', 220, 5, 3, 'Step into modern luxury with this 220m² house, boasting 5 bedrooms, 3 baths, and a refreshing swimming pool, promising an epitome of contemporary living.', 350000, '2024-01-25', 2, -0.5068, 38.3498, '2024-04-24 21:11:24', 1),
-(7, '1246G', 'Bright flat with balcony', 120, 2, 1, 'Illuminate your life in this bright 120m² flat, featuring 2 bedrooms and 1 bath, complemented by a charming balcony, offering a delightful urban retreat.', 180000, '2024-01-25', 3, -3.7038, 40.4168, NULL, 0),
-(8, '5789H', 'Commercial property with parking', 400, 0, 1, 'Unlock the potential of your business in this 400m² property, equipped with parking facilities, offering a strategic location for your commercial endeavors.', 600000, '2024-01-25', 4, 2.2049, 41.4168, NULL, 0),
+(7, '1246G', 'Bright flat with balcony', 120, 2, 1, 'Illuminate your life in this bright 120m² flat, featuring 2 bedrooms and 1 bath, complemented by a charming balcony, offering a delightful urban retreat.', 1440, '2024-01-25', 3, -3.7038, 40.4168, NULL, 0),
+(8, '5789H', 'Commercial property with parking', 400, 0, 1, 'Unlock the potential of your business in this 400m² property, equipped with parking facilities, offering a strategic location for your commercial endeavors.', 1800, '2024-01-25', 4, 2.2049, 41.4168, NULL, 0),
 (9, '6485J', 'Spacious garage for multiple cars', 10, 0, 0, 'Safeguard your vehicles in this spacious 10m² garage, providing ample room for multiple cars, ensuring convenience and security for your prized possessions.', 25000, '2024-01-25', 5, -5.9651, 37.3814, '2024-04-19 20:01:11', 0),
 (10, 'ABC123', 'Modern Apartment with Sea View', 110, 3, 2, 'This modern apartment offers stunning sea views, with 3 bedrooms and 2 bathrooms, perfect for those seeking a coastal lifestyle.', 250000, '2024-04-19', 1, -0.4015, 39.4737, '2024-04-19 19:51:00', 0),
-(11, 'DEF456', 'Charming Villa with Pool', 250, 5, 3, 'Experience the charm of this villa with a private pool, featuring 5 bedrooms and 3 bathrooms, ideal for relaxation and entertainment.', 450000, '2024-04-19', 2, -0.4986, 38.3456, NULL, 0),
-(12, 'GHI789', 'Spacious Loft in the City', 150, 1, 1, 'This spacious loft in the heart of the city offers a unique living experience, with 1 bedroom and 1 bathroom, perfect for urban dwellers.', 180000, '2024-04-19', 3, -3.7025, 40.4144, NULL, 0),
-(13, 'JKL012', 'Luxury Penthouse with Terrace', 180, 4, 2, 'Indulge in luxury living with this penthouse boasting a spacious terrace, 4 bedrooms, and 2 bathrooms, offering panoramic city views.', 700000, '2024-04-19', 4, 2.1781, 41.3948, NULL, 0),
+(11, 'DEF456', 'Charming Villa with Pool', 250, 5, 3, 'Experience the charm of this villa with a private pool, featuring 5 bedrooms and 3 bathrooms, ideal for relaxation and entertainment.', 3600, '2024-04-19', 2, -0.4986, 38.3456, NULL, 0),
+(12, 'GHI789', 'Spacious Loft in the City', 150, 1, 1, 'This spacious loft in the heart of the city offers a unique living experience, with 1 bedroom and 1 bathroom, perfect for urban dwellers.', 540, '2024-04-19', 3, -3.7025, 40.4144, NULL, 0),
+(13, 'JKL012', 'Luxury Penthouse with Terrace', 180, 4, 2, 'Indulge in luxury living with this penthouse boasting a spacious terrace, 4 bedrooms, and 2 bathrooms, offering panoramic city views.', 3500, '2024-04-19', 4, 2.1781, 41.3948, NULL, 0),
 (14, 'MNO345', 'Cozy Cottage in the Countryside', 120, 2, 1, 'Escape to the countryside in this cozy cottage, featuring 2 bedrooms and 1 bathroom, offering tranquility and nature just outside your door.', 120000, '2024-04-19', 5, -6.0123, 37.3971, NULL, 0),
-(15, 'PQR678', 'Commercial Space in Business District', 400, 0, 2, 'Invest in this commercial space located in the bustling business district, offering 400m² of opportunity for your entrepreneurial ventures.', 800000, '2024-04-19', 1, -0.4072, 39.4891, NULL, 0),
-(16, 'STU901', 'Renovated Townhouse with Garden', 180, 3, 2, 'Discover the charm of this renovated townhouse with a beautiful garden, featuring 3 bedrooms and 2 bathrooms, perfect for family living.', 320000, '2024-04-19', 2, -0.4903, 38.3558, NULL, 0),
-(17, 'VWX234', 'Industrial Warehouse with Office', 600, 0, 0, 'Unlock the potential of this industrial warehouse with an attached office space, offering 600m² of space for your business needs.', 550000, '2024-04-19', 3, -3.7045, 40.4158, NULL, 0),
+(15, 'PQR678', 'Commercial Space in Business District', 400, 0, 2, 'Invest in this commercial space located in the bustling business district, offering 400m² of opportunity for your entrepreneurial ventures.', 6400, '2024-04-19', 1, -0.4072, 39.4891, NULL, 0),
+(16, 'STU901', 'Renovated Townhouse with Garden', 180, 3, 2, 'Discover the charm of this renovated townhouse with a beautiful garden, featuring 3 bedrooms and 2 bathrooms, perfect for family living.', 960, '2024-04-19', 2, -0.4903, 38.3558, NULL, 0),
+(17, 'VWX234', 'Industrial Warehouse with Office', 600, 0, 0, 'Unlock the potential of this industrial warehouse with an attached office space, offering 600m² of space for your business needs.', 2750, '2024-04-19', 3, -3.7045, 40.4158, NULL, 0),
 (18, 'YZA567', 'Rustic Farmhouse with Vineyard', 300, 4, 3, 'Experience rustic living in this farmhouse surrounded by vineyards, boasting 4 bedrooms and 3 bathrooms, perfect for wine enthusiasts.', 400000, '2024-04-19', 4, 2.1859, 41.3845, NULL, 0),
-(19, 'BCD890', 'Secluded Retreat in the Mountains', 200, 3, 2, 'Escape to this secluded retreat nestled in the mountains, offering 3 bedrooms and 2 bathrooms, ideal for those seeking serenity and nature.', 280000, '2024-04-19', 5, -6.0021, 37.4035, NULL, 0),
-(20, 'EFG123', 'Elegant Townhouse with Rooftop Terrace', 160, 3, 2, 'Step into elegance with this townhouse featuring a rooftop terrace, 3 bedrooms, and 2 bathrooms, offering sophistication and style.', 380000, '2024-04-19', 1, -0.4138, 39.4982, '2024-05-09 23:16:43', 0);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `property_product`
---
-
-CREATE TABLE `property_product` (
-  `code_prop` int(11) NOT NULL,
-  `code_prod` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `property_product`
---
-
-INSERT INTO `property_product` (`code_prop`, `code_prod`) VALUES
-(1,1), 
-(6,1),
-(11,1),
-(16,1),
-(2,2),
-(7,2),
-(12,2),
-(17,2),
-(3,3),
-(8,3),
-(13,3),
-(18,3),
-(4,4),
-(9,4),
-(14,4),
-(19,4),
-(5,5),
-(10,5),
-(15,5),
-(20,5),
-(1,6),
-(2,6),
-(3,6),
-(4,6),
-(5,6),
-(6,6),
-(7,6),
-(8,6),
-(9,6),
-(10,6),
-(11,6),
-(12,6),
-(13,6),
-(14,6),
-(15,6),
-(16,6),
-(17,6),
-(18,6),
-(19,6),
-(20,6),
-(2,7),
-(7,7),
-(11,7),
-(15,7),
-(19,7),
-(1,8),
-(3,8),
-(6,8),
-(10,8),
-(14,8),
-(18,8),
-(1,9),
-(2,9),
-(3,9),
-(4,9),
-(6,9),
-(7,9),
-(8,9),
-(10,9),
-(11,9),
-(12,9),
-(14,9),
-(15,9),
-(16,9),
-(18,9),
-(19,9),
-(20,9),
-(1,10),
-(2,10),
-(3,10),
-(4,10),
-(6,10),
-(7,10),
-(8,10),
-(10,10),
-(11,10),
-(12,10),
-(14,10),
-(15,10),
-(16,10),
-(18,10),
-(19,10),
-(20,10),
-(1,11),
-(3,11),
-(6,11),
-(10,11),
-(14,11),
-(18,11),
-(2,11),
-(7,11),
-(11,11),
-(15,11),
-(19,11),
-(1,12),
-(2,12),
-(3,12),
-(6,12),
-(10,12),
-(14,12),
-(18,12),
-(7,12),
-(11,12),
-(15,12),
-(19,12),
-(2,13),
-(7,13),
-(11,13),
-(15,13),
-(19,13),
-(4,13),
-(8,13),
-(12,13),
-(16,13),
-(20,13),
-(5,13),
-(13,13),
-(17,13),
-(4,14),
-(8,14),
-(12,14),
-(16,14),
-(20,14);
-
+(19, 'BCD890', 'Secluded Retreat in the Mountains', 200, 3, 2, 'Escape to this secluded retreat nestled in the mountains, offering 3 bedrooms and 2 bathrooms, ideal for those seeking serenity and nature.', 2240, '2024-04-19', 5, -6.0021, 37.4035, NULL, 0),
+(20, 'EFG123', 'Elegant Townhouse with Rooftop Terrace', 160, 3, 2, 'Step into elegance with this townhouse featuring a rooftop terrace, 3 bedrooms, and 2 bathrooms, offering sophistication and style.', 1140, '2024-04-19', 1, -0.4138, 39.4982, '2024-05-09 23:16:43', 0);
 
 -- --------------------------------------------------------
 
@@ -552,27 +381,26 @@ CREATE TABLE `property_activity` (
 --
 
 INSERT INTO `property_activity` (`code_prop`, `code_act`) VALUES
-(1, 1), -- Spacious house with garden -> Ballet
-(2, 2), -- Cozy flat in the city center -> HipHop
-(3, 3), -- Beautiful house with a view -> Pilates
-(4, 4), -- Large commercial space -> Salon
-(5, 5), -- Spacious land for development -> Yoga
-(6, 1), -- Modern house with swimming pool -> Ballet
-(7, 2), -- Bright flat with balcony -> HipHop
-(8, 3), -- Commercial property with parking -> Pilates
-(9, 5), -- Spacious garage for multiple cars -> Yoga
-(10, 1), -- Modern Apartment with Sea View -> Ballet
-(11, 2), -- Charming Villa with Pool -> HipHop
-(12, 3), -- Spacious Loft in the City -> Pilates
-(13, 4), -- Luxury Penthouse with Terrace -> Salon
-(14, 5), -- Cozy Cottage in the Countryside -> Yoga
-(15, 1), -- Commercial Space in Business District -> Ballet
-(16, 2), -- Renovated Townhouse with Garden -> HipHop
-(17, 3), -- Industrial Warehouse with Office -> Pilates
-(18, 4), -- Rustic Farmhouse with Vineyard -> Salon
-(19, 5), -- Secluded Retreat in the Mountains -> Yoga
-(20, 1); -- Elegant Townhouse with Rooftop Terrace -> Ballet
-
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 1),
+(7, 2),
+(8, 3),
+(9, 5),
+(10, 1),
+(11, 2),
+(12, 3),
+(13, 4),
+(14, 5),
+(15, 1),
+(16, 2),
+(17, 3),
+(18, 4),
+(19, 5),
+(20, 1);
 
 -- --------------------------------------------------------
 
@@ -590,26 +418,26 @@ CREATE TABLE `property_category` (
 --
 
 INSERT INTO `property_category` (`code_prop`, `code_cat`) VALUES
-(1, 1), -- Spacious house with garden -> FOR SALE
-(2, 2), -- Cozy flat in the city center -> FOR RENT
-(3, 1), -- Beautiful house with a view -> FOR SALE
-(4, 3), -- Large commercial space -> FOR SHARE
-(5, 4), -- Spacious land for development -> A ROOM
-(6, 1), -- Modern house with swimming pool -> FOR SALE
-(7, 2), -- Bright flat with balcony -> FOR RENT
-(8, 3), -- Commercial property with parking -> FOR SHARE
-(9, 5), -- Spacious garage for multiple cars -> NEW BUILD
-(10, 1), -- Modern Apartment with Sea View -> FOR SALE
-(11, 2), -- Charming Villa with Pool -> FOR RENT
-(12, 3), -- Spacious Loft in the City -> FOR SHARE
-(13, 4), -- Luxury Penthouse with Terrace -> A ROOM
-(14, 1), -- Cozy Cottage in the Countryside -> FOR SALE
-(15, 2), -- Commercial Space in Business District -> FOR RENT
-(16, 3), -- Renovated Townhouse with Garden -> FOR SHARE
-(17, 4), -- Industrial Warehouse with Office -> A ROOM
-(18, 1), -- Rustic Farmhouse with Vineyard -> FOR SALE
-(19, 2), -- Secluded Retreat in the Mountains -> FOR RENT
-(20, 3); -- Elegant Townhouse with Rooftop Terrace -> FOR SHARE
+(1, 1),
+(2, 2),
+(3, 1),
+(4, 3),
+(5, 4),
+(6, 1),
+(7, 2),
+(8, 3),
+(9, 5),
+(10, 1),
+(11, 2),
+(12, 3),
+(13, 4),
+(14, 1),
+(15, 2),
+(16, 3),
+(17, 4),
+(18, 1),
+(19, 2),
+(20, 3);
 
 -- --------------------------------------------------------
 
@@ -627,26 +455,166 @@ CREATE TABLE `property_extras` (
 --
 
 INSERT INTO `property_extras` (`code_prop`, `code_extra`) VALUES
-(1, 2), -- Spacious house with garden -> Garden
-(2, 7), -- Cozy flat in the city center -> Furnished
-(3, 3), -- Beautiful house with a view -> Terrace
-(4, 8), -- Large commercial space -> Parking
-(5, 6), -- Spacious land for development -> Empty
-(6, 1), -- Modern house with swimming pool -> Pool
-(7, 4), -- Bright flat with balcony -> Balcony
-(8, 8), -- Commercial property with parking -> Parking
-(9, 8), -- Spacious garage for multiple cars -> Parking
-(10, 3), -- Modern Apartment with Sea View -> Terrace
-(11, 1), -- Charming Villa with Pool -> Pool
-(12, 6), -- Spacious Loft in the City -> Empty
-(13, 3), -- Luxury Penthouse with Terrace -> Terrace
-(14, 2), -- Cozy Cottage in the Countryside -> Garden
-(15, 8), -- Commercial Space in Business District -> Parking
-(16, 2), -- Renovated Townhouse with Garden -> Garden
-(17, 8), -- Industrial Warehouse with Office -> Parking
-(18, 2), -- Rustic Farmhouse with Vineyard -> Garden
-(19, 2), -- Secluded Retreat in the Mountains -> Garden
-(20, 3); -- Elegant Townhouse with Rooftop Terrace -> Terrace
+(1, 2),
+(2, 7),
+(3, 3),
+(4, 8),
+(5, 6),
+(6, 1),
+(7, 4),
+(8, 8),
+(9, 8),
+(10, 3),
+(11, 1),
+(12, 6),
+(13, 3),
+(14, 2),
+(15, 8),
+(16, 2),
+(17, 8),
+(18, 2),
+(19, 2),
+(20, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `property_product`
+--
+
+CREATE TABLE `property_product` (
+  `code_prop` int(11) NOT NULL,
+  `code_prod` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `property_product`
+--
+
+INSERT INTO `property_product` (`code_prop`, `code_prod`) VALUES
+(1, 1),
+(6, 1),
+(11, 1),
+(16, 1),
+(2, 2),
+(7, 2),
+(12, 2),
+(17, 2),
+(3, 3),
+(8, 3),
+(13, 3),
+(18, 3),
+(4, 4),
+(9, 4),
+(14, 4),
+(19, 4),
+(5, 5),
+(10, 5),
+(15, 5),
+(20, 5),
+(1, 6),
+(2, 6),
+(3, 6),
+(4, 6),
+(5, 6),
+(6, 6),
+(7, 6),
+(8, 6),
+(9, 6),
+(10, 6),
+(11, 6),
+(12, 6),
+(13, 6),
+(14, 6),
+(15, 6),
+(16, 6),
+(17, 6),
+(18, 6),
+(19, 6),
+(20, 6),
+(2, 7),
+(7, 7),
+(11, 7),
+(15, 7),
+(19, 7),
+(1, 8),
+(3, 8),
+(6, 8),
+(10, 8),
+(14, 8),
+(18, 8),
+(1, 9),
+(2, 9),
+(3, 9),
+(4, 9),
+(6, 9),
+(7, 9),
+(8, 9),
+(10, 9),
+(11, 9),
+(12, 9),
+(14, 9),
+(15, 9),
+(16, 9),
+(18, 9),
+(19, 9),
+(20, 9),
+(1, 10),
+(2, 10),
+(3, 10),
+(4, 10),
+(6, 10),
+(7, 10),
+(8, 10),
+(10, 10),
+(11, 10),
+(12, 10),
+(14, 10),
+(15, 10),
+(16, 10),
+(18, 10),
+(19, 10),
+(20, 10),
+(1, 11),
+(3, 11),
+(6, 11),
+(10, 11),
+(14, 11),
+(18, 11),
+(2, 11),
+(7, 11),
+(11, 11),
+(15, 11),
+(19, 11),
+(1, 12),
+(2, 12),
+(3, 12),
+(6, 12),
+(10, 12),
+(14, 12),
+(18, 12),
+(7, 12),
+(11, 12),
+(15, 12),
+(19, 12),
+(2, 13),
+(7, 13),
+(11, 13),
+(15, 13),
+(19, 13),
+(4, 13),
+(8, 13),
+(12, 13),
+(16, 13),
+(20, 13),
+(5, 13),
+(13, 13),
+(17, 13),
+(4, 14),
+(8, 14),
+(12, 14),
+(16, 14),
+(20, 14);
 
 -- --------------------------------------------------------
 
@@ -664,27 +632,26 @@ CREATE TABLE `property_type` (
 --
 
 INSERT INTO `property_type` (`code_prop`, `code_type`) VALUES
-(1, 1), -- Spacious house with garden -> House
-(2, 2), -- Cozy flat in the city center -> Flat
-(3, 1), -- Beautiful house with a view -> House
-(4, 3), -- Large commercial space -> Business
-(5, 4), -- Spacious land for development -> Terrain
-(6, 1), -- Modern house with swimming pool -> House
-(7, 2), -- Bright flat with balcony -> Flat
-(8, 3), -- Commercial property with parking -> Business
-(9, 5), -- Spacious garage for multiple cars -> Garage
-(10, 2), -- Modern Apartment with Sea View -> Flat
-(11, 1), -- Charming Villa with Pool -> House
-(12, 2), -- Spacious Loft in the City -> Flat
-(13, 3), -- Luxury Penthouse with Terrace -> Business
-(14, 1), -- Cozy Cottage in the Countryside -> House
-(15, 2), -- Commercial Space in Business District -> Flat
-(16, 3), -- Renovated Townhouse with Garden -> Business
-(17, 4), -- Industrial Warehouse with Office -> Terrain
-(18, 1), -- Rustic Farmhouse with Vineyard -> House
-(19, 2), -- Secluded Retreat in the Mountains -> Flat
-(20, 3); -- Elegant Townhouse with Rooftop Terrace -> Business
-
+(1, 1),
+(2, 2),
+(3, 1),
+(4, 3),
+(5, 4),
+(6, 1),
+(7, 2),
+(8, 3),
+(9, 5),
+(10, 1),
+(11, 2),
+(12, 3),
+(13, 4),
+(14, 1),
+(15, 2),
+(16, 3),
+(17, 4),
+(18, 1),
+(19, 2),
+(20, 3);
 
 -- --------------------------------------------------------
 
