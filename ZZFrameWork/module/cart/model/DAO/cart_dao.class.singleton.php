@@ -14,7 +14,7 @@ class cart_dao
         }
         return self::$_instance;
     }
-
+    // BASICS
     public function select_products($db, $code_prop)
     {
         // return "hola dao";
@@ -28,7 +28,18 @@ class cart_dao
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
     }
+    public function count_products($db, $username)
+    {
+        // return "hola dao";
+        $sql = "SELECT COUNT(*) as 'count'
+        FROM `cart` 
+        WHERE `name_user`='$username'";
 
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
+
+    // CONSTRUIR CARRITO
     public function check_product($db, $code_prod, $username)
     {
         $sql = "SELECT * 
@@ -39,7 +50,6 @@ class cart_dao
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
     }
-
     public function update_product($db, $code_prod, $username)
     {
         $sql = "UPDATE `cart` 

@@ -18,12 +18,17 @@ class controller_cart
         common::load_view('top_page_cart.html', VIEW_PATH_CART . 'cart.html');
     }
 
-    // FILTROS DINAMICOS
+    // BASICOS
     function cart_products()
     {
         // echo json_encode("get_products");
         echo json_encode(common::load_model('cart_model', 'get_products', $_POST['code_prop']));
 
+    }
+    function count_cart()
+    {
+        // echo json_encode("count_cart");
+        echo json_encode(common::load_model('cart_model', 'count_cart', $_POST['access_token']));
     }
 
     function modify_cart()

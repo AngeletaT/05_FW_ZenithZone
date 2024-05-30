@@ -9,6 +9,11 @@
         <uri>cart_products</uri>
     </function>
     <function>
+        <name>count_cart</name>
+        <uri>count_cart</uri>
+    </function>
+    <!-- CONSTRUCTOR DEL CARRITO -->
+    <function>
         <name>modify_cart</name>
         <uri>modify_cart</uri>
     </function>

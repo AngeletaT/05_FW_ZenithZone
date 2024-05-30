@@ -824,7 +824,7 @@ function modifyCart(code_prod, action) {
 		})
 			.then(function (data) {
 				console.log(data)
-				return
+				// return
 				if (data === "added") {
 					console.log("Producto añadido al carrito")
 					var cartCount = parseInt($(".cart-count").text())
@@ -838,6 +838,7 @@ function modifyCart(code_prod, action) {
 				} else {
 					console.log("Error en la modificación del carrito")
 				}
+				load_menu()
 			})
 			.catch(function (error) {
 				console.error(error)

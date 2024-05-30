@@ -21,6 +21,7 @@ function ajaxPromise(sUrl, sType, sTData, sData = undefined) {
 
 //================LOAD-HEADER================
 function load_menu() {
+	$("#nav_list").empty()
 	// $("<li></li>")
 	// 	.attr({"class": "nav_item"})
 	// 	.html('<a href="' + friendlyURL("?module=home&op=view") + '" class="nav_link">Home</a>')
@@ -29,18 +30,27 @@ function load_menu() {
 		.attr({"class": "nav_item"})
 		.html('<a href="' + friendlyURL("?module=shop") + '" class="nav_link">Shop</a>')
 		.appendTo("#nav_list")
-	$("<li></li>")
-		.attr({"class": "nav_item"})
-		.html(
-			'<a href="' +
-				friendlyURL("?module=cart") +
-				'" class="nav_link"><i class="fas fa-shopping-cart"></i>(<span id="cart-count">0</span>)</a>'
-		)
-		.appendTo("#nav_list")
 
 	if (localStorage.getItem("access_token")) {
 		var access_token = localStorage.getItem("access_token")
 		console.log(access_token)
+
+		ajaxPromise(friendlyURL("?module=cart"), "POST", "JSON", {access_token: access_token, op: "count_cart"})
+			.then(function (data) {
+				console.log(data)
+				// return
+				$("<li></li>")
+					.attr({"class": "nav_item nav_cart"})
+					.html(
+						`<a href="${friendlyURL("?module=cart")}" class="nav_link">
+						<i class="fas fa-shopping-cart"></i><span id="cart-count">&nbsp;${data[0].count}</span></a>`
+					)
+					.appendTo("#nav_list")
+			})
+			.catch(function () {
+				console.log("Error")
+			})
+
 		ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", {
 			access_token: access_token,
 			op: "data_user",

@@ -23,6 +23,13 @@ class cart_bll
     {
         return $this->dao->select_products($this->db, $args[0]);
     }
+    public function count_cart_BLL($args)
+    {
+        $username = middleware::decode_token($args);
+        // return $username['username'];
+
+        return $this->dao->count_products($this->db, $username['username']);
+    }
 
     public function modify_cart_BLL($args)
     {
