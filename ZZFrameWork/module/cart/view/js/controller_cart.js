@@ -30,10 +30,22 @@ function fill_cart() {
                             &nbsp;&nbsp;${data[row].quantity}&nbsp;&nbsp;
                             <button class="add_product button-card" id="${data[row].code_prod}">+</button>
                         </td>
-                        <td style="width: 150px; text-align: center">${subtotal}€</td>
+                        <td style="width: 150px; text-align: center">${subtotal
+													.toString()
+													.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}€</td>
 					</tr>
 				`)
 				}
+
+				var total = 0
+				for (var row in data) {
+					var subtotal = data[row].price_prod * data[row].quantity
+					total += subtotal
+				}
+
+				$(".cart-total").html(`
+                    ${total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}€
+                `)
 			})
 			.catch(function (error) {
 				console.error(error)
