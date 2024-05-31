@@ -80,5 +80,18 @@ class cart_dao
         return 'deleted';
     }
 
+    // CART
+    public function select_cart($db, $username)
+    {
+        $sql = "SELECT * 
+        FROM products p JOIN cart c
+        WHERE p.code_prod=c.code_prod
+        AND c.name_user='$username'
+        AND c.quantity>0;";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
+
 }
 ?>

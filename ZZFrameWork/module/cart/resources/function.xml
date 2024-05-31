@@ -17,4 +17,9 @@
         <name>modify_cart</name>
         <uri>modify_cart</uri>
     </function>
+    <!-- CART -->
+    <function>
+        <name>fill_cart</name>
+        <uri>fill_cart</uri>
+    </function>
 </functions>

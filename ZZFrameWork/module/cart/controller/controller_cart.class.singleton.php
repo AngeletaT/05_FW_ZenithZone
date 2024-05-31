@@ -31,11 +31,20 @@ class controller_cart
         echo json_encode(common::load_model('cart_model', 'count_cart', $_POST['access_token']));
     }
 
+    // CONSTRUICTOR CARRITO
     function modify_cart()
     {
         // echo json_encode("modifycart");
         echo json_encode(common::load_model('cart_model', 'modify_cart', [$_POST['code_prod'], $_POST['action'], $_POST['access_token']]));
     }
+
+    // CART
+    function fill_cart()
+    {
+        // echo json_encode("fill_cart");
+        echo json_encode(common::load_model('cart_model', 'fill_cart', $_POST['access_token']));
+    }
+
 
 }
 ?>

@@ -18,7 +18,7 @@ class cart_bll
         }
         return self::$_instance;
     }
-
+    // BASICOS
     public function get_products_BLL($args)
     {
         return $this->dao->select_products($this->db, $args[0]);
@@ -30,7 +30,7 @@ class cart_bll
 
         return $this->dao->count_products($this->db, $username['username']);
     }
-
+    // CONSTRUIR CARRITO
     public function modify_cart_BLL($args)
     {
         $username = middleware::decode_token($args[2]);
@@ -49,6 +49,12 @@ class cart_bll
         } else {
             return 'error';
         }
+    }
+    // CART
+    public function fill_cart_BLL($args)
+    {
+        $username = middleware::decode_token($args);
+        return $this->dao->select_cart($this->db, $username['username']);
     }
 
 }
