@@ -31,6 +31,19 @@ class cart_bll
         return $this->dao->count_products($this->db, $username['username']);
     }
     // CONSTRUIR CARRITO
+    public function add_prop_BLL($args)
+    {
+        $username = middleware::decode_token($args[1]);
+
+        if ($this->dao->check_property($this->db, $args[0], $username['username'])) {
+            return 'done';
+        } else {
+            $property = $this->dao->select_property($this->db, $args[0]);
+            // return $property;
+            $this->dao->addcart_property($this->db, $args[0], $username['username'], $property[0]['name_prop'], $property[0]['price']);
+            return 'added';
+        }
+    }
     public function modify_cart_BLL($args)
     {
         $username = middleware::decode_token($args[2]);
@@ -66,6 +79,13 @@ class cart_bll
             $updatedCart[] = $item;
         }
         return $updatedCart;
+    }
+
+    public function get_property_BLL($args)
+    {
+        $username = middleware::decode_token($args);
+
+        return $this->dao->select_property_cart($this->db, $username['username']);
     }
 
 }

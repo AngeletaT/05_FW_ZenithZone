@@ -32,6 +32,11 @@ class controller_cart
     }
 
     // CONSTRUICTOR CARRITO
+    function add_prop()
+    {
+        // echo json_encode("addprop");
+        echo json_encode(common::load_model('cart_model', 'add_prop', [$_POST['code_prop'], $_POST['access_token']]));
+    }
     function modify_cart()
     {
         // echo json_encode("modifycart");
@@ -43,6 +48,11 @@ class controller_cart
     {
         // echo json_encode("fill_cart");
         echo json_encode(common::load_model('cart_model', 'fill_cart', $_POST['access_token']));
+    }
+    function cart_prop()
+    {
+        // echo json_encode("get_property");
+        echo json_encode(common::load_model('cart_model', 'get_property', $_POST['access_token']));
     }
 
 

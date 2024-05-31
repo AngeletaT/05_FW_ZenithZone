@@ -30,6 +30,11 @@ class cart_model
     }
 
     // CONSTRUIR CARRITO
+    public function add_prop($args)
+    {
+        // echo json_encode("add_prop model");
+        return $this->bll->add_prop_BLL($args);
+    }
     public function modify_cart($args)
     {
         // echo json_encode("modify_cart model");
@@ -41,6 +46,11 @@ class cart_model
     {
         // echo json_encode("fill_cart model");
         return $this->bll->fill_cart_BLL($args);
+    }
+    public function get_property($args)
+    {
+        // echo json_encode("get_property model");
+        return $this->bll->get_property_BLL($args);
     }
 }
 ?>

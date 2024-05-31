@@ -14,6 +14,10 @@
     </function>
     <!-- CONSTRUCTOR DEL CARRITO -->
     <function>
+        <name>add_prop</name>
+        <uri>add_prop</uri>
+    </function>
+    <function>
         <name>modify_cart</name>
         <uri>modify_cart</uri>
     </function>
@@ -21,5 +25,9 @@
     <function>
         <name>fill_cart</name>
         <uri>fill_cart</uri>
+    </function>
+    <function>
+        <name>cart_prop</name>
+        <uri>cart_prop</uri>
     </function>
 </functions>

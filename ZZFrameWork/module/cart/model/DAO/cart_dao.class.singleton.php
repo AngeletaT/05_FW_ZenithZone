@@ -41,6 +41,33 @@ class cart_dao
     }
 
     // CONSTRUIR CARRITO
+    public function check_property($db, $code_prop, $username)
+    {
+        $sql = "SELECT * 
+        FROM `cart_prod` 
+        WHERE `name_user`='$username' 
+        AND `code_prop`='$code_prop'";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
+    public function select_property($db, $code_prop)
+    {
+        $sql = "SELECT `name_prop`, `price` 
+        FROM `property` 
+        WHERE `code_prop`='$code_prop'";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
+    public function addcart_property($db, $code_prop, $username, $name_prop, $price)
+    {
+        $sql = "INSERT INTO `cart_prod`(`code_prop`, `name_user`, `name_prop`, `price`) VALUES 
+        ('$code_prop', '$username', '$name_prop', '$price')";
+
+        $stmt = $db->ejecutar($sql);
+        return 'added';
+    }
     public function check_product($db, $code_prod, $username)
     {
         $sql = "SELECT * 
@@ -92,7 +119,6 @@ class cart_dao
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
     }
-
     public function check_stock($db, $code_prod, $quantity)
     {
         $sql = "SELECT stock - $quantity AS remaining_stock
@@ -103,7 +129,17 @@ class cart_dao
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
     }
-        
+    public function select_property_cart($db, $username)
+    {
+        $sql = "SELECT * 
+        FROM `cart_prod` 
+        WHERE `name_user`='$username'";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
+
+
 
 }
 ?>

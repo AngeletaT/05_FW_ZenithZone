@@ -499,6 +499,7 @@ function clicks() {
 		var code_prop = this.getAttribute("id")
 		localStorage.setItem("code_prop", code_prop)
 		// console.log(code_prop);
+		add_prop(code_prop)
 		loadDetails(code_prop)
 		loadCarrito(code_prop)
 		loadSuggestionsDetails()
@@ -871,6 +872,38 @@ function loadCarrito(code_prop) {
 			console.error(error)
 			// window.location.href = "index.php?module=ctrl_exceptions&op=503&type=503&lugar=Load_Carrito SHOP";
 		})
+}
+
+function add_prop(code_prop) {
+	console.log("add_prop", code_prop)
+	var access_token = localStorage.getItem("access_token")
+	if (access_token) {
+		ajaxPromise(friendlyURL("?module=cart"), "POST", "JSON", {
+			"code_prop": code_prop,
+			"access_token": access_token,
+			"op": "add_prop",
+		})
+			.then(function (data) {
+				console.log(data)
+				// return
+				if (data === "added") {
+					console.log("Producto añadido al carrito")
+					var cartCount = parseInt($(".cart-count").text())
+					$(".cart-count").text(cartCount + 1)
+				} else if (data === "done") {
+					console.log("Producto ya existe en el carrito")
+				} else {
+					console.log("Error en la modificación del carrito")
+				}
+				load_menu()
+			})
+			.catch(function (error) {
+				console.error(error)
+			})
+	} else {
+		localStorage.setItem("redirect_product", code_prop)
+		window.location.href = friendlyURL("?module=login")
+	}
 }
 
 // #region FILTROS
