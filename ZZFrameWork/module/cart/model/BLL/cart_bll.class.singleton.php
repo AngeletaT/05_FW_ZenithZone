@@ -54,7 +54,18 @@ class cart_bll
     public function fill_cart_BLL($args)
     {
         $username = middleware::decode_token($args);
-        return $this->dao->select_cart($this->db, $username['username']);
+
+        $cart = $this->dao->select_cart($this->db, $username['username']);
+        // return $cart;
+
+        $updatedCart = [];
+
+        foreach ($cart as $item) {
+            $stock = $this->dao->check_stock($this->db, $item['code_prod'], $item['quantity']);
+            $item['remaining_stock'] = $stock;
+            $updatedCart[] = $item;
+        }
+        return $updatedCart;
     }
 
 }

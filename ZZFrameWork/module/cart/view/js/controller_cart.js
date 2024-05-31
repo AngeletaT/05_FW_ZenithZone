@@ -19,27 +19,88 @@ function fill_cart() {
 			    </tr>
                 `)
 				for (var row in data) {
-					var subtotal = data[row].price_prod * data[row].quantity
+					if (data[row].remaining_stock == 0) {
+						var subtotal = 0
+					} else {
+						var subtotal = data[row].price_prod * data[row].quantity
+					}
 
-					$(".cart-usertable").append(`
-					<tr>
-						<td style="width: 800px;"><b>${data[row].name_prod}</b></td>
-						<td style="width: 150px; text-align: center">${data[row].price_prod}€</td>
-                        <td style="width: 150px; text-align: center">
-                            <button class="del_product button-card" id="${data[row].code_prod}">-</button>
-                            &nbsp;&nbsp;${data[row].quantity}&nbsp;&nbsp;
-                            <button class="add_product button-card" id="${data[row].code_prod}">+</button>
-                        </td>
-                        <td style="width: 150px; text-align: center">${subtotal
-													.toString()
-													.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}€</td>
-					</tr>
-				`)
+					if (data[row].remaining_stock == 0) {
+						$(".cart-usertable").append(`
+						<tr>
+							<td style="width: 800px;">
+								<b style="color:gray">${data[row].name_prod}</b>
+								<br>
+								<span style="color: red">SOLD OUT</span>
+							</td>
+							<td style="width: 150px; text-align: center">${data[row].price_prod}€</td>
+							<td style="width: 150px; text-align: center">
+								<button class="del_product button-card" id="${data[row].code_prod}">-</button>
+								&nbsp;&nbsp;${data[row].quantity}&nbsp;&nbsp;
+								<button class="add_product button-card" id="${data[row].code_prod}" disabled>+</button>
+							</td>
+							<td style="width: 150px; text-align: center">${subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}€</td>
+						</tr>
+					`)
+					} else if (data[row].remaining_stock[0].remaining_stock == 0) {
+						$(".cart-usertable").append(`
+						<tr>
+							<td style="width: 800px;">
+								<b>${data[row].name_prod}</b>
+								<br>
+								<span style="color: red">¡Ultima unidad!</span>
+							</td>
+							<td style="width: 150px; text-align: center">${data[row].price_prod}€</td>
+							<td style="width: 150px; text-align: center">
+								<button class="del_product button-card" id="${data[row].code_prod}">-</button>
+								&nbsp;&nbsp;${data[row].quantity}&nbsp;&nbsp;
+								<button class="add_product button-card" id="${data[row].code_prod}">+</button>
+							</td>
+							<td style="width: 150px; text-align: center">${subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}€</td>
+						</tr>
+					`)
+					} else if (data[row].remaining_stock[0].remaining_stock <= 10) {
+						$(".cart-usertable").append(`
+						<tr>
+							<td style="width: 800px;">
+								<b>${data[row].name_prod}</b>
+								<br>
+								<span style="color: red">Quedan ${data[row].remaining_stock[0].remaining_stock} unidades</span>
+							</td>
+							<td style="width: 150px; text-align: center">${data[row].price_prod}€</td>
+							<td style="width: 150px; text-align: center">
+								<button class="del_product button-card" id="${data[row].code_prod}">-</button>
+								&nbsp;&nbsp;${data[row].quantity}&nbsp;&nbsp;
+								<button class="add_product button-card" id="${data[row].code_prod}">+</button>
+							</td>
+							<td style="width: 150px; text-align: center">${subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}€</td>
+						</tr>
+					`)
+					} else if (data[row].remaining_stock[0].remaining_stock > 10) {
+						$(".cart-usertable").append(`
+						<tr>
+							<td style="width: 800px;"><b>${data[row].name_prod}</b></td>
+							<td style="width: 150px; text-align: center">${data[row].price_prod}€</td>
+                    	    <td style="width: 150px; text-align: center">
+                    	        <button class="del_product button-card" id="${data[row].code_prod}">-</button>
+                    	        &nbsp;&nbsp;${data[row].quantity}&nbsp;&nbsp;
+                    	        <button class="add_product button-card" id="${data[row].code_prod}">+</button>
+                    	    </td>
+                    	    <td style="width: 150px; text-align: center">${subtotal
+														.toString()
+														.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}€</td>
+						</tr>
+						`)
+					}
 				}
 
 				var total = 0
 				for (var row in data) {
-					var subtotal = data[row].price_prod * data[row].quantity
+					if (data[row].remaining_stock == 0) {
+						var subtotal = 0
+					} else {
+						var subtotal = data[row].price_prod * data[row].quantity
+					}
 					total += subtotal
 				}
 

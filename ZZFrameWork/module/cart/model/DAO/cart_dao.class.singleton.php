@@ -93,5 +93,17 @@ class cart_dao
         return $db->listar($stmt);
     }
 
+    public function check_stock($db, $code_prod, $quantity)
+    {
+        $sql = "SELECT stock - $quantity AS remaining_stock
+        FROM products
+        WHERE code_prod='$code_prod'
+        AND stock>=$quantity;";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
+        
+
 }
 ?>
