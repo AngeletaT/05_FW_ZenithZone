@@ -33,7 +33,8 @@ class cart_dao
         // return "hola dao";
         $sql = "SELECT COUNT(*) as 'count'
         FROM `cart` 
-        WHERE `name_user`='$username'";
+        WHERE `name_user`='$username'
+        AND `quantity`>0;";
 
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
@@ -68,7 +69,6 @@ class cart_dao
         $stmt = $db->ejecutar($sql);
         return 'added';
     }
-
     public function remove_product($db, $code_prod, $username)
     {
         $sql = "UPDATE `cart` 

@@ -831,7 +831,7 @@ function modifyCart(code_prod, action) {
 					$(".cart-count").text(cartCount + 1)
 				} else if (data === "updated") {
 					console.log("Producto ya existe en el carrito")
-				} else if (data === "deleted") {
+				} else if (data === "removed") {
 					console.log("Producto eliminado del carrito")
 					var cartCount = parseInt($(".cart-count").text())
 					$(".cart-count").text(cartCount - 1)
