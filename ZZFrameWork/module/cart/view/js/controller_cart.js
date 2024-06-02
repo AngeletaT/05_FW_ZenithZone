@@ -1,5 +1,9 @@
+var subtotal = 0
+var total_extras = 0
+var total = 0
+
 function fill_cart() {
-	console.log("fill_cart")
+	// console.log("fill_cart")
 	var access_token = localStorage.getItem("access_token")
 
 	if (access_token) {
@@ -8,7 +12,7 @@ function fill_cart() {
 			"op": "fill_cart",
 		})
 			.then(function (data) {
-				console.log(data)
+				// console.log(data)
 				// return
 				$(".cart-usertable").append(`
                 <tr>
@@ -20,9 +24,9 @@ function fill_cart() {
                 `)
 				for (var row in data) {
 					if (data[row].remaining_stock == 0) {
-						var subtotal = 0
+						subtotal = 0
 					} else {
-						var subtotal = data[row].price_prod * data[row].quantity
+						subtotal = data[row].price_prod * data[row].quantity
 					}
 
 					if (data[row].remaining_stock == 0) {
@@ -37,7 +41,6 @@ function fill_cart() {
 							<td style="width: 150px; text-align: center">
 								<button class="del_product button-card" id="${data[row].code_prod}">-</button>
 								&nbsp;&nbsp;${data[row].quantity}&nbsp;&nbsp;
-								<button class="add_product button-card" id="${data[row].code_prod}" disabled>+</button>
 							</td>
 							<td style="width: 150px; text-align: center">${subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}€</td>
 						</tr>
@@ -94,19 +97,21 @@ function fill_cart() {
 					}
 				}
 
-				var total = 0
 				for (var row in data) {
 					if (data[row].remaining_stock == 0) {
-						var subtotal = 0
+						subtotal = 0
+						total_extras += subtotal
 					} else {
-						var subtotal = data[row].price_prod * data[row].quantity
+						subtotal = data[row].price_prod * data[row].quantity
+						total_extras += subtotal
 					}
-					total += subtotal
 				}
 
 				$(".cart-total").html(`
-                    ${total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}€
+                    ${total_extras.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}€
                 `)
+
+				cart_prop()
 			})
 			.catch(function (error) {
 				console.error(error)
@@ -115,7 +120,7 @@ function fill_cart() {
 }
 
 function click() {
-	console.log("click")
+	// console.log("click")
 	$(document)
 		.off("click", ".add_product")
 		.on("click", ".add_product", function () {
@@ -132,6 +137,10 @@ function click() {
 			var del = "del"
 			modifyCart(code_prod, del)
 		})
+	$(document).on("click", ".button-checkout", function () {
+		console.log("button-checkout")
+		checkout()
+	})
 }
 
 function modifyCart(code_prod, action) {
@@ -163,7 +172,10 @@ function modifyCart(code_prod, action) {
 					console.log("Error en la modificación del carrito")
 				}
 				$(".cart-usertable").empty()
+				$(".cart-total").empty()
+				$(".cart-total-prop").empty()
 				fill_cart()
+				total_extras = 0
 			})
 			.catch(function (error) {
 				console.error(error)
@@ -174,6 +186,33 @@ function modifyCart(code_prod, action) {
 		window.location.href = friendlyURL("?module=login")
 	}
 }
+
+function cart_prop() {
+	var access_token = localStorage.getItem("access_token")
+
+	if (access_token) {
+		ajaxPromise(friendlyURL("?module=cart"), "POST", "JSON", {
+			"access_token": access_token,
+			"op": "cart_prop",
+		})
+			.then(function (data) {
+				console.log(data)
+				// return
+				$(".cart-property").text(data[0].name_prop)
+				$(".cart-prop-price").text(data[0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "€")
+				// console.log("total_Extras", total_extras)
+				// console.log("precio propiedad", total)
+				total = parseInt(data[0].price) + parseInt(total_extras)
+				// console.log(total)
+				$(".cart-total-prop").html(total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "€")
+			})
+			.catch(function (error) {
+				console.error(error)
+			})
+	}
+}
+
+function checkout() {}
 
 $(document).ready(function () {
 	// console.log("ready")
