@@ -112,15 +112,18 @@ class cart_bll
 
         if ($property[0]['available'] === '1') {
 
-            $this->dao->update_property($this->db, $property_cart[0]['code_prop']);
             $cart = $this->dao->select_cart($this->db, $username['username']);
             // return $cart;
             foreach ($cart as $item) {
-                $this->dao->create_order($this->db, $code_purchase, $item['code_prod'], $username['username'], $item['quantity']);
-                $this->dao->update_stock($this->db, $item['code_prod'], $item['quantity']);
+                if ($item['quantity'] > $item['stock']) {
+                    return 'error stock';
+                } else {
+                    $this->dao->create_order($this->db, $code_purchase, $item['code_prod'], $username['username'], $item['quantity'], $item['price_prod']);
+                    $this->dao->update_stock($this->db, $item['code_prod'], $item['quantity']);
+                }
             }
 
-
+            $this->dao->update_property($this->db, $property_cart[0]['code_prop']);
             $this->dao->delete_cart($this->db, $username['username']);
             return 'done';
         } else {

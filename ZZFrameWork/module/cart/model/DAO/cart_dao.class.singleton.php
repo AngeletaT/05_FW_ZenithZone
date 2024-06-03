@@ -158,13 +158,13 @@ class cart_dao
         $stmt = $db->ejecutar($sql);
         return 'updated';
     }
-    public function create_order($db, $code_purchase, $code_prod, $username, $quantity)
+    public function create_order($db, $code_purchase, $code_prod, $username, $quantity, $price)
     {
-        $sql = "INSERT INTO `purchase`(`code_purchase`, `code_prod`, `name_user`, `quantity`) VALUES 
-        ('$code_purchase','$code_prod','$username','$quantity')";
+        $sql = "INSERT INTO `purchase`(`code_purchase`, `code_prod`, `name_user`, `quantity`, `price`) VALUES 
+        ('$code_purchase','$code_prod','$username','$quantity',($price*$quantity))";
 
         $stmt = $db->ejecutar($sql);
-        
+
     }
     public function update_stock($db, $code_prod, $quantity)
     {
@@ -173,7 +173,7 @@ class cart_dao
         WHERE `code_prod`='$code_prod'";
 
         $stmt = $db->ejecutar($sql);
-        
+
     }
     public function delete_cart($db, $username)
     {
@@ -182,7 +182,7 @@ class cart_dao
         WHERE `name_user`='$username'";
 
         $stmt = $db->ejecutar($sql);
-        
+
     }
 
 

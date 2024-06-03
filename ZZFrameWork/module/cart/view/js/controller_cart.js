@@ -143,7 +143,7 @@ function click() {
 	$(document)
 		.off("click", ".add_product")
 		.on("click", ".add_product", function () {
-			console.log("add_prod")
+			// console.log("add_prod")
 			var code_prod = this.getAttribute("id")
 			var add = "add"
 			modifyCart(code_prod, add)
@@ -151,23 +151,23 @@ function click() {
 	$(document)
 		.off("click", ".del_product")
 		.on("click", ".del_product", function () {
-			console.log("del_prod")
+			// console.log("del_prod")
 			var code_prod = this.getAttribute("id")
 			var del = "del"
 			modifyCart(code_prod, del)
 		})
 	$(document).on("click", ".button-checkout", function () {
-		console.log("button-checkout")
+		// console.log("button-checkout")
 		checkout()
 	})
 	$(document).on("click", ".button-discard", function () {
-		console.log("button-discard")
+		// console.log("button-discard")
 		discard()
 	})
 }
 
 function modifyCart(code_prod, action) {
-	console.log("modifyCart", code_prod)
+	// console.log("modifyCart", code_prod)
 	var code_prop = localStorage.getItem("code_prop")
 	var access_token = localStorage.getItem("access_token")
 	// return
@@ -179,20 +179,20 @@ function modifyCart(code_prod, action) {
 			"op": "modify_cart",
 		})
 			.then(function (data) {
-				console.log(data)
+				// console.log(data)
 				// return
 				if (data === "added") {
-					console.log("Producto añadido al carrito")
+					// console.log("Producto añadido al carrito")
 					var cartCount = parseInt($(".cart-count").text())
 					$(".cart-count").text(cartCount + 1)
 				} else if (data === "updated") {
-					console.log("Producto ya existe en el carrito")
+					// console.log("Producto ya existe en el carrito")
 				} else if (data === "removed") {
-					console.log("Producto eliminado del carrito")
+					// console.log("Producto eliminado del carrito")
 					var cartCount = parseInt($(".cart-count").text())
 					$(".cart-count").text(cartCount - 1)
 				} else {
-					console.log("Error en la modificación del carrito")
+					// console.log("Error en la modificación del carrito")
 				}
 				$(".cart-usertable").empty()
 				$(".cart-total").empty()
@@ -258,7 +258,7 @@ function checkout() {
 				// console.log(data)
 				// return
 				if (data === "done") {
-					console.log("Compra realizada")
+					// console.log("Compra realizada")
 					toastr.success("Compra realizada")
 					$(".cart-usertable").empty()
 					$(".cart-total").empty()
@@ -269,8 +269,11 @@ function checkout() {
 					$(".cart-property").text("No hay propiedad seleccionada")
 					$(".cart-prop-price").text("0€")
 					$(".cart-total-prop").text("0€")
+				} else if (data === "error stock") {
+					// console.log("Error en la compra")
+					toastr.error("Tienes productos agotados en el pedido, por favor, revisa tu carrito")
 				} else {
-					console.log("Error en la compra")
+					// console.log("Error en la compra")
 				}
 			})
 			.catch(function (error) {
@@ -294,7 +297,7 @@ function discard() {
 				// console.log(data)
 				// return
 				if (data === "discard") {
-					console.log("Carrito vaciado")
+					// console.log("Carrito vaciado")
 					toastr.warning("Carrito vaciado")
 					$(".cart-usertable").empty()
 					$(".cart-total").empty()
@@ -305,7 +308,7 @@ function discard() {
 					$(".cart-prop-price").text("0€")
 					$(".cart-total-prop").text("0€")
 				} else {
-					console.log("Error al vaciar el carrito")
+					// console.log("Error al vaciar el carrito")
 				}
 			})
 			.catch(function (error) {
