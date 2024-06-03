@@ -91,8 +91,16 @@ class cart_bll
     public function get_property_BLL($args)
     {
         $username = middleware::decode_token($args);
+        $property_cart = $this->dao->select_property_cart($this->db, $username['username']);
+        $property = $this->dao->select_property($this->db, $property_cart[0]['code_prop']);
 
-        return $this->dao->select_property_cart($this->db, $username['username']);
+        if ($property[0]['available'] === '1') {
+            return $property_cart;
+        } else {
+            return 'error';
+        }
+
+
     }
     public function checkout_BLL($args)
     {

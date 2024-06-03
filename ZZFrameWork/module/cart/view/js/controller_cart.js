@@ -221,13 +221,19 @@ function cart_prop() {
 			.then(function (data) {
 				// console.log(data)
 				// return
-				$(".cart-property").text(data[0].name_prop)
-				$(".cart-prop-price").text(data[0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "€")
-				// console.log("total_Extras", total_extras)
-				// console.log("precio propiedad", total)
-				total = parseInt(data[0].price) + parseInt(total_extras)
-				// console.log(total)
-				$(".cart-total-prop").html(total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "€")
+				if (data === "error") {
+					$(".cart-property").text("No hay propiedad seleccionada")
+					$(".cart-prop-price").text("0€")
+					$(".cart-total-prop").text("0€")
+				} else {
+					$(".cart-property").text(data[0].name_prop)
+					$(".cart-prop-price").text(data[0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "€")
+					// console.log("total_Extras", total_extras)
+					// console.log("precio propiedad", total)
+					total = parseInt(data[0].price) + parseInt(total_extras)
+					// console.log(total)
+					$(".cart-total-prop").html(total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "€")
+				}
 			})
 			.catch(function (error) {
 				console.error(error)
