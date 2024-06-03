@@ -52,5 +52,10 @@
             return $this -> array;
         }
 
+        public function multiQuery($sql) {
+            $this->stmt = $this->link->multi_query($sql);
+            return $this->stmt;
+        }
+
         // se debera crear diferentes tipos de listar para cada tipo de consulta
     }

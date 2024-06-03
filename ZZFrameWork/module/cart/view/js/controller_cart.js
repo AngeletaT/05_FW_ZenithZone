@@ -160,6 +160,10 @@ function click() {
 		console.log("button-checkout")
 		checkout()
 	})
+	$(document).on("click", ".button-discard", function () {
+		console.log("button-discard")
+		discard()
+	})
 }
 
 function modifyCart(code_prod, action) {
@@ -215,7 +219,7 @@ function cart_prop() {
 			"op": "cart_prop",
 		})
 			.then(function (data) {
-				console.log(data)
+				// console.log(data)
 				// return
 				$(".cart-property").text(data[0].name_prop)
 				$(".cart-prop-price").text(data[0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "€")
@@ -236,7 +240,76 @@ function cart_prop() {
 	}
 }
 
-function checkout() {}
+function checkout() {
+	var access_token = localStorage.getItem("access_token")
+
+	if (access_token) {
+		ajaxPromise(friendlyURL("?module=cart"), "POST", "JSON", {
+			"access_token": access_token,
+			"op": "checkout",
+		})
+			.then(function (data) {
+				// console.log(data)
+				// return
+				if (data === "done") {
+					console.log("Compra realizada")
+					toastr.success("Compra realizada")
+					$(".cart-usertable").empty()
+					$(".cart-total").empty()
+					$(".cart-total-prop").empty()
+					fill_cart()
+					total_extras = 0
+					$(".cart-count").text("0")
+					$(".cart-property").text("No hay propiedad seleccionada")
+					$(".cart-prop-price").text("0€")
+					$(".cart-total-prop").text("0€")
+				} else {
+					console.log("Error en la compra")
+				}
+			})
+			.catch(function (error) {
+				console.error(error)
+			})
+	} else {
+		// console.log("No existe access_token")
+		window.location.href = friendlyURL("?module=login")
+	}
+}
+
+function discard() {
+	var access_token = localStorage.getItem("access_token")
+
+	if (access_token) {
+		ajaxPromise(friendlyURL("?module=cart"), "POST", "JSON", {
+			"access_token": access_token,
+			"op": "discard",
+		})
+			.then(function (data) {
+				// console.log(data)
+				// return
+				if (data === "discard") {
+					console.log("Carrito vaciado")
+					toastr.warning("Carrito vaciado")
+					$(".cart-usertable").empty()
+					$(".cart-total").empty()
+					fill_cart()
+					total_extras = 0
+					$(".cart-count").text("0")
+					$(".cart-property").text("No hay propiedad seleccionada")
+					$(".cart-prop-price").text("0€")
+					$(".cart-total-prop").text("0€")
+				} else {
+					console.log("Error al vaciar el carrito")
+				}
+			})
+			.catch(function (error) {
+				console.error(error)
+			})
+	} else {
+		// console.log("No existe access_token")
+		window.location.href = friendlyURL("?module=login")
+	}
+}
 
 $(document).ready(function () {
 	// console.log("ready")

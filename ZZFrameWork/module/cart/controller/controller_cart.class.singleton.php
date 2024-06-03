@@ -54,6 +54,11 @@ class controller_cart
         // echo json_encode("get_property");
         echo json_encode(common::load_model('cart_model', 'get_property', $_POST['access_token']));
     }
+    function checkout()
+    {
+        // echo json_encode("checkout");
+        echo json_encode(common::load_model('cart_model', 'checkout', $_POST['access_token']));
+    }
 
 
 }

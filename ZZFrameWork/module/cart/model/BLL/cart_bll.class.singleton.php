@@ -30,6 +30,7 @@ class cart_bll
 
         return $this->dao->count_products($this->db, $username['username']);
     }
+
     // CONSTRUIR CARRITO
     public function add_prop_BLL($args)
     {
@@ -69,6 +70,7 @@ class cart_bll
             return 'error';
         }
     }
+
     // CART
     public function fill_cart_BLL($args)
     {
@@ -86,12 +88,36 @@ class cart_bll
         }
         return $updatedCart;
     }
-
     public function get_property_BLL($args)
     {
         $username = middleware::decode_token($args);
 
         return $this->dao->select_property_cart($this->db, $username['username']);
+    }
+    public function checkout_BLL($args)
+    {
+        $username = middleware::decode_token($args);
+        $code_purchase = common::generate_token_secure(6);
+
+        $property_cart = $this->dao->select_property_cart($this->db, $username['username']);
+        $property = $this->dao->select_property($this->db, $property_cart[0]['code_prop']);
+
+        if ($property[0]['available'] === '1') {
+
+            $this->dao->update_property($this->db, $property_cart[0]['code_prop']);
+            $cart = $this->dao->select_cart($this->db, $username['username']);
+            // return $cart;
+            foreach ($cart as $item) {
+                $this->dao->create_order($this->db, $code_purchase, $item['code_prod'], $username['username'], $item['quantity']);
+                $this->dao->update_stock($this->db, $item['code_prod'], $item['quantity']);
+            }
+
+
+            $this->dao->delete_cart($this->db, $username['username']);
+            return 'done';
+        } else {
+            return 'error';
+        }
     }
 
 }

@@ -62,7 +62,7 @@ class cart_dao
     }
     public function select_property($db, $code_prop)
     {
-        $sql = "SELECT `name_prop`, `price` 
+        $sql = "SELECT * 
         FROM `property` 
         WHERE `code_prop`='$code_prop'";
 
@@ -147,6 +147,44 @@ class cart_dao
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
     }
+
+    // CHECKOUT
+    public function update_property($db, $code_prop)
+    {
+        $sql = "UPDATE `property` 
+        SET `available`= 0 
+        WHERE `code_prop`='$code_prop'";
+
+        $stmt = $db->ejecutar($sql);
+        return 'updated';
+    }
+    public function create_order($db, $code_purchase, $code_prod, $username, $quantity)
+    {
+        $sql = "INSERT INTO `purchase`(`code_purchase`, `code_prod`, `name_user`, `quantity`) VALUES 
+        ('$code_purchase','$code_prod','$username','$quantity')";
+
+        $stmt = $db->ejecutar($sql);
+        
+    }
+    public function update_stock($db, $code_prod, $quantity)
+    {
+        $sql = "UPDATE `products` 
+        SET `stock`= stock - $quantity 
+        WHERE `code_prod`='$code_prod'";
+
+        $stmt = $db->ejecutar($sql);
+        
+    }
+    public function delete_cart($db, $username)
+    {
+        $sql = "UPDATE `cart`
+        SET `quantity`= 0
+        WHERE `name_user`='$username'";
+
+        $stmt = $db->ejecutar($sql);
+        
+    }
+
 
 
 
