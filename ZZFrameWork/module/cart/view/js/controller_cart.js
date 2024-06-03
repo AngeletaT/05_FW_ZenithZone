@@ -35,12 +35,13 @@ function fill_cart() {
 							<td style="width: 800px;">
 								<b style="color:gray">${data[row].name_prod}</b>
 								<br>
-								<span style="color: red">SOLD OUT</span>
+								<span style="color: red">OUT OF STOCK</span>
 							</td>
 							<td style="width: 150px; text-align: center">${data[row].price_prod}€</td>
 							<td style="width: 150px; text-align: center">
-								<button class="del_product button-card" id="${data[row].code_prod}">-</button>
+								<button class="del_product button-cart" id="${data[row].code_prod}">-</button>
 								&nbsp;&nbsp;${data[row].quantity}&nbsp;&nbsp;
+								<button class="add_product button-cart" id="${data[row].code_prod}" disabled>+</button>
 							</td>
 							<td style="width: 150px; text-align: center">${subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}€</td>
 						</tr>
@@ -51,13 +52,13 @@ function fill_cart() {
 							<td style="width: 800px;">
 								<b>${data[row].name_prod}</b>
 								<br>
-								<span style="color: red">¡Ultima unidad!</span>
+								<span style="color: red">Last unit!</span>
 							</td>
 							<td style="width: 150px; text-align: center">${data[row].price_prod}€</td>
 							<td style="width: 150px; text-align: center">
-								<button class="del_product button-card" id="${data[row].code_prod}">-</button>
+								<button class="del_product button-cart" id="${data[row].code_prod}">-</button>
 								&nbsp;&nbsp;${data[row].quantity}&nbsp;&nbsp;
-								<button class="add_product button-card" id="${data[row].code_prod}">+</button>
+								<button class="add_product button-cart" id="${data[row].code_prod}">+</button>
 							</td>
 							<td style="width: 150px; text-align: center">${subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}€</td>
 						</tr>
@@ -68,13 +69,13 @@ function fill_cart() {
 							<td style="width: 800px;">
 								<b>${data[row].name_prod}</b>
 								<br>
-								<span style="color: red">Quedan ${data[row].remaining_stock[0].remaining_stock} unidades</span>
+								<span style="color: red">${data[row].remaining_stock[0].remaining_stock} units left</span>
 							</td>
 							<td style="width: 150px; text-align: center">${data[row].price_prod}€</td>
 							<td style="width: 150px; text-align: center">
-								<button class="del_product button-card" id="${data[row].code_prod}">-</button>
+								<button class="del_product button-cart" id="${data[row].code_prod}">-</button>
 								&nbsp;&nbsp;${data[row].quantity}&nbsp;&nbsp;
-								<button class="add_product button-card" id="${data[row].code_prod}">+</button>
+								<button class="add_product button-cart" id="${data[row].code_prod}">+</button>
 							</td>
 							<td style="width: 150px; text-align: center">${subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}€</td>
 						</tr>
@@ -85,9 +86,9 @@ function fill_cart() {
 							<td style="width: 800px;"><b>${data[row].name_prod}</b></td>
 							<td style="width: 150px; text-align: center">${data[row].price_prod}€</td>
                     	    <td style="width: 150px; text-align: center">
-                    	        <button class="del_product button-card" id="${data[row].code_prod}">-</button>
+                    	        <button class="del_product button-cart" id="${data[row].code_prod}">-</button>
                     	        &nbsp;&nbsp;${data[row].quantity}&nbsp;&nbsp;
-                    	        <button class="add_product button-card" id="${data[row].code_prod}">+</button>
+                    	        <button class="add_product button-cart" id="${data[row].code_prod}">+</button>
                     	    </td>
                     	    <td style="width: 150px; text-align: center">${subtotal
 														.toString()
@@ -116,6 +117,24 @@ function fill_cart() {
 			.catch(function (error) {
 				console.error(error)
 			})
+	} else {
+		// console.log("No existe access_token")
+		$(".cart-usertable").append(`
+			<tr>
+				<th style="width: 800px; text-align: left">Product</th>
+				<th style="width: 150px">Price</th>
+				<th style="width: 150px">Quantity</th>
+				<th style="width: 150px">Subtotal</th>
+			</tr>
+			`)
+		$(".cart-usertable").append(`
+			<tr>
+				<td colspan="4" style="text-align: center">No hay productos en el carrito</td>
+			</tr>
+			`)
+		$(".cart-total").html("0€")
+		$(".cart-total-prop").html("0€")
+		cart_prop()
 	}
 }
 
@@ -209,6 +228,11 @@ function cart_prop() {
 			.catch(function (error) {
 				console.error(error)
 			})
+	} else {
+		// console.log("No existe access_token")
+		$(".cart-property").text("No hay propiedad seleccionada")
+		$(".cart-prop-price").text("0€")
+		$(".cart-total-prop").text("0€")
 	}
 }
 

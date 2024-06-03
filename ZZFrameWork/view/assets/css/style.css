@@ -532,7 +532,7 @@ h6,
 	justify-content: center;
 	align-items: center;
 	/* padding: 50px; */
-	margin-top: 100px;
+	margin-top: 50px;
 	font-family: "Roboto", sans-serif;
 }
 
@@ -1123,7 +1123,7 @@ td {
 	text-align: left;
 }
 
-.button-card {
+.button-cart {
 	background-color: rgba(0, 0, 0, 0.3);
 	color: #fff;
 	border-radius: 9px;
@@ -1133,6 +1133,9 @@ td {
 	transition: 0.3s;
 }
 
+.button-cart:disabled {
+	background-color: rgba(153 152 152 / 30%);
+}
 
 /*-----------------------------------------------------------------------------------------------------------------------------------------------
 # LOGIN - REGISTER

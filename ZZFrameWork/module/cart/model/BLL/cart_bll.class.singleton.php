@@ -33,15 +33,21 @@ class cart_bll
     // CONSTRUIR CARRITO
     public function add_prop_BLL($args)
     {
+
+        // return $args;
         $username = middleware::decode_token($args[1]);
 
         if ($this->dao->check_property($this->db, $args[0], $username['username'])) {
             return 'done';
         } else {
-            $property = $this->dao->select_property($this->db, $args[0]);
-            // return $property;
-            $this->dao->addcart_property($this->db, $args[0], $username['username'], $property[0]['name_prop'], $property[0]['price']);
-            return 'added';
+            if ($this->dao->check_property_cart($this->db, $username['username'])) {
+                return 'error';
+            } else {
+                $property = $this->dao->select_property($this->db, $args[0]);
+                // return $property[0]['name_prop'];
+                $this->dao->addcart_property($this->db, $args[0], $username['username'], $property[0]['name_prop'], $property[0]['price']);
+                return 'added';
+            }
         }
     }
     public function modify_cart_BLL($args)

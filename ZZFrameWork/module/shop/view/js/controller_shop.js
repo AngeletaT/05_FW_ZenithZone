@@ -891,9 +891,11 @@ function add_prop(code_prop) {
 					var cartCount = parseInt($(".cart-count").text())
 					$(".cart-count").text(cartCount + 1)
 				} else if (data === "done") {
+					toastr.success("Producto ya existe en el carrito")
 					console.log("Producto ya existe en el carrito")
-				} else {
-					console.log("Error en la modificación del carrito")
+				} else if (data === "error") {
+					toastr.error("Ya tienes una propiedad en el carrito")
+					console.log("El carrito ya tiene una propiedad")
 				}
 				load_menu()
 			})

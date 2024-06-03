@@ -44,9 +44,18 @@ class cart_dao
     public function check_property($db, $code_prop, $username)
     {
         $sql = "SELECT * 
-        FROM `cart_prod` 
+        FROM `cart_prop` 
         WHERE `name_user`='$username' 
         AND `code_prop`='$code_prop'";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
+    public function check_property_cart($db, $username)
+    {
+        $sql = "SELECT * 
+        FROM `cart_prop` 
+        WHERE `name_user`='$username'";
 
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
@@ -62,7 +71,7 @@ class cart_dao
     }
     public function addcart_property($db, $code_prop, $username, $name_prop, $price)
     {
-        $sql = "INSERT INTO `cart_prod`(`code_prop`, `name_user`, `name_prop`, `price`) VALUES 
+        $sql = "INSERT INTO `cart_prop`(`code_prop`, `name_user`, `name_prop`, `price`) VALUES 
         ('$code_prop', '$username', '$name_prop', '$price')";
 
         $stmt = $db->ejecutar($sql);
@@ -132,7 +141,7 @@ class cart_dao
     public function select_property_cart($db, $username)
     {
         $sql = "SELECT * 
-        FROM `cart_prod` 
+        FROM `cart_prop` 
         WHERE `name_user`='$username'";
 
         $stmt = $db->ejecutar($sql);
