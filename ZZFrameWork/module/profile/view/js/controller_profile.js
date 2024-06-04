@@ -44,6 +44,12 @@ function click() {
 		e.preventDefault()
 		update_profile()
 	})
+
+	$(".prop-table-profile").on("click", ".more_info_profile", function () {
+		var code_prop = $(this).attr("id")
+		localStorage.setItem("redirect_profile", code_prop)
+		window.location.href = friendlyURL("?module=shop")
+	})
 }
 
 function list_profile() {
@@ -161,7 +167,7 @@ function likes_profile() {
 						<tr>
                 	        <td colspan='4'>
                 	            <button id='${data[row][0].code_prop}' 
-								class='more_info_list Button_principal'>More Info</button>
+								class='more_info_profile Button_principal'>More Info</button>
                 	        </td>
 							<td>
 								<button id='${data[row][0].code_prop}' class="carrito Button_segundario">
@@ -169,7 +175,7 @@ function likes_profile() {
 								</button>
 							</td>
 							<td class="like-content">
-								<button id='${data[row][0].code_prop}'class="like-review Button_segundario">
+								<button id='${data[row][0].code_prop}'class="like-review Button_segundario active">
 								<i class="fa fa-heart" aria-hidden="true"></i>${data[row][0].likes}</button>
 							</td>
 						</tr>

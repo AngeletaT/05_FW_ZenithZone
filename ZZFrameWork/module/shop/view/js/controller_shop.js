@@ -6,6 +6,7 @@ function loadprops() {
 	var filters_shop = JSON.parse(localStorage.getItem("filters_shop")) || false
 	var redirect_like = localStorage.getItem("redirect_like") || false
 	var redirect_product = localStorage.getItem("redirect_product") || false
+	var redirect_profile = localStorage.getItem("redirect_profile") || false
 
 	if (filters_home !== false) {
 		ajaxForSearch(friendlyURL("?module=shop"), "filters_home")
@@ -32,6 +33,14 @@ function loadprops() {
 		loadCarrito(redirect_product)
 		loadSuggestionsDetails()
 		localStorage.removeItem("redirect_product")
+	}else if (redirect_profile !== false) {
+		// console.log("LOADPROPS redirect_profile")
+		// console.log(redirect_profile)
+		// return
+		loadDetails(redirect_profile)
+		loadCarrito(redirect_profile)
+		loadSuggestionsDetails()
+		localStorage.removeItem("redirect_profile")
 	} else {
 		ajaxForSearch(friendlyURL("?module=shop"), "all_prop")
 		// console.log("allprop")
@@ -490,7 +499,7 @@ function clicks() {
 	$(document).on("click", ".more_info_list", function () {
 		var code_prop = this.getAttribute("id")
 		localStorage.setItem("code_prop", code_prop)
-		// console.log(code_prop);
+		console.log(code_prop)
 		loadDetails(code_prop)
 		loadCarrito(code_prop)
 		loadSuggestionsDetails()
