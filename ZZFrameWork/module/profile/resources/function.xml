@@ -4,4 +4,9 @@
         <name>view</name>
         <uri>view</uri>
     </function>
+<!-- USER -->
+    <function>
+        <name>list_profile</name>
+        <uri>list_profile</uri>
+    </function>
 </functions>

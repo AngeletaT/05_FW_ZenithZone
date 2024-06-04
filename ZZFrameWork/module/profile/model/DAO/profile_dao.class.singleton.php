@@ -14,4 +14,15 @@ class profile_dao
         }
         return self::$_instance;
     }
+
+    public function select_data_user($db, $username)
+    {
+        // return 'hola dao';
+        $sql = "SELECT * 
+        FROM users 
+        WHERE username = '$username'";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
 }

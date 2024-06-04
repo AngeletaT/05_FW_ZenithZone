@@ -119,6 +119,8 @@ function logout() {
 				console.log("Borrando acces_token")
 				localStorage.removeItem("access_token")
 				localStorage.removeItem("refresh_token")
+				localStorage.removeItem("page")
+				localStorage.removeItem("code_prop")
 				toastr.warning("The account has been closed for security!!")
 				$(".useravatar").hide()
 				window.location.href = friendlyURL("?module=home")

@@ -17,5 +17,11 @@ class profile_model
         }
         return self::$_instance;
     }
+
+    function list_profile($args)
+    {
+        // return $args;
+        return $this->bll->list_profile_BLL($args);
+    }
 }
 ?>

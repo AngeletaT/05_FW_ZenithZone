@@ -3,7 +3,9 @@
 	<div class="profile-container">
 		<!-- Sidebar -->
 		<aside class="profile-sidebar">
-			<img src="avatar.jpg" alt="Avatar" class="profile_avatar" />
+			<img class="profile-avatar" src="images/avatar.jpg" alt="Avatar" />
+			<br />
+			<br />
 			<ul>
 				<li><a href="#" class="profile-orders">My Orders</a></li>
 				<li><a href="#" class="profile-preferences">Preferences</a></li>
@@ -16,8 +18,11 @@
 				<h2>User Information</h2>
 				<br />
 				<p><b>Username:</b> <span class="profile-username">John Doe</span></p>
+				<p><b>Name:</b> <span class="profile-name">John Doe</span></p>
+				<p><b>Surname:</b> <span class="profile-surname">John Doe</span></p>
 				<p><b>Email:</b> <span class="profile-email">30</span></p>
 				<p><b>Telephone:</b> <span class="profile-phone">New York</span></p>
+				<p><b>City:</b> <span class="profile-city">John Doe</span></p>
 			</section>
 
 			<section class="profile-pref-sect">
@@ -28,12 +33,20 @@
 					<input type="file" id="user_avatar" name="avatar" accept="image/*" />
 					<br />
 					<br />
-					<label for="email"><b>Email: </b></label>&nbsp;
-					<input type="email" id="user_email" name="email" />
+					<label for="name"><b>Name: </b></label>&nbsp;
+					<input type="name" id="user_name" name="name" />
+					<br />
+					<br />
+					<label for="surname"><b>Surname: </b></label>&nbsp;
+					<input type="surname" id="user_surname" name="surname" />
 					<br />
 					<br />
 					<label for="phone"><b>Phone: </b></label>&nbsp;
 					<input type="tel" id="user_phone" name="phone" />
+					<br />
+					<br />
+					<label for="city"><b>City: </b></label>&nbsp;
+					<input type="city" id="user_city" name="city" />
 					<br />
 					<br />
 					<input type="submit" value="Save" />
@@ -43,7 +56,7 @@
 			<section class="profile-orders-sect">
 				<h2>My Orders</h2>
 				<br />
-				<table class="cart-table">
+				<table class="cart-table-profile">
 					<thead>
 						<tr>
 							<th>Order ID</th>

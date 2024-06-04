@@ -19,9 +19,12 @@ class profile_bll
         return self::$_instance;
     }
 
-    // FILTROS DINAMICOS
-    public function get_filters_type_BLL()
+    public function list_profile_BLL($args)
     {
-        return $this->dao->select_data_filters_type($this->db);
+        // return $args;
+        $username = middleware::decode_token($args);
+        // return $username;
+
+        return $this->dao->select_data_user($this->db, $username['username']);
     }
 }
