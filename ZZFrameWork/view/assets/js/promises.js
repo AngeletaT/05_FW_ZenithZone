@@ -65,7 +65,7 @@ function load_menu() {
 					$("<li></li>")
 						.html(
 							'<a class="active" id="useravatar" href="' +
-								friendlyURL("?module=login") +
+								friendlyURL("?module=profile") +
 								'"><img class="useravatar avatar" src="' +
 								data[0].avatar +
 								'" alt="UserAvatar"/></a>'
