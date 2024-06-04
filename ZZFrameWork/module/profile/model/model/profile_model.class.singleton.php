@@ -23,5 +23,11 @@ class profile_model
         // return $args;
         return $this->bll->list_profile_BLL($args);
     }
+
+    function update_profile($args)
+    {
+        // return $args;
+        return $this->bll->update_profile_BLL($args);
+    }
 }
 ?>

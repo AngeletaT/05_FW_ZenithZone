@@ -24,5 +24,11 @@ class controller_profile
         echo json_encode(common::load_model('profile_model', 'list_profile', $_POST['access_token']));
     }
 
+    function update_profile()
+    {
+        // echo json_encode("update_profile");
+        echo json_encode(common::load_model('profile_model', 'update_profile', [$_POST['access_token'], $_POST['name'], $_POST['surname'], $_POST['phone'], $_POST['city']]));
+    }
+
 }
 ?>

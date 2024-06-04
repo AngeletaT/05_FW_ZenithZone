@@ -25,4 +25,41 @@ class profile_dao
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
     }
+
+    public function update_user_name($db, $username, $name)
+    {
+        $sql = "UPDATE users 
+        SET name = '$name' 
+        WHERE username = '$username'";
+
+        $db->ejecutar($sql);
+    }
+
+    public function update_user_surname($db, $username, $surname)
+    {
+        $sql = "UPDATE users 
+        SET surname = '$surname' 
+        WHERE username = '$username'";
+
+        $db->ejecutar($sql);
+    }
+
+    public function update_user_phone($db, $username, $phone)
+    {
+        $sql = "UPDATE users 
+        SET phone_number = '$phone' 
+        WHERE username = '$username'";
+
+        $db->ejecutar($sql);
+    }
+
+    public function update_user_city($db, $username, $city)
+    {
+        $sql = "UPDATE users 
+        SET city = '$city' 
+        WHERE username = '$username'";
+
+        $db->ejecutar($sql);
+    }
+
 }

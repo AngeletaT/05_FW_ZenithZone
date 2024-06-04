@@ -9,4 +9,8 @@
         <name>list_profile</name>
         <uri>list_profile</uri>
     </function>
+    <function>
+        <name>update_profile</name>
+        <uri>update_profile</uri>
+    </function>
 </functions>
