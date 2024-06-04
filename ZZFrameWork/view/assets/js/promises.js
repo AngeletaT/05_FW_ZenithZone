@@ -33,11 +33,11 @@ function load_menu() {
 
 	if (localStorage.getItem("access_token")) {
 		var access_token = localStorage.getItem("access_token")
-		console.log(access_token)
+		// console.log(access_token)
 
 		ajaxPromise(friendlyURL("?module=cart"), "POST", "JSON", {access_token: access_token, op: "count_cart"})
 			.then(function (data) {
-				console.log(data)
+				// console.log(data)
 				// return
 				$("<li></li>")
 					.attr({"class": "nav_item nav_cart"})
