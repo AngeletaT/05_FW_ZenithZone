@@ -54,4 +54,19 @@ class profile_bll
         return 'update';
 
     }
+
+    public function likes_profile_BLL($args)
+    {
+        // return $args;
+        $username = middleware::decode_token($args);
+        // return $username;
+
+        $likes = $this->dao->select_likes($this->db, $username['username']);
+        foreach ($likes as $item) {
+            // sacar $item['code_prop'] para usarlo en select_prop_likes y construir un array con cada propiedad
+            $property = $this->dao->select_prop_likes($this->db, $item['code_prop']);
+            $props[] = $property;
+        }
+        return $props;
+    }
 }

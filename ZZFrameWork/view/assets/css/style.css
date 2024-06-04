@@ -1329,8 +1329,9 @@ td {
 
 .profile-container {
 	display: flex;
-	justify-content: space-between;
+	/* justify-content: space-between; */
 	height: 700px;
+	width: 100%;
 }
 
 .profile-container::before {
@@ -1363,7 +1364,7 @@ td {
 	border-radius: 50%;
 }
 .profile-main {
-	width: 900px;
+	width: 100%;
 	padding: 40px;
 }
 
@@ -1386,6 +1387,11 @@ td {
 	padding: 14px;
 	font-size: 16px;
 	border-bottom: 2px solid #7aafcb;
+}
+
+.likes-container {
+	max-height: 526px;
+	overflow-y: auto;
 }
 
 /*-----------------------------------------------------------------------------------------------------------------------------------------------

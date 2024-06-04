@@ -14,6 +14,7 @@ function click() {
 		$(".profile-info-sect").hide()
 		$(".profile-pref-sect").hide()
 		$(".profile-orders-sect").show()
+		$(".profile-likes-sect").hide()
 	})
 
 	$(".profile-sidebar a.profile-preferences").click(function (e) {
@@ -21,6 +22,16 @@ function click() {
 		$(".profile-info-sect").hide()
 		$(".profile-orders-sect").hide()
 		$(".profile-pref-sect").show()
+		$(".profile-likes-sect").hide()
+	})
+
+	$(".profile-sidebar a.profile-likes").click(function (e) {
+		e.preventDefault()
+		$(".profile-info-sect").hide()
+		$(".profile-orders-sect").hide()
+		$(".profile-pref-sect").hide()
+		$(".profile-likes-sect").show()
+		likes_profile()
 	})
 
 	$(".profile-sidebar a.profile-logout").click(function (e) {
@@ -87,6 +98,105 @@ function update_profile() {
 			// return
 			// console.log("Success")
 			location.reload()
+		})
+		.catch(function (e) {
+			console.error("Catch error: ", e)
+		})
+}
+
+function likes_profile() {
+	$(".prop-table-profile").empty()
+	console.log("likes_profile")
+	var access_token = localStorage.getItem("access_token")
+	var op = "likes_profile"
+
+	ajaxPromise(friendlyURL("?module=profile"), "POST", "JSON", {access_token: access_token, op: op})
+		.then(function (data) {
+			console.log("Dentro del then", data)
+			// return
+			for (row in data) {
+				var carousel = ""
+				data[row][0].images.forEach(function (image) {
+					// console.log("image:", image)
+					carousel += `<div class="item imagen"><img src="${image}" alt="property" /></div>`
+				})
+				$("<div></div>").attr({"id": data[row][0].code_prop, "class": "propertytable"}).appendTo(".prop-table-profile")
+					.html(`
+                	<table>
+                	    <tr>
+							<td rowspan="7" class="imagen">
+                			    <div class="owl-container imagen shop">
+                			        <div class="owl-list-profile owl-carousel owl-theme imagen shop">
+                			            ${carousel}
+                			        </div>
+                			    </div>
+                			</td>
+                	        <td colspan="8"><a class="titlelist" id="${data[row][0].code_prop}">
+								<h2>${data[row][0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}&nbsp;
+								<i class="fa-solid fa-euro-sign"></i></h2></a>
+							</td>
+                	    </tr>
+                	    <tr>
+							<td colspan="8"><h5>${data[row][0].name_prop}</h5</td>
+						</tr>
+						<tr>
+							<td colspan="8">${data[row][0].description}</td>
+						</tr>
+                	    <tr>
+                	        <td class="icon"><i class="fa-solid fa-bed fa-xl"></i></td>
+                	        <td class="text">${data[row][0].rooms}</td>
+                	        <td class="icon"><i class="fa-solid fa-bath fa-xl"></i></td>
+                	        <td class="text">${data[row][0].baths}</td>
+                	        <td class="icon"><i class="fa-solid fa-key fa-xl"></i></td>
+                	        <td class="text">${data[row][0].name_cat}</td>
+                	    </tr>
+                	    <tr>
+                	        <td class="icon"><i class="fa-solid fa-expand fa-xl"></i></td>
+                	        <td class="text">${data[row][0].m2}</td>
+                	        <td class="icon"><i class="fa-solid fa-location-dot fa-xl"></i></td>
+                	        <td class="text">${data[row][0].name_city}</td>
+                	        <td class="icon"><i class="fa-solid fa-plus fa-xl"></i></td>
+                	        <td class="text">${data[row][0].name_extra}</td>
+                	    </tr>
+						<tr>
+                	        <td colspan='4'>
+                	            <button id='${data[row][0].code_prop}' 
+								class='more_info_list Button_principal'>More Info</button>
+                	        </td>
+							<td>
+								<button id='${data[row][0].code_prop}' class="carrito Button_segundario">
+									<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+								</button>
+							</td>
+							<td class="like-content">
+								<button id='${data[row][0].code_prop}'class="like-review Button_segundario">
+								<i class="fa fa-heart" aria-hidden="true"></i>${data[row][0].likes}</button>
+							</td>
+						</tr>
+                	</table>
+				`)
+				$(".owl-list-profile").owlCarousel({
+					loop: true,
+					autoplay: true,
+					margin: 10,
+					nav: true,
+					dots: false,
+					responsive: {
+						0: {
+							items: 1,
+						},
+						600: {
+							items: 1,
+						},
+						1000: {
+							items: 1,
+						},
+					},
+				})
+			}
+
+			// console.log("Success")
+			// location.reload()
 		})
 		.catch(function (e) {
 			console.error("Catch error: ", e)

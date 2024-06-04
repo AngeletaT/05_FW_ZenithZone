@@ -29,5 +29,11 @@ class profile_model
         // return $args;
         return $this->bll->update_profile_BLL($args);
     }
+
+    function likes_profile($args)
+    {
+        // return $args;
+        return $this->bll->likes_profile_BLL($args);
+    }
 }
 ?>

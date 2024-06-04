@@ -13,4 +13,8 @@
         <name>update_profile</name>
         <uri>update_profile</uri>
     </function>
+    <function>
+        <name>likes_profile</name>
+        <uri>likes_profile</uri>
+    </function>
 </functions>
