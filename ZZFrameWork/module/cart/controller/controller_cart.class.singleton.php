@@ -59,6 +59,11 @@ class controller_cart
         // echo json_encode("checkout");
         echo json_encode(common::load_model('cart_model', 'checkout', $_POST['access_token']));
     }
+    function discard_cart()
+    {
+        // echo json_encode("discard_cart");
+        echo json_encode(common::load_model('cart_model', 'discard_cart', $_POST['access_token']));
+    }
 
 
 }

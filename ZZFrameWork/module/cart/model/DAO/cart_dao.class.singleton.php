@@ -56,6 +56,7 @@ class cart_dao
         $sql = "SELECT * 
         FROM `cart_prop` 
         WHERE `name_user`='$username'";
+        
 
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
@@ -179,6 +180,14 @@ class cart_dao
     {
         $sql = "UPDATE `cart`
         SET `quantity`= 0
+        WHERE `name_user`='$username'";
+
+        $stmt = $db->ejecutar($sql);
+
+    }
+    public function delete_cart_prop($db, $username)
+    {
+        $sql = "DELETE FROM `cart_prop`
         WHERE `name_user`='$username'";
 
         $stmt = $db->ejecutar($sql);

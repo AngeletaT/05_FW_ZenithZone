@@ -57,5 +57,10 @@ class cart_model
         // echo json_encode("checkout model");
         return $this->bll->checkout_BLL($args);
     }
+    public function discard_cart($args)
+    {
+        // echo json_encode("discard_cart model");
+        return $this->bll->discard_cart_BLL($args);
+    }
 }
 ?>

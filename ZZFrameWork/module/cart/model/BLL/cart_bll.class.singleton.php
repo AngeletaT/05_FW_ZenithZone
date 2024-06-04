@@ -34,7 +34,6 @@ class cart_bll
     // CONSTRUIR CARRITO
     public function add_prop_BLL($args)
     {
-
         // return $args;
         $username = middleware::decode_token($args[1]);
 
@@ -92,12 +91,20 @@ class cart_bll
     {
         $username = middleware::decode_token($args);
         $property_cart = $this->dao->select_property_cart($this->db, $username['username']);
-        $property = $this->dao->select_property($this->db, $property_cart[0]['code_prop']);
 
-        if ($property[0]['available'] === '1') {
-            return $property_cart;
+        if (empty($property_cart) || is_null($property_cart)) {
+            return 'empty prop_cart';
         } else {
-            return 'error';
+            $property = $this->dao->select_property($this->db, $property_cart[0]['code_prop']);
+            if (empty($property) || is_null($property)) {
+                return 'empty prop';
+            } else {
+                if ($property[0]['available'] === '0') {
+                    return 'error prop';
+                }else {
+                    return $property_cart;
+                }
+            }
         }
 
 
@@ -125,10 +132,20 @@ class cart_bll
 
             $this->dao->update_property($this->db, $property_cart[0]['code_prop']);
             $this->dao->delete_cart($this->db, $username['username']);
+            $this->dao->delete_cart_prop($this->db, $username['username']);
             return 'done';
         } else {
             return 'error';
         }
+    }
+    public function discard_cart_BLL($args)
+    {
+        $username = middleware::decode_token($args);
+
+        $this->dao->delete_cart($this->db, $username['username']);
+        $this->dao->delete_cart_prop($this->db, $username['username']);
+
+        return 'done';
     }
 
 }

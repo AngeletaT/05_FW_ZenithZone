@@ -34,4 +34,8 @@
         <name>checkout</name>
         <uri>checkout</uri>
     </function>
+    <function>
+        <name>discard_cart</name>
+        <uri>discard_cart</uri>
+    </function>
 </functions>

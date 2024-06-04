@@ -12,25 +12,43 @@ function fill_cart() {
 			"op": "fill_cart",
 		})
 			.then(function (data) {
-				// console.log(data)
+				console.log(data)
 				// return
-				$(".cart-usertable").append(`
-                <tr>
-				    <th style="width: 800px; text-align: left">Product</th>
-				    <th style="width: 150px">Price</th>
-				    <th style="width: 150px">Quantity</th>
-				    <th style="width: 150px">Subtotal</th>
-			    </tr>
-                `)
-				for (var row in data) {
-					if (data[row].remaining_stock == 0) {
-						subtotal = 0
-					} else {
-						subtotal = data[row].price_prod * data[row].quantity
-					}
+				if (data.length === 0) {
+					$(".cart-usertable").append(`
+					<tr>
+					    <th style="width: 800px; text-align: left">Product</th>
+					    <th style="width: 150px">Price</th>
+					    <th style="width: 150px">Quantity</th>
+					    <th style="width: 150px">Subtotal</th>
+			    	</tr>
+					`)
+					$(".cart-usertable").append(`
+					<tr>
+					    <td colspan="4" style="text-align: center">No hay productos en el carrito</td>
+			    	</tr>
+					`)
+					$(".cart-total").html("0€")
+					$(".cart-total-prop").html("0€")
+					cart_prop()
+				} else {
+					$(".cart-usertable").append(`
+                	<tr>
+					    <th style="width: 800px; text-align: left">Product</th>
+					    <th style="width: 150px">Price</th>
+					    <th style="width: 150px">Quantity</th>
+					    <th style="width: 150px">Subtotal</th>
+			    	</tr>
+                	`)
+					for (var row in data) {
+						if (data[row].remaining_stock == 0) {
+							subtotal = 0
+						} else {
+							subtotal = data[row].price_prod * data[row].quantity
+						}
 
-					if (data[row].remaining_stock == 0) {
-						$(".cart-usertable").append(`
+						if (data[row].remaining_stock == 0) {
+							$(".cart-usertable").append(`
 						<tr>
 							<td style="width: 800px;">
 								<b style="color:gray">${data[row].name_prod}</b>
@@ -46,8 +64,8 @@ function fill_cart() {
 							<td style="width: 150px; text-align: center">${subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}€</td>
 						</tr>
 					`)
-					} else if (data[row].remaining_stock[0].remaining_stock == 0) {
-						$(".cart-usertable").append(`
+						} else if (data[row].remaining_stock[0].remaining_stock == 0) {
+							$(".cart-usertable").append(`
 						<tr>
 							<td style="width: 800px;">
 								<b>${data[row].name_prod}</b>
@@ -63,8 +81,8 @@ function fill_cart() {
 							<td style="width: 150px; text-align: center">${subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}€</td>
 						</tr>
 					`)
-					} else if (data[row].remaining_stock[0].remaining_stock <= 10) {
-						$(".cart-usertable").append(`
+						} else if (data[row].remaining_stock[0].remaining_stock <= 10) {
+							$(".cart-usertable").append(`
 						<tr>
 							<td style="width: 800px;">
 								<b>${data[row].name_prod}</b>
@@ -80,8 +98,8 @@ function fill_cart() {
 							<td style="width: 150px; text-align: center">${subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}€</td>
 						</tr>
 					`)
-					} else if (data[row].remaining_stock[0].remaining_stock > 10) {
-						$(".cart-usertable").append(`
+						} else if (data[row].remaining_stock[0].remaining_stock > 10) {
+							$(".cart-usertable").append(`
 						<tr>
 							<td style="width: 800px;"><b>${data[row].name_prod}</b></td>
 							<td style="width: 150px; text-align: center">${data[row].price_prod}€</td>
@@ -95,24 +113,25 @@ function fill_cart() {
 														.replace(/\B(?=(\d{3})+(?!\d))/g, ".")}€</td>
 						</tr>
 						`)
+						}
 					}
-				}
 
-				for (var row in data) {
-					if (data[row].remaining_stock == 0) {
-						subtotal = 0
-						total_extras += subtotal
-					} else {
-						subtotal = data[row].price_prod * data[row].quantity
-						total_extras += subtotal
+					for (var row in data) {
+						if (data[row].remaining_stock == 0) {
+							subtotal = 0
+							total_extras += subtotal
+						} else {
+							subtotal = data[row].price_prod * data[row].quantity
+							total_extras += subtotal
+						}
 					}
-				}
 
-				$(".cart-total").html(`
+					$(".cart-total").html(`
                     ${total_extras.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}€
                 `)
 
-				cart_prop()
+					cart_prop()
+				}
 			})
 			.catch(function (error) {
 				console.error(error)
@@ -221,7 +240,18 @@ function cart_prop() {
 			.then(function (data) {
 				// console.log(data)
 				// return
-				if (data === "error") {
+				if (data === "empty prop_cart") {
+					// no hay propiedad seleccionada
+					$(".cart-property").text("No hay propiedad seleccionada")
+					$(".cart-prop-price").text("0€")
+					$(".cart-total-prop").text("0€")
+				} else if (data === "empty prop") {
+					// la propiedad no esta disponible
+					$(".cart-property").text("No hay propiedad seleccionada")
+					$(".cart-prop-price").text("0€")
+					$(".cart-total-prop").text("0€")
+				} else if (data === "error prop") {
+					// la propiedad no esta disponible
 					$(".cart-property").text("No hay propiedad seleccionada")
 					$(".cart-prop-price").text("0€")
 					$(".cart-total-prop").text("0€")
@@ -291,22 +321,34 @@ function discard() {
 	if (access_token) {
 		ajaxPromise(friendlyURL("?module=cart"), "POST", "JSON", {
 			"access_token": access_token,
-			"op": "discard",
+			"op": "discard_cart",
 		})
 			.then(function (data) {
-				// console.log(data)
+				console.log(data)
 				// return
-				if (data === "discard") {
+				if (data === "done") {
 					// console.log("Carrito vaciado")
 					toastr.warning("Carrito vaciado")
-					$(".cart-usertable").empty()
-					$(".cart-total").empty()
-					fill_cart()
-					total_extras = 0
+					$(".cart-usertable").append(`
+					<tr>
+						<th style="width: 800px; text-align: left">Product</th>
+						<th style="width: 150px">Price</th>
+						<th style="width: 150px">Quantity</th>
+						<th style="width: 150px">Subtotal</th>
+					</tr>
+					`)
+					$(".cart-usertable").append(`
+					<tr>
+						<td colspan="4" style="text-align: center">No hay productos en el carrito</td>
+					</tr>
+					`)
+					$(".cart-total").html("0€")
+					$(".cart-total-prop").html("0€")
 					$(".cart-count").text("0")
 					$(".cart-property").text("No hay propiedad seleccionada")
 					$(".cart-prop-price").text("0€")
-					$(".cart-total-prop").text("0€")
+
+					cart_prop()
 				} else {
 					// console.log("Error al vaciar el carrito")
 				}
