@@ -1324,6 +1324,49 @@ td {
 }
 
 /*-----------------------------------------------------------------------------------------------------------------------------------------------
+# Profile
+-----------------------------------------------------------------------------------------------------------------------------------------------*/
+
+.profile-container {
+	display: flex;
+	justify-content: space-between;
+}
+
+.profile-container::before {
+	content: " ";
+	display: block;
+	visibility: hidden;
+}
+
+.profile-main {
+	width: 700px;
+	padding: 20px;
+}
+
+.profile-main::before {
+	content: " ";
+	display: block;
+	visibility: hidden;
+}
+
+.profile-sidebar {
+	width: 300px;
+	padding: 20px;
+}
+
+.profile-sidebar::before {
+	content: " ";
+	display: block;
+	visibility: hidden;
+}
+
+.profile_avatar {
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+}
+
+/*-----------------------------------------------------------------------------------------------------------------------------------------------
 # Footer
 -----------------------------------------------------------------------------------------------------------------------------------------------*/
 #footer {

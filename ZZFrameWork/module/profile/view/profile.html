@@ -1,22 +1,65 @@
 <main class="mainproperty">
-	<div class="container">
-		<div class="column">
-			<div class="profile-menu">
-				<img src="ruta_de_la_imagen_del_usuario.jpg" alt="Foto de perfil" />
-				<ul>
-					<li>Ajustes</li>
-					<li>Pedidos</li>
-					<li>Log out</li>
-				</ul>
-			</div>
-		</div>
-		<div class="column">
-			<div class="profile-details">
-				<h2>Nombre del usuario</h2>
-				<p>Email: usuario@example.com</p>
-				<p>Teléfono: 123456789</p>
-				<!-- Otros detalles del perfil -->
-			</div>
-		</div>
+	<br />
+	<div class="profile-container">
+		<!-- Sidebar -->
+		<aside class="profile-sidebar">
+			<img src="avatar.jpg" alt="Avatar" class="profile_avatar" />
+			<ul>
+				<li><a href="#" class="profile-orders">My Orders</a></li>
+				<li><a href="#" class="profile-preferences">Preferences</a></li>
+				<li><a href="#" class="profile-logout">Log out</a></li>
+			</ul>
+		</aside>
+		<!-- Main Content -->
+		<main class="profile-main">
+			<section class="profile-info-sect">
+				<h2>User Information</h2>
+				<br />
+				<p><b>Username:</b> <span class="profile-username">John Doe</span></p>
+				<p><b>Email:</b> <span class="profile-email">30</span></p>
+				<p><b>Telephone:</b> <span class="profile-phone">New York</span></p>
+			</section>
+
+			<section class="profile-pref-sect">
+				<h2>Preferences</h2>
+				<br />
+				<form>
+					<label for="avatar"><b>Avatar: </b></label>&nbsp;
+					<input type="file" id="user_avatar" name="avatar" accept="image/*" />
+					<br />
+					<br />
+					<label for="email"><b>Email: </b></label>&nbsp;
+					<input type="email" id="user_email" name="email" />
+					<br />
+					<br />
+					<label for="phone"><b>Phone: </b></label>&nbsp;
+					<input type="tel" id="user_phone" name="phone" />
+					<br />
+					<br />
+					<input type="submit" value="Save" />
+				</form>
+			</section>
+
+			<section class="profile-orders-sect">
+				<h2>My Orders</h2>
+				<br />
+				<table class="cart-table">
+					<thead>
+						<tr>
+							<th>Order ID</th>
+							<th>Download PDF</th>
+							<th>See QR Code</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="order_id">1</td>
+							<td><a href="order1.pdf" class="order_pdf">Download</a></td>
+							<td><a href="qr1.png" class="order_qr">View</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+		</main>
 	</div>
 </main>
