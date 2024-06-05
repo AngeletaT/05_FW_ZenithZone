@@ -195,22 +195,26 @@ function uploadFile(file) {
 // FAVORITOS
 function likes_profile() {
 	$(".prop-table-profile").empty()
-	console.log("likes_profile")
+	// console.log("likes_profile")
 	var access_token = localStorage.getItem("access_token")
 	var op = "likes_profile"
 
 	ajaxPromise(friendlyURL("?module=profile"), "POST", "JSON", {access_token: access_token, op: op})
 		.then(function (data) {
-			console.log("Dentro del then", data)
+			// console.log("Dentro del then", data)
 			// return
-			for (row in data) {
-				var carousel = ""
-				data[row][0].images.forEach(function (image) {
-					// console.log("image:", image)
-					carousel += `<div class="item imagen"><img src="${image}" alt="property" /></div>`
-				})
-				$("<div></div>").attr({"id": data[row][0].code_prop, "class": "propertytable"}).appendTo(".prop-table-profile")
-					.html(`
+			if (data === "No likes") {
+				$(".prop-table-profile").html("<h2>No likes</h2>")
+			} else {
+				for (row in data) {
+					var carousel = ""
+					data[row][0].images.forEach(function (image) {
+						// console.log("image:", image)
+						carousel += `<div class="item imagen"><img src="${image}" alt="property" /></div>`
+					})
+					$("<div></div>")
+						.attr({"id": data[row][0].code_prop, "class": "propertytable"})
+						.appendTo(".prop-table-profile").html(`
                 	<table>
                 	    <tr>
 							<td rowspan="7" class="imagen">
@@ -264,24 +268,25 @@ function likes_profile() {
 						</tr>
                 	</table>
 				`)
-				$(".owl-list-profile").owlCarousel({
-					loop: true,
-					autoplay: true,
-					margin: 10,
-					nav: true,
-					dots: false,
-					responsive: {
-						0: {
-							items: 1,
+					$(".owl-list-profile").owlCarousel({
+						loop: true,
+						autoplay: true,
+						margin: 10,
+						nav: true,
+						dots: false,
+						responsive: {
+							0: {
+								items: 1,
+							},
+							600: {
+								items: 1,
+							},
+							1000: {
+								items: 1,
+							},
 						},
-						600: {
-							items: 1,
-						},
-						1000: {
-							items: 1,
-						},
-					},
-				})
+					})
+				}
 			}
 
 			// console.log("Success")

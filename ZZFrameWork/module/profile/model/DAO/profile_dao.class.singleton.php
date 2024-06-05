@@ -86,7 +86,8 @@ class profile_dao
         AND pc.code_cat=c.code_cat
         AND p.code_city=ct.code_city
         AND p.code_prop=pa.code_prop
-        AND pa.code_act=a.code_act";
+        AND pa.code_act=a.code_act
+        AND p.available = 1";
 
 
         $stmt = $db->ejecutar($sql);

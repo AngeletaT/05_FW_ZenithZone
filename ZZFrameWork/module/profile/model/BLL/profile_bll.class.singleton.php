@@ -67,6 +67,9 @@ class profile_bll
             $property = $this->dao->select_prop_likes($this->db, $item['code_prop']);
             $props[] = $property;
         }
+        if (empty($props)) {
+            return 'No likes';
+        }
         return $props;
     }
 }
