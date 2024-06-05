@@ -51,7 +51,7 @@ function click() {
 		window.location.href = friendlyURL("?module=shop")
 	})
 }
-
+// INFORMACION USER
 function list_profile() {
 	console.log("list_profile")
 	var access_token = localStorage.getItem("access_token")
@@ -110,6 +110,89 @@ function update_profile() {
 		})
 }
 
+// DROPZONE AVATAR
+function dropzone_avatar() {
+	$("#drop_zone").on("dragover dragleave drop", function (e) {
+		e.preventDefault()
+		e.stopPropagation()
+	})
+
+	$("#drop_zone").on("dragover", function () {
+		$("#drop_zone").addClass("highlight")
+	})
+
+	$("#drop_zone").on("dragleave drop", function () {
+		$("#drop_zone").removeClass("highlight")
+	})
+
+	$("#drop_zone").on("drop", function (e) {
+		handleFiles(e.originalEvent.dataTransfer.files)
+	})
+
+	$("#drop_zone").on("click", function () {
+		$("#fileInput").click()
+	})
+}
+
+function setupFileInput() {
+	$("#fileInput").on("change", function () {
+		handleFiles(this.files)
+	})
+}
+
+function handleFiles(files) {
+	for (var i = 0; i < files.length; i++) {
+		var file = files[i]
+		if (validateFile(file)) {
+			uploadFile(file)
+		}
+	}
+}
+
+function validateFile(file) {
+	var allowedTypes = ["image/jpeg", "image/png", "image/jpg"]
+	var maxSize = 5 * 1024 * 1024 // 5MB
+
+	if (allowedTypes.indexOf(file.type) === -1) {
+		$("#drop_zone").addClass("error")
+		$("#drop_zone").text("Invalid file type")
+		setTimeout(function () {
+			$("#drop_zone").removeClass("error")
+			$("#drop_zone").text("Drop files here")
+		}, 1000)
+		return false
+	}
+
+	if (file.size > maxSize) {
+		$("#drop_zone").addClass("error")
+		$("#drop_zone").text("File is too large")
+		setTimeout(function () {
+			$("#drop_zone").removeClass("error")
+			$("#drop_zone").text("Drop files here")
+		}, 1000)
+		return false
+	}
+
+	return true
+}
+
+function uploadFile(file) {
+	var formData = new FormData()
+	formData.append("file", file)
+	console.log("uploadFile", formData)
+
+	ajaxPromise(friendlyURL("?module=profile"), "POST", "JSON", {formData: formData, op: "upload_avatar"})
+		.then(function (data) {
+			console.log("Dentro del then", data)
+			return
+			$(".profile-avatar").attr("src", data)
+		})
+		.catch(function (e) {
+			console.error("Catch error: ", e)
+		})
+}
+
+// FAVORITOS
 function likes_profile() {
 	$(".prop-table-profile").empty()
 	console.log("likes_profile")
@@ -212,4 +295,6 @@ function likes_profile() {
 $(document).ready(function () {
 	click()
 	list_profile()
+	dropzone_avatar()
+	fileinput_avatar()
 })
