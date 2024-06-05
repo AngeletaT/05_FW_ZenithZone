@@ -74,6 +74,7 @@ class shop_dao
         AND p.code_prop=pc.code_prop
         AND pc.code_cat=c.code_cat
         AND p.code_city=ct.code_city
+        AND p.available = 1
         ORDER BY p.code_prop ASC
         LIMIT $offset, $items_page";
 
@@ -105,7 +106,8 @@ class shop_dao
         AND pc.code_cat=c.code_cat
         AND p.code_city=ct.code_city
         AND p.code_prop=pa.code_prop
-        AND pa.code_act=a.code_act";
+        AND pa.code_act=a.code_act
+        AND p.available = 1";
 
         if (isset($filters_home[0]['type'])) {
             $filtro = $filters_home[0]['type'][0];
@@ -153,7 +155,8 @@ class shop_dao
         AND pc.code_cat=c.code_cat
         AND p.code_city=ct.code_city
         AND p.code_prop=pa.code_prop
-        AND pa.code_act=a.code_act";
+        AND pa.code_act=a.code_act
+        AND p.available = 1";
 
         foreach ($filters_shop as $filter) {
 
@@ -246,6 +249,7 @@ class shop_dao
                         INNER JOIN property_type pt2 ON p2.code_prop = pt2.code_prop
                         WHERE p2.code_prop = $code_prop)
             AND p1.code_prop != $code_prop
+            AND p1.available = 1
             LIMIT $limit;";
 
         $stmt = $db->ejecutar($sql);
@@ -298,7 +302,8 @@ class shop_dao
         AND pc.code_cat=c.code_cat
         AND p.code_city=ct.code_city
         AND p.code_prop=pa.code_prop
-        AND pa.code_act=a.code_act";
+        AND pa.code_act=a.code_act
+        AND p.available = 1";
 
         if (isset($filters_home[0]['type'])) {
             $filtro = $filters_home[0]['type'][0];
@@ -336,7 +341,8 @@ class shop_dao
         AND pc.code_cat=c.code_cat
         AND p.code_city=ct.code_city
         AND p.code_prop=pa.code_prop
-        AND pa.code_act=a.code_act";
+        AND pa.code_act=a.code_act
+        AND p.available = 1";
 
         foreach ($filters_shop as $filter) {
 
@@ -413,6 +419,7 @@ class shop_dao
         AND p.code_prop=pa.code_prop
         AND pa.code_act=a.code_act 
         AND p.code_prop=v.code_prop
+        AND p.available = 1
         $orderby";
 
         $stmt = $db->ejecutar($sql);
