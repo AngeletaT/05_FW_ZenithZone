@@ -114,14 +114,10 @@ function login() {
 
 					if (localStorage.getItem("redirect_like")) {
 						// console.log("redirect_like")
-						setTimeout(function () {
-							window.location.href = friendlyURL("?module=shop")
-						}, 3000)
+						window.location.href = friendlyURL("?module=shop")
 					} else {
 						// console.log("redirect_home")
-						setTimeout(function () {
-							window.location.href = friendlyURL("?module=shop")
-						}, 3000)
+						window.location.href = friendlyURL("?module=shop")
 					}
 				}
 			})
