@@ -426,40 +426,8 @@ function switchform() {
 }
 
 // LOAD CONTENT
-function load_content() {
-	let path = window.location.pathname.split("/")
-	// console.log("load_content")
-	// console.log([path[1], path[2], path[3], path[4], path[5]])
-	// console.log("token_email", path[5])
-
-	if (path[4] === "recover") {
-		window.location.href = friendlyURL("?module=login&op=recover_view")
-		localStorage.setItem("token_email", path[5])
-	} else if (path[4] === "verify") {
-		ajaxPromise(friendlyURL("?module=login"), "POST", "JSON", {token_email: path[5], op: "verify_email"})
-			.then(function (data) {
-				// console.log(data)
-				// return
-				if (data === "verify") {
-					toastr.options.timeOut = 3000
-					toastr.success("Email verified")
-					setTimeout(function () {
-						window.location.href = friendlyURL("?module=login")
-					}, 3000)
-				} else {
-					console.log("Then Error: verify email error")
-				}
-			})
-			.catch(function () {
-				console.log("Catch Error: verify email error")
-			})
-	} else if (path[4] === "recover_view") {
-		load_form_new_password()
-	}
-}
 
 $(document).ready(function () {
 	switchform()
-	load_content()
 	click_login()
 })
