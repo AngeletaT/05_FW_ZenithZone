@@ -113,7 +113,7 @@ class shop_dao
             $filtro = $filters_home[0]['type'][0];
             $sql .= " AND t.code_type = '$filtro'";
         } else if (isset($filters_home[0]['category'])) {
-            $filtro = $filters_home[0]['categoty'][0];
+            $filtro = $filters_home[0]['category'][0];
             $sql .= " AND c.code_cat = '$filtro'";
         } else if (isset($filters_home[0]['city'])) {
             $filtro = $filters_home[0]['city'][0];

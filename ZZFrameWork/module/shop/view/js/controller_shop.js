@@ -33,7 +33,7 @@ function loadprops() {
 		loadCarrito(redirect_product)
 		loadSuggestionsDetails()
 		localStorage.removeItem("redirect_product")
-	}else if (redirect_profile !== false) {
+	} else if (redirect_profile !== false) {
 		// console.log("LOADPROPS redirect_profile")
 		// console.log(redirect_profile)
 		// return
@@ -53,7 +53,7 @@ var userLiked = "no-like"
 function ajaxForSearch(url, op, items_page = 2) {
 	var filters_home = JSON.parse(localStorage.getItem("filters_home"))
 	var access_token = localStorage.getItem("access_token")
-	localStorage.removeItem("filters_home")
+	// localStorage.removeItem("filters_home")
 	// console.log("filters home:", filters_home)
 	// console.log(url)
 
@@ -1322,6 +1322,7 @@ function applyFilters() {
 
 function highlight_filters() {
 	var filters_shop = JSON.parse(localStorage.getItem("filters_shop"))
+	var filters_home = JSON.parse(localStorage.getItem("filters_home"))
 	// console.log(filters_shop);
 
 	for (var i = 0; i < filters_shop.length; i++) {
@@ -1406,6 +1407,41 @@ function highlight_filters() {
 			$("#filter_activity").addClass("activefilter")
 		}
 	}
+
+	for (var j = 0; j < filters_home.length; j++) {
+		if (filters_home[j][0] === "code_type") {
+			// console.log(filters_shop[0][1]);
+			// document.getElementById("filter_type").value = "3";
+			$("#filter_type").val(filters_home[0][1])
+			$("#filter_type").addClass("activefilter")
+		}
+		if (filters_home[j][0] === "code_city") {
+			// console.log(filters_shop[i][1]);
+			$("#filter_location").val(filters_home[j][1])
+			$("#filter_location").addClass("activefilter")
+		}
+		if (filters_home[j][0] === "code_cat") {
+			// console.log(filters_shop[i][1]);
+			$("#filter_category").val(filters_home[j][1])
+			$("#filter_category").addClass("activefilter")
+		}
+		if (filters_home[j][0] === "code_extra") {
+			// console.log(filters_shop[i][1]);
+			$("#filter_extra").val(filters_home[j][1])
+			$("#filter_extra").addClass("activefilter")
+			if (localStorage.getItem("filter_extra")) {
+				var extraValues = JSON.parse(localStorage.getItem("filter_extra"))
+				extraValues.forEach(function (value) {
+					$("input[name='extra[]'][value='" + value + "']").prop("checked", true)
+				})
+			}
+		}
+		if (filters_home[j][0] === "code_act") {
+			// console.log(filters_shop[i][1]);
+			$("#filter_activity").val(filters_home[j][1])
+			$("#filter_activity").addClass("activefilter")
+		}
+	}
 }
 
 function remove_filter() {
@@ -1419,6 +1455,8 @@ function remove_filter() {
 	localStorage.removeItem("filter_location")
 	localStorage.removeItem("filter_type")
 	localStorage.removeItem("filter_activity")
+	localStorage.removeItem("filters_home")
+	localStorage.removeItem("page")
 	location.reload()
 }
 
