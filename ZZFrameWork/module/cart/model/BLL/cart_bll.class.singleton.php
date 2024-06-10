@@ -101,7 +101,7 @@ class cart_bll
             } else {
                 if ($property[0]['available'] === '0') {
                     return 'error prop';
-                }else {
+                } else {
                     return $property_cart;
                 }
             }
@@ -131,6 +131,7 @@ class cart_bll
             }
 
             $this->dao->update_property($this->db, $property_cart[0]['code_prop']);
+            $this->dao->property_order($this->db, $code_purchase, $property_cart[0]['code_prop'], $username['username'], $property[0]['price']);
             $this->dao->delete_cart($this->db, $username['username']);
             $this->dao->delete_cart_prop($this->db, $username['username']);
             return 'done';

@@ -329,6 +329,7 @@ function discard() {
 				if (data === "done") {
 					// console.log("Carrito vaciado")
 					toastr.warning("Carrito vaciado")
+					location.reload()
 					$(".cart-usertable").append(`
 					<tr>
 						<th style="width: 800px; text-align: left">Product</th>

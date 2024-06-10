@@ -56,7 +56,7 @@ class cart_dao
         $sql = "SELECT * 
         FROM `cart_prop` 
         WHERE `name_user`='$username'";
-        
+
 
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
@@ -163,6 +163,15 @@ class cart_dao
     {
         $sql = "INSERT INTO `purchase`(`code_purchase`, `code_prod`, `name_user`, `quantity`, `price`) VALUES 
         ('$code_purchase','$code_prod','$username','$quantity',($price*$quantity))";
+
+        $stmt = $db->ejecutar($sql);
+
+    }
+
+    public function property_order($db, $code_purchase, $code_prop, $username, $price)
+    {
+        $sql = "INSERT INTO `purchase`(`code_purchase`, `code_prop`, `name_user`, `quantity`, `price`) VALUES 
+        ('$code_purchase','$code_prop','$username','1','$price')";
 
         $stmt = $db->ejecutar($sql);
 
