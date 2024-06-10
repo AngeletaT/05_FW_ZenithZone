@@ -41,5 +41,11 @@ class profile_model
         // return $args;
         return $this->bll->likes_profile_BLL($args);
     }
+
+    function orders_profile($args)
+    {
+        // return $args;
+        return $this->bll->orders_profile_BLL($args);
+    }
 }
 ?>

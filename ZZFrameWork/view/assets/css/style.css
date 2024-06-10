@@ -1379,7 +1379,7 @@ td {
 	align-items: center;
 	overflow-y: auto;
 	background: #0000000a;
-	width: 500px;
+	width: 100%;
 }
 
 .cart-table-profile th {
@@ -1387,6 +1387,11 @@ td {
 	padding: 14px;
 	font-size: 16px;
 	border-bottom: 2px solid #7aafcb;
+}
+
+.cart-table-profile td {
+	padding: 4px;
+	text-align: center;
 }
 
 .likes-container {
@@ -1414,6 +1419,31 @@ td {
 #drop_zone.error {
 	border-color: red;
 	color: red;
+}
+
+.invoice {
+	margin: 20px;
+	padding: 20px;
+	border: 1px solid #ccc;
+	font-family: Arial, sans-serif;
+}
+
+.invoice-header {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.invoice-property {
+	margin-bottom: 20px;
+}
+
+.invoice-extras {
+	margin-bottom: 20px;
+}
+
+.invoice-total {
+	text-align: right;
+	font-weight: bold;
 }
 
 /*-----------------------------------------------------------------------------------------------------------------------------------------------

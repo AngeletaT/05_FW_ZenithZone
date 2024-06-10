@@ -73,6 +73,7 @@ class profile_dao
         $stmt = $db->ejecutar($sql);
         return $db->listar($stmt);
     }
+
     public function select_prop_likes($db, $code_prop)
     {
         $sql = "SELECT *
@@ -102,6 +103,50 @@ class profile_dao
 
         return $retrArray;
 
+
+    }
+
+    // ORDENES DEL USUARIO
+    public function select_orders($db, $username)
+    {
+        $sql = "SELECT * 
+        FROM purchase 
+        WHERE name_user = '$username'
+        AND code_prop != 0";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
+
+    public function select_order_products($db, $code_purchase)
+    {
+        $sql = "SELECT * 
+        FROM purchase p
+        WHERE p.code_purchase = '$code_purchase'";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+
+    }
+
+    public function select_products($db, $code_prod)
+    {
+        $sql = "SELECT * 
+        FROM products
+        WHERE code_prod = '$code_prod'";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
+    }
+
+    public function select_property($db, $code_prop)
+    {
+        $sql = "SELECT * 
+        FROM property p
+        WHERE code_prop = '$code_prop'";
+
+        $stmt = $db->ejecutar($sql);
+        return $db->listar($stmt);
 
     }
 

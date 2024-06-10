@@ -18,6 +18,12 @@ class controller_profile
         common::load_view('top_page_profile.html', VIEW_PATH_PROFILE . 'profile.html');
     }
 
+    function invoice()
+    {
+        // echo 'hola view desde el profile';
+        common::load_view('top_page_profile.html', VIEW_PATH_PROFILE . 'invoice.html');
+    }
+
     function list_profile()
     {
         // echo json_encode("list_profile");
@@ -40,6 +46,12 @@ class controller_profile
     {
         // echo json_encode("likes_profile");
         echo json_encode(common::load_model('profile_model', 'likes_profile', $_POST['access_token']));
+    }
+
+    function orders_profile()
+    {
+        // echo json_encode("orders_profile");
+        echo json_encode(common::load_model('profile_model', 'orders_profile', $_POST['access_token']));
     }
 
 }

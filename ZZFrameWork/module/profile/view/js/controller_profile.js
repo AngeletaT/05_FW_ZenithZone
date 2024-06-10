@@ -59,7 +59,7 @@ function list_profile() {
 
 	ajaxPromise(friendlyURL("?module=profile"), "POST", "JSON", {access_token: access_token, op: "list_profile"})
 		.then(function (result) {
-			console.log("Dentro del then", result[0])
+			// console.log("Dentro del then", result[0])
 			// return
 			// INFORMACION DEL USUARIO
 			$(".profile-username").text(result[0].username)
@@ -145,6 +145,7 @@ function dropzone_avatar() {
 		handleFiles(files)
 	})
 }
+
 function handleFiles(files) {
 	for (var i = 0; i < files.length; i++) {
 		var file = files[i]
@@ -309,8 +310,62 @@ function likes_profile() {
 		})
 }
 
+// ORDERS
+function orders_profile() {
+	console.log("orders_profile")
+	var access_token = localStorage.getItem("access_token")
+	var op = "orders_profile"
+
+	ajaxPromise(friendlyURL("?module=profile"), "POST", "JSON", {access_token: access_token, op: op})
+		.then(function (data) {
+			console.log("Dentro del then", data)
+			// return
+			if (data === "No orders") {
+				$(".cart-table-profile").html("<h4>No orders</h4>")
+			} else {
+				for (row in data) {
+					var total = calculateInvoiceTotal(data[row])
+					$("<tr></tr>")
+						.attr({"id": data[row].code_order, "class": "cart-table-profile"})
+						.appendTo(".tbody-table-profile").html(`
+								<td>${data[row].code_purchase}</td>
+								<td>${data[row].date_purchase}</td>
+								<td>${total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}&nbsp;
+								<i class="fa-solid fa-euro-sign"></i></td>
+								<td>
+									<button id="${data[row].code_purchase}" class="order-info Button_principal">Order Info</button>
+								</td>
+								<td>
+									<button id="${data[row].code_purchase}" class="order-pdf Button_segundario">Generate PDF</button>
+								</td>
+								<td>
+									<button id="${data[row].code_purchase}" class="order-qr Button_segundario">Generate QR</button>
+								</td>
+							
+						`)
+				}
+			}
+		})
+		.catch(function (e) {
+			console.error("Catch error: ", e)
+		})
+}
+function calculateInvoiceTotal(data) {
+	console.log("calculateInvoiceTotal", data)
+	var total = 0
+
+	data.lineas.forEach((line) => {
+		total += Number(line.price)
+	})
+
+	console.log("total", total)
+
+	return total
+}
+
 $(document).ready(function () {
 	click()
 	list_profile()
 	dropzone_avatar()
+	orders_profile()
 })

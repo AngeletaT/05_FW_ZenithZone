@@ -108,4 +108,25 @@ class profile_bll
         }
         return $props;
     }
+
+    public function orders_profile_BLL($args)
+    {
+        $username = middleware::decode_token($args);
+
+        $orders = $this->dao->select_orders($this->db, $username['username']);
+
+        foreach ($orders as &$order) {
+            $order['lineas'] = $this->dao->select_order_products($this->db, $order['code_purchase']);
+            foreach ($order['lineas'] as &$linea) {
+                $linea['producto'] = $this->dao->select_products($this->db, $linea['code_prod']);
+                $linea['property'] = $this->dao->select_property($this->db, $linea['code_prop']);
+            }
+            $order['userdata'] = $this->dao->select_data_user($this->db, $order['name_user']);
+        }
+
+        if (empty($orders)) {
+            return 'No orders';
+        }
+        return $orders;
+    }
 }
