@@ -106,6 +106,16 @@ class profile_dao
 
     }
 
+    public function select_data_like($db, $code_prop, $username)
+    {
+        // return "hola dao";
+
+        $sql = "CALL UpdateLikes('$username', '$code_prop')";
+
+        $stmt = $db->ejecutar($sql);
+        return;
+    }
+
     // ORDENES DEL USUARIO
     public function select_orders($db, $username)
     {

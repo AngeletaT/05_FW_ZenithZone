@@ -1721,6 +1721,7 @@ function buttonLike() {
 	$(document).one("click", ".like-review", function (e) {
 		var code_prop = $(this).attr("id")
 		var access_token = localStorage.getItem("access_token")
+		console.log("code_prop", code_prop)
 		if (access_token) {
 			// console.log("dentro de if buttonLike")
 			// console.log("access_token", access_token)
@@ -1731,6 +1732,8 @@ function buttonLike() {
 				"op": "like",
 			})
 				.then(function (data) {
+					// console.log(data)
+					// return
 					$(this).children(".fa-heart").addClass("animate-like")
 					$(this).css("background", "#ed2553")
 					location.reload()

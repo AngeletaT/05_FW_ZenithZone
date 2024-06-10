@@ -26,6 +26,10 @@
         <uri>likes_profile</uri>
     </function>
     <function>
+        <name>like</name>
+        <uri>like</uri>
+    </function>
+    <function>
         <name>orders_profile</name>
         <uri>orders_profile</uri>
     </function>

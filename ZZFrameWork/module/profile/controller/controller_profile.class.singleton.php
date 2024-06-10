@@ -48,6 +48,12 @@ class controller_profile
         echo json_encode(common::load_model('profile_model', 'likes_profile', $_POST['access_token']));
     }
 
+    function like()
+    {
+        // echo json_encode("like");
+        echo json_encode(common::load_model('profile_model', 'like', [$_POST['access_token'], $_POST['code_prop']]));
+    }
+
     function orders_profile()
     {
         // echo json_encode("orders_profile");

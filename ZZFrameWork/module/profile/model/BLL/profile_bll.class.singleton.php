@@ -109,6 +109,15 @@ class profile_bll
         return $props;
     }
 
+    public function like_BLL($args)
+    {
+        // return $args;
+        $username = middleware::decode_token($args[0]);
+        // return $username;
+
+        return $this->dao->select_data_like($this->db, $args[1], $username["username"]);
+    }
+
     public function orders_profile_BLL($args)
     {
         $username = middleware::decode_token($args);

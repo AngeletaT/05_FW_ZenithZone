@@ -310,6 +310,28 @@ function likes_profile() {
 		})
 }
 
+$(document).on("click", ".like-profile", function () {
+	var code_prop = $(this).attr("id")
+	var access_token = localStorage.getItem("access_token")
+	console.log("code_prop", code_prop)
+	if (access_token) {
+		ajaxPromise(friendlyURL("?module=profile"), "POST", "JSON", {
+			"code_prop": code_prop,
+			"access_token": access_token,
+			"op": "like",
+		})
+			.then(function (data) {
+				// console.log(data)
+				likes_profile()
+			})
+			.catch(function (error) {
+				console.error(error)
+			})
+	} else {
+		window.location.href = friendlyURL("?module=login")
+	}
+})
+
 // ORDERS
 function orders_profile() {
 	console.log("orders_profile")
@@ -350,6 +372,7 @@ function orders_profile() {
 			console.error("Catch error: ", e)
 		})
 }
+
 function calculateInvoiceTotal(data) {
 	console.log("calculateInvoiceTotal", data)
 	var total = 0
