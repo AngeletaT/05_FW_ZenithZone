@@ -30,6 +30,12 @@ class profile_model
         return $this->bll->update_profile_BLL($args);
     }
 
+    function update_avatar($args)
+    {
+        // return $args;
+        return $this->bll->update_avatar_BLL($args);
+    }
+
     function likes_profile($args)
     {
         // return $args;

@@ -102,8 +102,7 @@ class profile_dao
 
         return $retrArray;
 
-        $stmt = $db->ejecutar($sql);
-        return $db->listar($stmt);
+
     }
 
 }

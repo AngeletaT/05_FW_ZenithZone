@@ -111,6 +111,98 @@ function update_profile() {
 }
 
 // DROPZONE AVATAR
+function dropzone_avatar() {
+	var dropZone = $("#drop_zone")
+	var fileInput = $("#fileInput")
+
+	dropZone.on("dragover", function (e) {
+		e.preventDefault()
+		e.stopPropagation()
+		dropZone.addClass("highlight")
+	})
+
+	dropZone.on("dragleave", function (e) {
+		e.preventDefault()
+		e.stopPropagation()
+		dropZone.removeClass("highlight")
+	})
+
+	dropZone.on("drop", function (e) {
+		e.preventDefault()
+		e.stopPropagation()
+		dropZone.removeClass("highlight")
+
+		var files = e.originalEvent.dataTransfer.files
+		handleFiles(files)
+	})
+
+	dropZone.on("click", function () {
+		fileInput.click()
+	})
+
+	fileInput.on("change", function () {
+		var files = fileInput[0].files
+		handleFiles(files)
+	})
+}
+function handleFiles(files) {
+	for (var i = 0; i < files.length; i++) {
+		var file = files[i]
+		if (validateFile(file)) {
+			uploadFile(file)
+		}
+	}
+}
+
+function validateFile(file) {
+	var allowedTypes = ["image/jpeg", "image/png", "image/jpg"]
+	var maxSize = 5 * 1024 * 1024 // 5MB
+
+	if (allowedTypes.indexOf(file.type) === -1) {
+		$("#drop_zone").addClass("error")
+		$("#drop_zone").text("File type not supported")
+		setTimeout(function () {
+			$("#drop_zone").removeClass("error")
+			$("#drop_zone").text("Drop file here")
+		}, 2000)
+
+		return false
+	}
+
+	if (file.size > maxSize) {
+		$("#drop_zone").addClass("error")
+		$("#drop_zone").text("File is too large")
+		setTimeout(function () {
+			$("#drop_zone").removeClass("error")
+			$("#drop_zone").text("Drop file here")
+		}, 2000)
+		return false
+	}
+
+	return true
+}
+
+function uploadFile(file) {
+	var formData = new FormData()
+	formData.append("file", file)
+	formData.append("access_token", localStorage.getItem("access_token"))
+
+	console.log("file", formData)
+
+	$.ajax({
+		url: friendlyURL("?module=profile&op=upload_avatar"),
+		type: "POST",
+		data: formData,
+		processData: false,
+		contentType: false,
+		success: function (response) {
+			console.log("File uploaded successfully", response)
+		},
+		error: function (e) {
+			console.error("Catch error: ", e)
+		},
+	})
+}
 
 // FAVORITOS
 function likes_profile() {
@@ -221,5 +313,4 @@ $(document).ready(function () {
 	click()
 	list_profile()
 	dropzone_avatar()
-	fileinput_avatar()
 })
