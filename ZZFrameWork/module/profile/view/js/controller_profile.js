@@ -25,14 +25,16 @@ function click() {
 		$(".profile-likes-sect").hide()
 	})
 
-	$(".profile-sidebar a.profile-likes").click(function (e) {
-		e.preventDefault()
-		$(".profile-info-sect").hide()
-		$(".profile-orders-sect").hide()
-		$(".profile-pref-sect").hide()
-		$(".profile-likes-sect").show()
-		likes_profile()
-	})
+	$(".profile-sidebar a.profile-likes")
+		.off("click")
+		.on("click", function (e) {
+			e.preventDefault()
+			$(".profile-info-sect").hide()
+			$(".profile-orders-sect").hide()
+			$(".profile-pref-sect").hide()
+			$(".profile-likes-sect").show()
+			likes_profile()
+		})
 
 	$(".profile-sidebar a.profile-logout").click(function (e) {
 		e.preventDefault()
@@ -50,12 +52,22 @@ function click() {
 		localStorage.setItem("redirect_profile", code_prop)
 		window.location.href = friendlyURL("?module=shop")
 	})
+
+	$(".order-pdf")
+		.off("click")
+		.on("click", function (e) {
+			e.preventDefault()
+			console.log("order-pdf")
+			var code_purchase = $(this).attr("id")
+			// console.log("code_purchase", code_purchase)
+			generate_pdf(code_purchase)
+		})
 }
 // INFORMACION USER
 function list_profile() {
-	console.log("list_profile")
+	// console.log("list_profile")
 	var access_token = localStorage.getItem("access_token")
-	console.log("access_token", access_token)
+	// console.log("access_token", access_token)
 
 	ajaxPromise(friendlyURL("?module=profile"), "POST", "JSON", {access_token: access_token, op: "list_profile"})
 		.then(function (result) {
@@ -275,7 +287,7 @@ function likes_profile() {
 									</button>
 								</td>
 								<td class="like-content">
-									<button id='${data[row][0].code_prop}'class="like-review Button_segundario active">
+									<button id='${data[row][0].code_prop}'class="like-profile Button_segundario active">
 									<i class="fa fa-heart" aria-hidden="true"></i>${data[row][0].likes}</button>
 								</td>
 							</tr>
@@ -334,13 +346,13 @@ $(document).on("click", ".like-profile", function () {
 
 // ORDERS
 function orders_profile() {
-	console.log("orders_profile")
+	// console.log("orders_profile")
 	var access_token = localStorage.getItem("access_token")
 	var op = "orders_profile"
 
 	ajaxPromise(friendlyURL("?module=profile"), "POST", "JSON", {access_token: access_token, op: op})
 		.then(function (data) {
-			console.log("Dentro del then", data)
+			// console.log("Dentro del then", data)
 			// return
 			if (data === "No orders") {
 				$(".cart-table-profile").html("<h4>No orders</h4>")
@@ -355,9 +367,6 @@ function orders_profile() {
 								<td>${total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}&nbsp;
 								<i class="fa-solid fa-euro-sign"></i></td>
 								<td>
-									<button id="${data[row].code_purchase}" class="order-info Button_principal">Order Info</button>
-								</td>
-								<td>
 									<button id="${data[row].code_purchase}" class="order-pdf Button_segundario">Generate PDF</button>
 								</td>
 								<td>
@@ -366,6 +375,7 @@ function orders_profile() {
 							
 						`)
 				}
+				click()
 			}
 		})
 		.catch(function (e) {
@@ -374,16 +384,52 @@ function orders_profile() {
 }
 
 function calculateInvoiceTotal(data) {
-	console.log("calculateInvoiceTotal", data)
+	// console.log("calculateInvoiceTotal", data)
 	var total = 0
 
 	data.lineas.forEach((line) => {
 		total += Number(line.price)
 	})
 
-	console.log("total", total)
+	// console.log("total", total)
 
 	return total
+}
+
+function generate_pdf(code_purchase) {
+	console.log("generate_pdf")
+	var access_token = localStorage.getItem("access_token")
+	var op = "generate_pdf"
+
+	ajaxPromise(friendlyURL("?module=profile"), "POST", "JSON", {
+		access_token: access_token,
+		code_purchase: code_purchase,
+		op: op,
+	})
+		.then(function (data) {
+			console.log("Dentro del then", data)
+			// return
+			ajaxPromise(friendlyURL("?module=profile"), "POST", "JSON", {
+				data: data,
+				op: "invoice_data",
+			})
+				.then(function (data) {
+					console.log("Dentro del then2", data)
+					// return
+					var pdf = data.invoice
+					window.open(pdf, "_blank")
+					// console.log("Success")
+					// location.reload()
+				})
+				.catch(function (e) {
+					console.error("Catch error: ", e)
+				})
+
+			// location.reload()
+		})
+		.catch(function (e) {
+			console.error("Catch error: ", e)
+		})
 }
 
 $(document).ready(function () {

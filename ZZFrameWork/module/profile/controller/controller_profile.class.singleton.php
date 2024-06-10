@@ -18,12 +18,6 @@ class controller_profile
         common::load_view('top_page_profile.html', VIEW_PATH_PROFILE . 'profile.html');
     }
 
-    function invoice()
-    {
-        // echo 'hola view desde el profile';
-        common::load_view('top_page_profile.html', VIEW_PATH_PROFILE . 'invoice.html');
-    }
-
     function list_profile()
     {
         // echo json_encode("list_profile");
@@ -59,6 +53,19 @@ class controller_profile
         // echo json_encode("orders_profile");
         echo json_encode(common::load_model('profile_model', 'orders_profile', $_POST['access_token']));
     }
+
+    function generate_pdf()
+    {
+        // echo json_encode("generate_pdf");
+        echo json_encode(common::load_model('profile_model', 'generate_pdf', [$_POST['access_token'], $_POST['code_purchase']]));
+    }
+
+    function invoice_data()
+    {
+        // echo json_encode("invoice_data");
+        echo json_encode(pdf::generatePDF($_POST['data']));
+    }
+
 
 }
 ?>

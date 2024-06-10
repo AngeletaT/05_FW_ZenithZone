@@ -138,4 +138,37 @@ class profile_bll
         }
         return $orders;
     }
+
+    public function generate_pdf_BLL($args)
+    {
+        // return $args;
+        $username = middleware::decode_token($args[0]);
+        // return $username;
+
+        $userData = $this->dao->select_data_user($this->db, $username['username']);
+        $order = $this->dao->select_order_products($this->db, $args[1]);
+        $products = [];
+        $property = [];
+        foreach ($order as &$linea) {
+            $product = $this->dao->select_products($this->db, $linea['code_prod']);
+            $prop = $this->dao->select_property($this->db, $linea['code_prop']);
+
+            if (!empty($product)) {
+                $products[] = $product;
+            }
+            if (!empty($prop)) {
+                $property[] = $prop;
+            }
+        }
+
+        $invoice = [];
+        $invoice['order'] = $args[1];
+        $invoice['cliente'] = $userData;
+        $invoice['propiedad'] = $property;
+        $invoice['productos'] = $products;
+
+        return $invoice;
+    }
+
+
 }

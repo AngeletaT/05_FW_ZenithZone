@@ -53,5 +53,11 @@ class profile_model
         // return $args;
         return $this->bll->orders_profile_BLL($args);
     }
+
+    function generate_pdf($args)
+    {
+        // return $args;
+        return $this->bll->generate_pdf_BLL($args);
+    }
 }
 ?>

@@ -33,4 +33,12 @@
         <name>orders_profile</name>
         <uri>orders_profile</uri>
     </function>
+    <function>
+        <name>generate_pdf</name>
+        <uri>generate_pdf</uri>
+    </function>
+    <function>
+        <name>invoice_data</name>
+        <uri>invoice_data</uri>
+    </function>
 </functions>

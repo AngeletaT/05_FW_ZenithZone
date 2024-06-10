@@ -4,7 +4,9 @@
     "type": "project",
     "require": {
         "resend/resend-php": "^0.6.0",
-        "ultramsg/whatsapp-php-sdk": "^2.0"
+        "ultramsg/whatsapp-php-sdk": "^2.0",
+        "dompdf/dompdf": "^3.0",
+        "endroid/qr-code": "^5.0"
     },
     "license": "MIT",
     "minimum-stability": "stable"
