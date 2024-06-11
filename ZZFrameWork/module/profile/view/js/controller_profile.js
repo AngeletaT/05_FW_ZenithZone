@@ -126,7 +126,10 @@ function update_profile() {
 			// console.log("Dentro del then", data)
 			// return
 			// console.log("Success")
-			location.reload()
+			tostr.success("Profile updated")
+			setTimeout(function () {
+				location.reload()
+			}, 3000)
 		})
 		.catch(function (e) {
 			console.error("Catch error: ", e)
