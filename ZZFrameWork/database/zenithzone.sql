@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-05-2024 a las 12:14:16
+-- Tiempo de generación: 11-06-2024 a las 17:53:14
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,6 +20,26 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `zenithzone`
 --
+
+DELIMITER $$
+--
+-- Procedimientos
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateLikes` (IN `p_username` VARCHAR(255), IN `p_code_prop` VARCHAR(255))   BEGIN
+  DECLARE v_count INT;
+
+  SELECT COUNT(*) INTO v_count FROM likes WHERE username = p_username AND code_prop = p_code_prop;
+
+  IF v_count = 1 THEN
+    DELETE FROM likes WHERE username = p_username AND code_prop = p_code_prop;
+    UPDATE property SET likes = likes - 1 WHERE code_prop = p_code_prop;
+  ELSEIF v_count = 0 THEN
+    UPDATE property SET likes = likes + 1 WHERE code_prop = p_code_prop;
+    INSERT INTO likes(username, code_prop) VALUES(p_username, p_code_prop);
+  END IF;
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -51,10 +71,64 @@ INSERT INTO `activity` (`code_act`, `name_act`, `img_act`) VALUES
 --
 
 CREATE TABLE `cart` (
-  `id_cart` int(11) NOT NULL,
-  `id_user` varchar(255) NOT NULL,
-  `id_prod` varchar(255) NOT NULL,
-  `cantidad` int(11) NOT NULL
+  `code_cart` int(11) NOT NULL,
+  `name_user` varchar(255) NOT NULL,
+  `code_prod` varchar(255) NOT NULL,
+  `quantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `cart`
+--
+
+INSERT INTO `cart` (`code_cart`, `name_user`, `code_prod`, `quantity`) VALUES
+(36, 'Salva32', '1', 0),
+(37, 'Salva32', '6', 0),
+(38, 'Salva32', '8', 0),
+(39, 'Salva32', '9', 0),
+(40, 'Salva32', '10', 0),
+(41, 'Cain33', '1', 0),
+(42, 'Cain33', '6', 0),
+(43, 'Cain33', '8', 0),
+(44, 'Cain33', '9', 0),
+(45, 'Cain33', '10', 0),
+(46, 'Salva32', '13', 0),
+(47, 'Salva32', '4', 0),
+(48, 'Cain33', '3', 0),
+(49, 'Salva32', '3', 0),
+(50, 'Salva32', '11', 0),
+(51, 'Salva32', '12', 0),
+(52, 'Cain33', '11', 0),
+(53, 'Cain33', '12', 0),
+(54, 'Cain33', '4', 0),
+(55, 'Xavi58', '12', 0),
+(56, 'Xavi58', '11', 0),
+(57, 'Xavi58', '10', 0),
+(58, 'Xavi58', '9', 0),
+(59, 'Xavi58', '8', 0),
+(60, 'Xavi58', '6', 0),
+(61, 'Xavi58', '1', 0),
+(62, 'Salva32', '14', 0),
+(63, 'Diego94', '3', 0),
+(64, 'Diego94', '6', 0),
+(65, 'Diego94', '8', 0),
+(66, 'Diego94', '9', 0),
+(67, 'Diego94', '10', 0),
+(68, 'Diego94', '11', 0),
+(69, 'Diego94', '12', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cart_prop`
+--
+
+CREATE TABLE `cart_prop` (
+  `code_cart_prop` int(11) NOT NULL,
+  `code_prop` int(11) DEFAULT NULL,
+  `name_user` varchar(255) NOT NULL,
+  `name_prop` varchar(255) DEFAULT NULL,
+  `price` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -281,7 +355,9 @@ INSERT INTO `likes` (`username`, `code_prop`) VALUES
 ('Cain33', 4),
 ('Cain33', 5),
 ('Salva32', 1),
-('Salva32', 6);
+('Salva32', 6),
+('Xavi58', 3),
+('Xavi58', 5);
 
 -- --------------------------------------------------------
 
@@ -290,7 +366,7 @@ INSERT INTO `likes` (`username`, `code_prop`) VALUES
 --
 
 CREATE TABLE `products` (
-  `id_prod` int(11) NOT NULL,
+  `code_prod` int(11) NOT NULL,
   `name_prod` varchar(255) NOT NULL,
   `price_prod` int(255) NOT NULL,
   `stock` int(11) DEFAULT 0
@@ -300,21 +376,21 @@ CREATE TABLE `products` (
 -- Volcado de datos para la tabla `products`
 --
 
-INSERT INTO `products` (`id_prod`, `name_prod`, `price_prod`, `stock`) VALUES
-(1, 'Clases de Ballet', 20, 100),
+INSERT INTO `products` (`code_prod`, `name_prod`, `price_prod`, `stock`) VALUES
+(1, 'Clases de Ballet', 20, 73),
 (2, 'Clases de Hip Hop', 20, 100),
-(3, 'Clases de Pilates', 20, 100),
-(4, 'Clases de Bailes de Salón', 25, 100),
+(3, 'Clases de Pilates', 20, 98),
+(4, 'Clases de Bailes de Salón', 25, 94),
 (5, 'Clases de Yoga', 25, 100),
-(6, 'Membresía de gimnasio', 50, 100),
+(6, 'Membresía de gimnasio', 50, 0),
 (7, 'Entrenador personal a domicilio', 60, 100),
-(8, 'Equipo de deporte en casa', 200, 100),
-(9, 'Instalación de vigilancia', 100, 150),
-(10, 'Instalación de internet', 75, 100),
-(11, 'Servicios de Streaming', 10, 100),
-(12, 'Mudanza', 100, 100),
-(13, 'Servicio de reparaciones', 50, 100),
-(14, 'Servicio de limpieza', 25, 100);
+(8, 'Equipo de deporte en casa', 200, 81),
+(9, 'Instalación de vigilancia', 100, 0),
+(10, 'Instalación de internet', 75, 0),
+(11, 'Servicios de Streaming', 10, 95),
+(12, 'Mudanza', 100, 95),
+(13, 'Servicio de reparaciones', 50, 99),
+(14, 'Servicio de limpieza', 25, 99);
 
 -- --------------------------------------------------------
 
@@ -336,34 +412,35 @@ CREATE TABLE `property` (
   `longitud` float NOT NULL,
   `latitud` float NOT NULL,
   `last_visit` datetime DEFAULT NULL,
-  `likes` int(11) NOT NULL
+  `likes` int(11) NOT NULL,
+  `available` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `property`
 --
 
-INSERT INTO `property` (`code_prop`, `ref_cat`, `name_prop`, `m2`, `rooms`, `baths`, `description`, `price`, `publication`, `code_city`, `longitud`, `latitud`, `last_visit`, `likes`) VALUES
-(1, '1235A', 'Spacious house with garden', 200, 4, 2, 'Enjoy the spaciousness of this 200m² house with 4 bedrooms and 2 baths, complemented by a serene garden, offering a perfect blend of comfort and tranquility', 300000, '2024-01-25', 1, -0.4063, 39.4946, '2024-05-29 19:24:31', 2),
-(2, '4567B', 'Cozy flat in the city center', 100, 2, 1, 'Nestled in the city center, this cozy 100m² flat boasts 2 bedrooms and 1 bath, promising urban convenience combined with warmth and charm.', 1200, '2024-01-25', 5, -5.9821, 37.3886, '2024-05-29 19:23:56', 2),
-(3, '8912C', 'Beautiful house with a view', 180, 3, 2, 'Revel in the beauty of this 180m² house, featuring 3 bedrooms and 2 baths, offering picturesque views that redefine the concept of home.', 250000, '2024-01-25', 2, -0.4838, 38.3452, '2024-04-19 19:09:03', 0),
-(4, '3456D', 'Large commercial space', 300, 0, 1, 'Embark on vast commercial ventures with this 300m² property, designed for expansive enterprises, promising ample space for your business aspirations.', 1500, '2024-01-25', 4, 2.1685, 41.3851, '2024-03-25 20:57:28', 1),
-(5, '6789E\r\n', 'Spacious land for development', 500, 0, 0, 'Unleash your development dreams on this 500m² expanse of land, offering endless possibilities and a canvas for your visionary projects.', 500, '2024-01-25', 1, -0.3847, 39.5122, '2024-04-24 21:10:47', 1),
-(6, '5896F', 'Modern house with swimming pool', 220, 5, 3, 'Step into modern luxury with this 220m² house, boasting 5 bedrooms, 3 baths, and a refreshing swimming pool, promising an epitome of contemporary living.', 350000, '2024-01-25', 2, -0.5068, 38.3498, '2024-04-24 21:11:24', 1),
-(7, '1246G', 'Bright flat with balcony', 120, 2, 1, 'Illuminate your life in this bright 120m² flat, featuring 2 bedrooms and 1 bath, complemented by a charming balcony, offering a delightful urban retreat.', 1440, '2024-01-25', 3, -3.7038, 40.4168, NULL, 0),
-(8, '5789H', 'Commercial property with parking', 400, 0, 1, 'Unlock the potential of your business in this 400m² property, equipped with parking facilities, offering a strategic location for your commercial endeavors.', 1800, '2024-01-25', 4, 2.2049, 41.4168, NULL, 0),
-(9, '6485J', 'Spacious garage for multiple cars', 10, 0, 0, 'Safeguard your vehicles in this spacious 10m² garage, providing ample room for multiple cars, ensuring convenience and security for your prized possessions.', 25000, '2024-01-25', 5, -5.9651, 37.3814, '2024-04-19 20:01:11', 0),
-(10, 'ABC123', 'Modern Apartment with Sea View', 110, 3, 2, 'This modern apartment offers stunning sea views, with 3 bedrooms and 2 bathrooms, perfect for those seeking a coastal lifestyle.', 250000, '2024-04-19', 1, -0.4015, 39.4737, '2024-04-19 19:51:00', 0),
-(11, 'DEF456', 'Charming Villa with Pool', 250, 5, 3, 'Experience the charm of this villa with a private pool, featuring 5 bedrooms and 3 bathrooms, ideal for relaxation and entertainment.', 3600, '2024-04-19', 2, -0.4986, 38.3456, NULL, 0),
-(12, 'GHI789', 'Spacious Loft in the City', 150, 1, 1, 'This spacious loft in the heart of the city offers a unique living experience, with 1 bedroom and 1 bathroom, perfect for urban dwellers.', 540, '2024-04-19', 3, -3.7025, 40.4144, NULL, 0),
-(13, 'JKL012', 'Luxury Penthouse with Terrace', 180, 4, 2, 'Indulge in luxury living with this penthouse boasting a spacious terrace, 4 bedrooms, and 2 bathrooms, offering panoramic city views.', 3500, '2024-04-19', 4, 2.1781, 41.3948, NULL, 0),
-(14, 'MNO345', 'Cozy Cottage in the Countryside', 120, 2, 1, 'Escape to the countryside in this cozy cottage, featuring 2 bedrooms and 1 bathroom, offering tranquility and nature just outside your door.', 120000, '2024-04-19', 5, -6.0123, 37.3971, NULL, 0),
-(15, 'PQR678', 'Commercial Space in Business District', 400, 0, 2, 'Invest in this commercial space located in the bustling business district, offering 400m² of opportunity for your entrepreneurial ventures.', 6400, '2024-04-19', 1, -0.4072, 39.4891, NULL, 0),
-(16, 'STU901', 'Renovated Townhouse with Garden', 180, 3, 2, 'Discover the charm of this renovated townhouse with a beautiful garden, featuring 3 bedrooms and 2 bathrooms, perfect for family living.', 960, '2024-04-19', 2, -0.4903, 38.3558, NULL, 0),
-(17, 'VWX234', 'Industrial Warehouse with Office', 600, 0, 0, 'Unlock the potential of this industrial warehouse with an attached office space, offering 600m² of space for your business needs.', 2750, '2024-04-19', 3, -3.7045, 40.4158, NULL, 0),
-(18, 'YZA567', 'Rustic Farmhouse with Vineyard', 300, 4, 3, 'Experience rustic living in this farmhouse surrounded by vineyards, boasting 4 bedrooms and 3 bathrooms, perfect for wine enthusiasts.', 400000, '2024-04-19', 4, 2.1859, 41.3845, NULL, 0),
-(19, 'BCD890', 'Secluded Retreat in the Mountains', 200, 3, 2, 'Escape to this secluded retreat nestled in the mountains, offering 3 bedrooms and 2 bathrooms, ideal for those seeking serenity and nature.', 2240, '2024-04-19', 5, -6.0021, 37.4035, NULL, 0),
-(20, 'EFG123', 'Elegant Townhouse with Rooftop Terrace', 160, 3, 2, 'Step into elegance with this townhouse featuring a rooftop terrace, 3 bedrooms, and 2 bathrooms, offering sophistication and style.', 1140, '2024-04-19', 1, -0.4138, 39.4982, '2024-05-09 23:16:43', 0);
+INSERT INTO `property` (`code_prop`, `ref_cat`, `name_prop`, `m2`, `rooms`, `baths`, `description`, `price`, `publication`, `code_city`, `longitud`, `latitud`, `last_visit`, `likes`, `available`) VALUES
+(1, '1235A', 'Spacious house with garden', 200, 4, 2, 'Enjoy the spaciousness of this 200m² house with 4 bedrooms and 2 baths, complemented by a serene garden, offering a perfect blend of comfort and tranquility', 300000, '2024-01-25', 1, -0.4063, 39.4946, '2024-06-03 21:21:20', 2, 1),
+(2, '4567B', 'Cozy flat in the city center', 100, 2, 1, 'Nestled in the city center, this cozy 100m² flat boasts 2 bedrooms and 1 bath, promising urban convenience combined with warmth and charm.', 1200, '2024-01-25', 5, -5.9821, 37.3886, '2024-06-04 21:13:17', 2, 0),
+(3, '8912C', 'Beautiful house with a view', 180, 3, 2, 'Revel in the beauty of this 180m² house, featuring 3 bedrooms and 2 baths, offering picturesque views that redefine the concept of home.', 250000, '2024-01-25', 2, -0.4838, 38.3452, '2024-06-11 16:57:56', 1, 0),
+(4, '3456D', 'Large commercial space', 300, 0, 1, 'Embark on vast commercial ventures with this 300m² property, designed for expansive enterprises, promising ample space for your business aspirations.', 1500, '2024-01-25', 4, 2.1685, 41.3851, '2024-06-11 15:25:03', 1, 0),
+(5, '6789E\r\n', 'Spacious land for development', 500, 0, 0, 'Unleash your development dreams on this 500m² expanse of land, offering endless possibilities and a canvas for your visionary projects.', 500, '2024-01-25', 1, -0.3847, 39.5122, '2024-06-10 19:35:01', 2, 1),
+(6, '5896F', 'Modern house with swimming pool', 220, 5, 3, 'Step into modern luxury with this 220m² house, boasting 5 bedrooms, 3 baths, and a refreshing swimming pool, promising an epitome of contemporary living.', 350000, '2024-01-25', 2, -0.5068, 38.3498, '2024-06-11 00:04:12', 1, 0),
+(7, '1246G', 'Bright flat with balcony', 120, 2, 1, 'Illuminate your life in this bright 120m² flat, featuring 2 bedrooms and 1 bath, complemented by a charming balcony, offering a delightful urban retreat.', 1440, '2024-01-25', 3, -3.7038, 40.4168, NULL, 0, 1),
+(8, '5789H', 'Commercial property with parking', 400, 0, 1, 'Unlock the potential of your business in this 400m² property, equipped with parking facilities, offering a strategic location for your commercial endeavors.', 1800, '2024-01-25', 4, 2.2049, 41.4168, NULL, 0, 1),
+(9, '6485J', 'Spacious garage for multiple cars', 10, 0, 0, 'Safeguard your vehicles in this spacious 10m² garage, providing ample room for multiple cars, ensuring convenience and security for your prized possessions.', 25000, '2024-01-25', 5, -5.9651, 37.3814, '2024-06-10 21:12:49', 0, 0),
+(10, 'ABC123', 'Modern Apartment with Sea View', 110, 3, 2, 'This modern apartment offers stunning sea views, with 3 bedrooms and 2 bathrooms, perfect for those seeking a coastal lifestyle.', 250000, '2024-04-19', 1, -0.4015, 39.4737, '2024-06-10 21:10:08', 0, 1),
+(11, 'DEF456', 'Charming Villa with Pool', 250, 5, 3, 'Experience the charm of this villa with a private pool, featuring 5 bedrooms and 3 bathrooms, ideal for relaxation and entertainment.', 3600, '2024-04-19', 2, -0.4986, 38.3456, NULL, 0, 1),
+(12, 'GHI789', 'Spacious Loft in the City', 150, 1, 1, 'This spacious loft in the heart of the city offers a unique living experience, with 1 bedroom and 1 bathroom, perfect for urban dwellers.', 540, '2024-04-19', 3, -3.7025, 40.4144, NULL, 0, 1),
+(13, 'JKL012', 'Luxury Penthouse with Terrace', 180, 4, 2, 'Indulge in luxury living with this penthouse boasting a spacious terrace, 4 bedrooms, and 2 bathrooms, offering panoramic city views.', 3500, '2024-04-19', 4, 2.1781, 41.3948, NULL, 0, 1),
+(14, 'MNO345', 'Cozy Cottage in the Countryside', 120, 2, 1, 'Escape to the countryside in this cozy cottage, featuring 2 bedrooms and 1 bathroom, offering tranquility and nature just outside your door.', 120000, '2024-04-19', 5, -6.0123, 37.3971, NULL, 0, 1),
+(15, 'PQR678', 'Commercial Space in Business District', 400, 0, 2, 'Invest in this commercial space located in the bustling business district, offering 400m² of opportunity for your entrepreneurial ventures.', 6400, '2024-04-19', 1, -0.4072, 39.4891, NULL, 0, 1),
+(16, 'STU901', 'Renovated Townhouse with Garden', 180, 3, 2, 'Discover the charm of this renovated townhouse with a beautiful garden, featuring 3 bedrooms and 2 bathrooms, perfect for family living.', 960, '2024-04-19', 2, -0.4903, 38.3558, NULL, 0, 1),
+(17, 'VWX234', 'Industrial Warehouse with Office', 600, 0, 0, 'Unlock the potential of this industrial warehouse with an attached office space, offering 600m² of space for your business needs.', 2750, '2024-04-19', 3, -3.7045, 40.4158, NULL, 0, 1),
+(18, 'YZA567', 'Rustic Farmhouse with Vineyard', 300, 4, 3, 'Experience rustic living in this farmhouse surrounded by vineyards, boasting 4 bedrooms and 3 bathrooms, perfect for wine enthusiasts.', 400000, '2024-04-19', 4, 2.1859, 41.3845, NULL, 0, 1),
+(19, 'BCD890', 'Secluded Retreat in the Mountains', 200, 3, 2, 'Escape to this secluded retreat nestled in the mountains, offering 3 bedrooms and 2 bathrooms, ideal for those seeking serenity and nature.', 2240, '2024-04-19', 5, -6.0021, 37.4035, '2024-06-10 20:04:42', 0, 1),
+(20, 'EFG123', 'Elegant Townhouse with Rooftop Terrace', 160, 3, 2, 'Step into elegance with this townhouse featuring a rooftop terrace, 3 bedrooms, and 2 bathrooms, offering sophistication and style.', 1140, '2024-04-19', 1, -0.4138, 39.4982, '2024-05-09 23:16:43', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -660,13 +737,44 @@ INSERT INTO `property_type` (`code_prop`, `code_type`) VALUES
 --
 
 CREATE TABLE `purchase` (
-  `id_purchase` int(11) NOT NULL,
-  `id_user` varchar(255) NOT NULL,
-  `id_prod` varchar(255) NOT NULL,
+  `code_order` int(25) NOT NULL,
+  `code_purchase` varchar(25) NOT NULL,
+  `name_user` varchar(255) NOT NULL,
+  `code_prod` varchar(255) NOT NULL,
+  `code_prop` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
   `price` int(11) NOT NULL,
   `date_purchase` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `purchase`
+--
+
+INSERT INTO `purchase` (`code_order`, `code_purchase`, `name_user`, `code_prod`, `code_prop`, `quantity`, `price`, `date_purchase`) VALUES
+(22, '30e94f', 'Salva32', '0', 2, 1, 1200, '2024-06-03 19:48:41'),
+(23, '30e94f', 'Salva32', '1', 0, 2, 40, '2024-06-03 19:48:40'),
+(24, '30e94f', 'Salva32', '6', 0, 92, 4600, '2024-06-03 19:48:40'),
+(25, '30e94f', 'Salva32', '8', 0, 3, 600, '2024-06-03 19:48:40'),
+(26, '30e94f', 'Salva32', '9', 0, 93, 9300, '2024-06-03 19:48:41'),
+(27, '30e94f', 'Salva32', '10', 0, 90, 6750, '2024-06-03 19:48:41'),
+(57, '3dc2c1', 'Cain33', '4', 0, 4, 100, '2024-06-10 19:13:04'),
+(58, '3dc2c1', 'Cain33', '', 9, 1, 25000, '2024-06-10 19:13:04'),
+(59, 'e873e6', 'Xavi58', '12', 0, 1, 100, '2024-06-10 22:04:28'),
+(60, 'e873e6', 'Xavi58', '11', 0, 1, 10, '2024-06-10 22:04:28'),
+(61, 'e873e6', 'Xavi58', '8', 0, 1, 200, '2024-06-10 22:04:28'),
+(62, 'e873e6', 'Xavi58', '1', 0, 1, 20, '2024-06-10 22:04:28'),
+(63, 'e873e6', 'Xavi58', '', 6, 1, 350000, '2024-06-10 22:04:28'),
+(64, 'feac19', 'Salva32', '10', 0, 1, 75, '2024-06-11 13:25:14'),
+(65, 'feac19', 'Salva32', '13', 0, 1, 50, '2024-06-11 13:25:14'),
+(66, 'feac19', 'Salva32', '4', 0, 1, 25, '2024-06-11 13:25:14'),
+(67, 'feac19', 'Salva32', '14', 0, 1, 25, '2024-06-11 13:25:14'),
+(68, 'feac19', 'Salva32', '', 4, 1, 1500, '2024-06-11 13:25:14'),
+(69, 'ade247', 'Diego94', '3', 0, 1, 20, '2024-06-11 14:58:37'),
+(70, 'ade247', 'Diego94', '8', 0, 1, 200, '2024-06-11 14:58:37'),
+(71, 'ade247', 'Diego94', '11', 0, 1, 10, '2024-06-11 14:58:37'),
+(72, 'ade247', 'Diego94', '12', 0, 1, 100, '2024-06-11 14:58:37'),
+(73, 'ade247', 'Diego94', '', 3, 1, 250000, '2024-06-11 14:58:37');
 
 -- --------------------------------------------------------
 
@@ -705,6 +813,9 @@ CREATE TABLE `users` (
   `type_user` varchar(50) DEFAULT NULL,
   `avatar` varchar(100) DEFAULT NULL,
   `phone_number` varchar(20) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `surname` varchar(255) NOT NULL,
+  `city` varchar(255) NOT NULL,
   `login_attempts` int(11) NOT NULL,
   `token_email` varchar(1000) NOT NULL,
   `token_otp` varchar(20) NOT NULL,
@@ -716,20 +827,23 @@ CREATE TABLE `users` (
 -- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `users` (`id_user`, `username`, `password`, `email`, `type_user`, `avatar`, `phone_number`, `login_attempts`, `token_email`, `token_otp`, `isActive`, `login_type`) VALUES
-('0069a', 'Salva32', '$2y$12$HuhpFdE6TZ6R4dSixiYwLOoqU9YIhyk/Vpqguu0wlpBnGBvcASQmS', 'salva32@gmail.com', 'client', 'https://i.pravatar.cc/500?u=3f7c577fb8d1d26e0bccaa5efb593184', '', 0, '', '', 1, 'local'),
-('1044v', 'Juan29', '$2y$12$dbwGopIYSRfpSu5qRkF.3uLq1kQUxSMmVbjUBSdJqGjJOr.hhaxfi', 'juan29@gmail.com', 'client', 'https://i.pravatar.cc/500?u=7038663cc684aa330956752c7e6fe7d4', '', 0, '', '', 1, 'local'),
-('1316a', 'guille14', '$2y$12$9KQBpg8Tf33dNN174kNnnOdPeb/vhFT4sVmSfL68pqcIn4L4lPZ8i', 'guille14@gmail.com', 'client', 'https://i.pravatar.cc/500?u=ade40bb1a8734c244cb961d1f5287582', '', 0, '', '', 1, 'local'),
-('2i9GDBf7SSdb0i06kTcKTYqRIvQ2', 'angeletatb98', '', 'angeletatb98@gmail.com', 'client', 'https://avatars.githubusercontent.com/u/170969127?v=4', '', 0, '', '', 0, 'github'),
-('471ca', 'Laura56', '$2y$12$nyJ1WKnz9yw3HdCNOxAIK.yWg5DbL8nn4bfchol1iW8/c05zRcp/m', 'laura56@gmail.com', 'client', 'https://i.pravatar.cc/500?u=f6a5735eb29501cce7904c2894432542', '', 0, '', '', 1, 'local'),
-('6bdb7', 'paco79', '$2y$12$7kAiWI6IcjtNcXSBESSaneZfId8KqvfVkxbk9G/uvpwvyZKyUz9bq', 'paco79@gmail.com', 'client', 'https://i.pravatar.cc/500?u=cd03520894abd001149c0ad0491c1d04', '', 0, '', '', 1, 'local'),
-('8dcb4', 'Cain33', '$2y$12$1i399bzacg67obsHMuNSZeYBZ/f5/Kvet23tn3OdWWYu/RIQVwzvO', 'cain33@gmail.com', 'client', 'https://i.pravatar.cc/500?u=3bb21b792c59e0c1d535902d3ea213e1', '', 0, '', '', 1, 'local'),
-('9d8df', 'Angela24', '$2y$12$qjen7QF.pQ4S6CLAR/WzuuuI1uvhSTpnK.lpNnaq0VUsX0EKKRXQi', 'angela24@gmail.com', 'admin', 'https://robohash.org/bcad65cbb7e72b2c3eb99b8f4a4d41ee', '', 0, '', '', 1, 'local'),
-('b0a0j', 'Alvaro74', '$2y$12$9Yl2wNh5hjRJr2c2SaNDkuW54avtOPyX6A3j08i61WZGcAYIlFT6u', 'alvaro74@gmail.com', 'client', 'https://i.pravatar.cc/500?u=438ae20f700cb35f02b4dc03e80c07e6', '+345687466', 0, '', '', 1, 'local'),
-('c9c15', 'Carla29 ', '$2y$12$ArMAmb7UPHEbzxo9so1BWOSjCzgBhqL0TtgzZJgmmy42q7UuJi4LO', 'carla29@gmail.com', 'client', 'https://i.pravatar.cc/400?u=62779a64d5b24b7fd3d5026977b7a87a', '', 0, '', '', 1, 'local'),
-('f138a', 'Carlos29', '$2y$12$DUmul1bagMdxtsqur.jNK.u01rZ.sKC3nBfs58PmUwgBZm.pxV.Wi', 'carlos29@gmail.com', 'client', 'https://robohash.org/db1e0a3750e0399df3eeee808187d9b4', '', 0, '', '', 1, 'local'),
-('f6e8r', 'Ainhoa22', '$2y$12$HTGQ.0KY4c8TNxRjCXPqoeP3LZogd4zEpoHNjAyb0rsrzxG17BrjK', 'ainhoa22@gmail.com', 'client', 'https://i.pravatar.cc/500?u=1314951436582657f9c3e6d3ddde1911', '', 0, '', '', 1, 'local'),
-('rFz4mONvFVUa1F5rCEI25SGj0Fl1', 'angeletatorro98', '', 'angeletatorro98@gmail.com', 'client', 'https://lh3.googleusercontent.com/a/ACg8ocICFaUywok03hRKF3BLUiKBRdEjcsKFA_MLPllpjXPlBShY5fGN=s96-c', '', 0, '', '', 0, 'google');
+INSERT INTO `users` (`id_user`, `username`, `password`, `email`, `type_user`, `avatar`, `phone_number`, `name`, `surname`, `city`, `login_attempts`, `token_email`, `token_otp`, `isActive`, `login_type`) VALUES
+('0069a', 'Salva32', '$2y$12$HuhpFdE6TZ6R4dSixiYwLOoqU9YIhyk/Vpqguu0wlpBnGBvcASQmS', 'salva32@gmail.com', 'client', '/angela/ZZFrameWork/view/uploads/avatar/0069a.png', '+34589652347', 'Salva', 'Llopis', 'Ontinyent', 0, '', '', 1, 'local'),
+('1044v', 'Juan29', '$2y$12$dbwGopIYSRfpSu5qRkF.3uLq1kQUxSMmVbjUBSdJqGjJOr.hhaxfi', 'juan29@gmail.com', 'client', 'https://i.pravatar.cc/500?u=7038663cc684aa330956752c7e6fe7d4', '', '', '', '', 0, '', '', 1, 'local'),
+('1316a', 'guille14', '$2y$12$9KQBpg8Tf33dNN174kNnnOdPeb/vhFT4sVmSfL68pqcIn4L4lPZ8i', 'guille14@gmail.com', 'client', 'https://i.pravatar.cc/500?u=ade40bb1a8734c244cb961d1f5287582', '', '', '', '', 0, '', '', 1, 'local'),
+('2i9GDBf7SSdb0i06kTcKTYqRIvQ2', 'angeletatb98', ' ', 'angeletatb98@gmail.com', 'client', '', '', '', '', '', 0, '', '', 0, 'github'),
+('471ca', 'Laura56', '$2y$12$PLMsbQcRhAvzrrEHQRYxKutEH5lK9mtrLg6O2q4jkuHfhLjgIVAmS', 'laura56@gmail.com', 'client', 'https://i.pravatar.cc/500?u=f6a5735eb29501cce7904c2894432542', '', '', '', '', 0, '', '', 1, 'local'),
+('63b5', 'Xavi58', '$2y$12$AfHCDhUf/kG.OdAIohWdTefuSekiu1jnq5j/Vg06vPBtaaabyMSnu', 'xavi58@gmail.com', 'client', 'https://i.pravatar.cc/500?u=ee689dd234a35b9f71fb79eac66c68fe', '', '', '', '', 0, '', '', 1, 'local'),
+('6bdb7', 'paco79', '$2y$12$7kAiWI6IcjtNcXSBESSaneZfId8KqvfVkxbk9G/uvpwvyZKyUz9bq', 'paco79@gmail.com', 'client', 'https://i.pravatar.cc/500?u=cd03520894abd001149c0ad0491c1d04', '', '', '', '', 0, '', '', 1, 'local'),
+('860c', 'Diego94', '$2y$12$D6s5NTCwbP.MGm062yZXxuuXZ50tpSwDP8prIR3RRMLkCWbxtEc1C', 'diego94@gmail.com', 'client', '/angela/ZZFrameWork/view/uploads/avatar/860c.png', '+25479621', 'Diego', 'Llorens', 'Ontinyent', 0, '', '', 1, 'local'),
+('8dcb4', 'Cain33', '$2y$12$1i399bzacg67obsHMuNSZeYBZ/f5/Kvet23tn3OdWWYu/RIQVwzvO', 'cain33@gmail.com', 'client', '/angela/ZZFrameWork/view/uploads/avatar/8dcb4.png', '+34578965252', 'Cain', 'Martinez', 'Aljorf', 0, '', '', 1, 'local'),
+('9d8df', 'Angela24', '$2y$12$qjen7QF.pQ4S6CLAR/WzuuuI1uvhSTpnK.lpNnaq0VUsX0EKKRXQi', 'angela24@gmail.com', 'admin', 'https://robohash.org/bcad65cbb7e72b2c3eb99b8f4a4d41ee', '', '', '', '', 0, '', '', 1, 'local'),
+('b0a0j', 'Alvaro74', '$2y$12$9Yl2wNh5hjRJr2c2SaNDkuW54avtOPyX6A3j08i61WZGcAYIlFT6u', 'alvaro74@gmail.com', 'client', '/angela/ZZFrameWork/view/uploads/avatar/b0a0j.jpg', '+3456985632', 'Alvaro', 'Garrido', 'Castellon', 0, '', '', 1, 'local'),
+('c9c15', 'Carla29 ', '$2y$12$ArMAmb7UPHEbzxo9so1BWOSjCzgBhqL0TtgzZJgmmy42q7UuJi4LO', 'carla29@gmail.com', 'client', 'https://i.pravatar.cc/400?u=62779a64d5b24b7fd3d5026977b7a87a', '', '', '', '', 0, '', '', 1, 'local'),
+('f138a', 'Carlos29', '$2y$12$DUmul1bagMdxtsqur.jNK.u01rZ.sKC3nBfs58PmUwgBZm.pxV.Wi', 'carlos29@gmail.com', 'client', 'https://robohash.org/db1e0a3750e0399df3eeee808187d9b4', '', '', '', '', 0, '', '', 1, 'local'),
+('f205', 'Alex22', '$2y$12$g83ESqaP1rbGeg21lWe70ek7uwu0ckt4rkrP8rFB/PQQMpHNUnKay', 'alex22@gmail.com', 'client', 'https://i.pravatar.cc/500?u=90d5e6cdce2909f062c106f02dab1e77', '', '', '', '', 0, '', '', 1, 'local'),
+('f6e8r', 'Ainhoa22', '$2y$12$HTGQ.0KY4c8TNxRjCXPqoeP3LZogd4zEpoHNjAyb0rsrzxG17BrjK', 'ainhoa22@gmail.com', 'client', 'https://i.pravatar.cc/500?u=1314951436582657f9c3e6d3ddde1911', '', '', '', '', 0, '', '', 1, 'local'),
+('rFz4mONvFVUa1F5rCEI25SGj0Fl1', 'angeletatorro98', '', 'angeletatorro98@gmail.com', 'client', 'https://lh3.googleusercontent.com/a/ACg8ocICFaUywok03hRKF3BLUiKBRdEjcsKFA_MLPllpjXPlBShY5fGN=s96-c', '', '', '', '', 0, '', '', 0, 'google');
 
 -- --------------------------------------------------------
 
@@ -748,15 +862,15 @@ CREATE TABLE `visited` (
 --
 
 INSERT INTO `visited` (`code_visit`, `code_prop`, `visits`) VALUES
-(1, 1, 96),
-(2, 2, 85),
-(3, 3, 8),
-(4, 4, 1),
-(5, 5, 17),
-(6, 6, 4),
+(1, 1, 144),
+(2, 2, 122),
+(3, 3, 16),
+(4, 4, 6),
+(5, 5, 18),
+(6, 6, 7),
 (7, 7, 0),
 (8, 8, 0),
-(9, 9, 10);
+(9, 9, 11);
 
 --
 -- Índices para tablas volcadas
@@ -773,7 +887,13 @@ ALTER TABLE `activity`
 -- Indices de la tabla `cart`
 --
 ALTER TABLE `cart`
-  ADD PRIMARY KEY (`id_cart`);
+  ADD PRIMARY KEY (`code_cart`);
+
+--
+-- Indices de la tabla `cart_prop`
+--
+ALTER TABLE `cart_prop`
+  ADD PRIMARY KEY (`code_cart_prop`);
 
 --
 -- Indices de la tabla `category`
@@ -813,7 +933,7 @@ ALTER TABLE `likes`
 -- Indices de la tabla `products`
 --
 ALTER TABLE `products`
-  ADD PRIMARY KEY (`id_prod`);
+  ADD PRIMARY KEY (`code_prod`);
 
 --
 -- Indices de la tabla `property`
@@ -855,7 +975,7 @@ ALTER TABLE `property_type`
 -- Indices de la tabla `purchase`
 --
 ALTER TABLE `purchase`
-  ADD PRIMARY KEY (`id_purchase`);
+  ADD PRIMARY KEY (`code_order`);
 
 --
 -- Indices de la tabla `type`
@@ -891,7 +1011,13 @@ ALTER TABLE `activity`
 -- AUTO_INCREMENT de la tabla `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id_cart` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `code_cart` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+
+--
+-- AUTO_INCREMENT de la tabla `cart_prop`
+--
+ALTER TABLE `cart_prop`
+  MODIFY `code_cart_prop` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `category`
@@ -921,7 +1047,7 @@ ALTER TABLE `images`
 -- AUTO_INCREMENT de la tabla `products`
 --
 ALTER TABLE `products`
-  MODIFY `id_prod` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `code_prod` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `property`
@@ -933,7 +1059,7 @@ ALTER TABLE `property`
 -- AUTO_INCREMENT de la tabla `purchase`
 --
 ALTER TABLE `purchase`
-  MODIFY `id_purchase` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `code_order` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT de la tabla `type`
