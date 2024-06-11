@@ -74,6 +74,7 @@ function list_profile() {
 			// console.log("Dentro del then", result[0])
 			// return
 			// INFORMACION DEL USUARIO
+			localStorage.setItem("userid", result[0].id_user)
 			$(".profile-username").text(result[0].username)
 			$(".profile-name").text(result[0].name)
 			$(".profile-surname").text(result[0].surname)
@@ -124,8 +125,9 @@ function update_profile() {
 
 // DROPZONE AVATAR
 function dropzone_avatar() {
-	var dropZone = $("#drop_zone")
-	var fileInput = $("#fileInput")
+	var dropZone = $("#drop-zone")
+	var maxFileSize = 2 * 1024 * 1024 // 2 MB
+	var allowedFileTypes = ["image/jpeg", "image/png", "image/jpg"]
 
 	dropZone.on("dragover", function (e) {
 		e.preventDefault()
@@ -145,76 +147,94 @@ function dropzone_avatar() {
 		dropZone.removeClass("highlight")
 
 		var files = e.originalEvent.dataTransfer.files
-		handleFiles(files)
-	})
-
-	dropZone.on("click", function () {
-		fileInput.click()
-	})
-
-	fileInput.on("change", function () {
-		var files = fileInput[0].files
-		handleFiles(files)
-	})
-}
-
-function handleFiles(files) {
-	for (var i = 0; i < files.length; i++) {
-		var file = files[i]
-		if (validateFile(file)) {
-			uploadFile(file)
+		if (files.length > 1) {
+			dropZone.addClass("error")
+			dropZone.html("Only one file upload is allowed at a time.")
+			setTimeout(function () {
+				dropZone.removeClass("error")
+				dropZone.html("Drop files here")
+			}, 3000)
+			return
 		}
-	}
+
+		var file = files[0]
+		if (file.size > maxFileSize) {
+			dropZone.addClass("error")
+			dropZone.html("File is too big. Max file size is 2MB.")
+			setTimeout(function () {
+				dropZone.removeClass("error")
+				dropZone.html("Drop files here")
+			}, 3000)
+			return
+		}
+
+		if (!allowedFileTypes.includes(file.type)) {
+			dropZone.addClass("error")
+			dropZone.html("Invalid file type. Only JPEG and PNG are allowed.")
+			setTimeout(function () {
+				dropZone.removeClass("error")
+				dropZone.html("Drop files here")
+			}, 3000)
+			return
+		}
+
+		handleFile(file)
+	})
 }
 
-function validateFile(file) {
-	var allowedTypes = ["image/jpeg", "image/png", "image/jpg"]
-	var maxSize = 5 * 1024 * 1024 // 5MB
-
-	if (allowedTypes.indexOf(file.type) === -1) {
-		$("#drop_zone").addClass("error")
-		$("#drop_zone").text("File type not supported")
-		setTimeout(function () {
-			$("#drop_zone").removeClass("error")
-			$("#drop_zone").text("Drop file here")
-		}, 2000)
-
-		return false
-	}
-
-	if (file.size > maxSize) {
-		$("#drop_zone").addClass("error")
-		$("#drop_zone").text("File is too large")
-		setTimeout(function () {
-			$("#drop_zone").removeClass("error")
-			$("#drop_zone").text("Drop file here")
-		}, 2000)
-		return false
-	}
-
-	return true
-}
-
-function uploadFile(file) {
+function handleFile(file) {
 	var formData = new FormData()
-	formData.append("file", file)
-	formData.append("access_token", localStorage.getItem("access_token"))
+	var userId = localStorage.getItem("userid")
+	if (!userId) {
+		alert("Usuario no identificado.")
+		return
+	}
 
-	console.log("file", formData)
+	var fileExtension = file.name.split(".").pop()
+	var newFileName = userId + "." + fileExtension
+	formData.append("file", file, newFileName)
+
+	console.log("formData", file, newFileName)
 
 	$.ajax({
-		url: friendlyURL("?module=profile&op=upload_avatar"),
+		url: "utils/dropzone.php",
 		type: "POST",
 		data: formData,
 		processData: false,
 		contentType: false,
 		success: function (response) {
-			console.log("File uploaded successfully", response)
+			console.log("response", response)
+			console.log("success")
+			handleFilePath(response)
 		},
-		error: function (e) {
-			console.error("Catch error: ", e)
+		error: function (xhr, status, error) {
+			alert("Error al subir los archivos.")
+			console.log(error)
 		},
 	})
+}
+
+function handleFilePath(filePath) {
+	console.log("Ruta del archivo:", filePath)
+	
+	var access_token = localStorage.getItem("access_token")
+	var op = "update_avatar"
+
+	ajaxPromise(friendlyURL("?module=profile"), "POST", "JSON", {
+		access_token: access_token,
+		avatar: filePath,
+		op: op,
+	})
+		.then(function (data) {
+			console.log("Dentro del then", data)
+			return
+			// console.log("Success")
+			location.reload()
+		})
+		.catch(function (e) {
+			console.error("Catch error: ", e)
+		})
+
 }
 
 // FAVORITOS
