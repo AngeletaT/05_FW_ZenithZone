@@ -52,7 +52,7 @@ class login_bll
 
         // return $email;
         // return $args;
-        if ($email['exp'] > time()) {
+        if ($email['exp'] < time()) {
             echo json_encode("Email caducado");
             exit();
         } else {

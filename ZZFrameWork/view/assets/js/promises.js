@@ -121,6 +121,7 @@ function logout() {
 				localStorage.removeItem("refresh_token")
 				localStorage.removeItem("page")
 				localStorage.removeItem("code_prop")
+				localStorage.removeItem("userid")
 				toastr.warning("The account has been closed for security!!")
 				$(".useravatar").hide()
 				window.location.href = friendlyURL("?module=home")
@@ -164,6 +165,7 @@ function load_content() {
 	let path = window.location.pathname.split("/")
 	// console.log("load_content")
 	// console.log([path[1], path[2], path[3], path[4], path[5]])
+	// console.log("path", path[4])
 	// console.log("token_email", path[5])
 
 	if (path[4] === "recover") {

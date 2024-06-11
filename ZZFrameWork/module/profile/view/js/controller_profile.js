@@ -42,7 +42,7 @@ function click() {
 	})
 
 	$(".profile-pref-sect form").submit(function (e) {
-		console.log("submit")
+		// console.log("submit")
 		e.preventDefault()
 		update_profile()
 	})
@@ -57,7 +57,7 @@ function click() {
 		.off("click")
 		.on("click", function (e) {
 			e.preventDefault()
-			console.log("order-pdf")
+			// console.log("order-pdf")
 			var code_purchase = $(this).attr("id")
 			// console.log("code_purchase", code_purchase)
 			generate_pdf(code_purchase)
@@ -67,7 +67,7 @@ function click() {
 		.off("click")
 		.on("click", function (e) {
 			e.preventDefault()
-			console.log("order-qr")
+			// console.log("order-qr")
 			var code_purchase = $(this).attr("id")
 			// console.log("code_purchase", code_purchase)
 			generate_qr(code_purchase)
@@ -106,7 +106,7 @@ function list_profile() {
 }
 
 function update_profile() {
-	console.log("update_profile")
+	// console.log("update_profile")
 	var access_token = localStorage.getItem("access_token")
 	var name = $("#user_name").val()
 	var surname = $("#user_surname").val()
@@ -126,7 +126,7 @@ function update_profile() {
 			// console.log("Dentro del then", data)
 			// return
 			// console.log("Success")
-			tostr.success("Profile updated")
+			toastr.success("Profile updated")
 			setTimeout(function () {
 				location.reload()
 			}, 3000)
@@ -207,7 +207,7 @@ function handleFile(file) {
 	var newFileName = userId + "." + fileExtension
 	formData.append("file", file, newFileName)
 
-	console.log("formData", file, newFileName)
+	// console.log("formData", file, newFileName)
 
 	$.ajax({
 		url: "utils/dropzone.php",
@@ -216,13 +216,13 @@ function handleFile(file) {
 		processData: false,
 		contentType: false,
 		success: function (response) {
-			console.log("response", response)
-			console.log("success")
+			// console.log("response", response)
+			// console.log("success")
 			handleFilePath(response)
 		},
 		error: function (xhr, status, error) {
 			alert("Error al subir los archivos.")
-			console.log(error)
+			// console.log(error)
 		},
 	})
 }
@@ -237,7 +237,7 @@ function handleFilePath(response) {
 	// Remove the unwanted part of the path
 	filePath = filePath.replace("..", "")
 
-	console.log("Ruta del archivo:", filePath)
+	// console.log("Ruta del archivo:", filePath)
 
 	var access_token = localStorage.getItem("access_token")
 	var op = "update_avatar"
@@ -248,7 +248,7 @@ function handleFilePath(response) {
 		op: op,
 	})
 		.then(function (data) {
-			console.log("Dentro del then", data)
+			// console.log("Dentro del then", data)
 			// return
 			// console.log("Success")
 			location.reload()
@@ -267,7 +267,7 @@ function likes_profile() {
 
 	ajaxPromise(friendlyURL("?module=profile"), "POST", "JSON", {access_token: access_token, op: op})
 		.then(function (data) {
-			console.log("Dentro del then", data)
+			// console.log("Dentro del then", data)
 			// return
 			if (data === "No likes") {
 				$(".prop-table-profile").html("<h4>No likes</h4>")
@@ -366,7 +366,7 @@ function likes_profile() {
 $(document).on("click", ".like-profile", function () {
 	var code_prop = $(this).attr("id")
 	var access_token = localStorage.getItem("access_token")
-	console.log("code_prop", code_prop)
+	// console.log("code_prop", code_prop)
 	if (access_token) {
 		ajaxPromise(friendlyURL("?module=profile"), "POST", "JSON", {
 			"code_prop": code_prop,
@@ -438,7 +438,7 @@ function calculateInvoiceTotal(data) {
 }
 
 function generate_pdf(code_purchase) {
-	console.log("generate_pdf")
+	// console.log("generate_pdf")
 	var access_token = localStorage.getItem("access_token")
 	var op = "generate_pdf"
 
@@ -448,14 +448,14 @@ function generate_pdf(code_purchase) {
 		op: op,
 	})
 		.then(function (data) {
-			console.log("Dentro del then", data)
+			// console.log("Dentro del then", data)
 			// return
 			ajaxPromise(friendlyURL("?module=profile"), "POST", "JSON", {
 				data: data,
 				op: "invoice_data",
 			})
 				.then(function (data) {
-					console.log("Dentro del then2", data)
+					// console.log("Dentro del then2", data)
 					// return
 					var pdf = data.invoice
 					window.open(pdf, "_blank")
@@ -474,7 +474,7 @@ function generate_pdf(code_purchase) {
 }
 
 function generate_qr(code_purchase) {
-	console.log("generate_pdf")
+	// console.log("generate_pdf")
 	var access_token = localStorage.getItem("access_token")
 	var op = "generate_pdf"
 
@@ -484,24 +484,24 @@ function generate_qr(code_purchase) {
 		op: op,
 	})
 		.then(function (data) {
-			console.log("Dentro del then", data)
+			// console.log("Dentro del then", data)
 			// return
 			ajaxPromise(friendlyURL("?module=profile"), "POST", "JSON", {
 				data: data,
 				op: "invoice_data",
 			})
 				.then(function (pdfPath) {
-					console.log("Dentro del then2", pdfPath)
+					// console.log("Dentro del then2", pdfPath)
 					var pdf_url = pdfPath.invoice
-					console.log("pdf_url", pdf_url)
-					console.log("code_purchase", code_purchase)
+					// console.log("pdf_url", pdf_url)
+					// console.log("code_purchase", code_purchase)
 					// return
 					ajaxPromise(friendlyURL("?module=profile"), "POST", "JSON", {
 						pdf_url: pdf_url,
 						op: "generate_qr",
 					})
 						.then(function (qrPath) {
-							console.log("Dentro del then3", qrPath)
+							// console.log("Dentro del then3", qrPath)
 							// return
 							window.open(qrPath, "_blank")
 						})
