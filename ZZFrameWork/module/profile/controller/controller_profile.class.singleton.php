@@ -60,6 +60,12 @@ class controller_profile
         echo json_encode(common::load_model('profile_model', 'generate_pdf', [$_POST['access_token'], $_POST['code_purchase']]));
     }
 
+    function generate_qr()
+    {
+        // echo json_encode("generate_qr");
+        echo json_encode(QR::createQR($_POST['pdf_url']));
+    }
+
     function invoice_data()
     {
         // echo json_encode("invoice_data");

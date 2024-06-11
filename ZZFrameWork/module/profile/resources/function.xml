@@ -38,6 +38,10 @@
         <uri>generate_pdf</uri>
     </function>
     <function>
+        <name>generate_qr</name>
+        <uri>generate_qr</uri>
+    </function>
+    <function>
         <name>invoice_data</name>
         <uri>invoice_data</uri>
     </function>

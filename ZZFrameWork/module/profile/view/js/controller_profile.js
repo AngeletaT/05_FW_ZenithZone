@@ -62,6 +62,16 @@ function click() {
 			// console.log("code_purchase", code_purchase)
 			generate_pdf(code_purchase)
 		})
+
+	$(".order-qr")
+		.off("click")
+		.on("click", function (e) {
+			e.preventDefault()
+			console.log("order-qr")
+			var code_purchase = $(this).attr("id")
+			// console.log("code_purchase", code_purchase)
+			generate_qr(code_purchase)
+		})
 }
 // INFORMACION USER
 function list_profile() {
@@ -451,6 +461,53 @@ function generate_pdf(code_purchase) {
 				})
 				.catch(function (e) {
 					console.error("Catch error: ", e)
+				})
+
+			// location.reload()
+		})
+		.catch(function (e) {
+			console.error("Catch error: ", e)
+		})
+}
+
+function generate_qr(code_purchase) {
+	console.log("generate_pdf")
+	var access_token = localStorage.getItem("access_token")
+	var op = "generate_pdf"
+
+	ajaxPromise(friendlyURL("?module=profile"), "POST", "JSON", {
+		access_token: access_token,
+		code_purchase: code_purchase,
+		op: op,
+	})
+		.then(function (data) {
+			console.log("Dentro del then", data)
+			// return
+			ajaxPromise(friendlyURL("?module=profile"), "POST", "JSON", {
+				data: data,
+				op: "invoice_data",
+			})
+				.then(function (pdfPath) {
+					console.log("Dentro del then2", pdfPath)
+					var pdf_url = pdfPath.invoice
+					console.log("pdf_url", pdf_url)
+					console.log("code_purchase", code_purchase)
+					// return
+					ajaxPromise(friendlyURL("?module=profile"), "POST", "JSON", {
+						pdf_url: pdf_url,
+						op: "generate_qr",
+					})
+						.then(function (qrPath) {
+							console.log("Dentro del then3", qrPath)
+							// return
+							window.open(qrPath, "_blank")
+						})
+						.catch(function (e) {
+							console.error("Catch error3: ", e)
+						})
+				})
+				.catch(function (e) {
+					console.error("Catch error2: ", e)
 				})
 
 			// location.reload()
