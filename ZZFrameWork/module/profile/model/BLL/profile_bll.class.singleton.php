@@ -57,37 +57,14 @@ class profile_bll
 
     public function update_avatar_BLL($args)
     {
-        return $args;
-        // $username = middleware::decode_token($args[1]);
+        // return $args;
+        $username = middleware::decode_token($args[0]);
         // return $username;
+        $avatar = $args[1];
 
-        // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        //     if (!isset($_FILES['file'])) {
-        //         return 'No file uploaded';
-        //     }
-        //     $file = $_FILES['file'];
-        //     if ($file['error'] !== UPLOAD_ERR_OK) {
-        //         return 'File upload error: ' . $file['error'];
-        //     }
-        //     $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-        //     if (!in_array($file['type'], $allowedTypes)) {
-        //         return 'Invalid file type';
-        //     }
-        //     $maxSize = 5 * 1024 * 1024;
-        //     if ($file['size'] > $maxSize) {
-        //         return 'File size exceeds the maximum limit';
-        //     }
-        //     $uploadDir = '/view/uploads/avatar/';
-        //     if (!is_dir($uploadDir) && !mkdir($uploadDir, 0777, true)) {
-        //         return 'Failed to create directory';
-        //     }
-        //     $filePath = $uploadDir . basename($file['name']);
-        //     if (!move_uploaded_file($file['tmp_name'], $filePath)) {
-        //         return 'Failed to move uploaded file';
-        //     }
-        //     return 'Uploaded';
-        // }
-        // return 'Invalid request method';
+        $this->dao->update_user_avatar($this->db, $username['username'], $avatar);
+
+        return 'update';
 
     }
 

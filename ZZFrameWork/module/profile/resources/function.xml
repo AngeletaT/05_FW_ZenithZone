@@ -18,8 +18,8 @@
         <uri>update_profile</uri>
     </function>
     <function>
-        <name>upload_avatar</name>
-        <uri>upload_avatar</uri>
+        <name>update_avatar</name>
+        <uri>update_avatar</uri>
     </function>
     <function>
         <name>likes_profile</name>

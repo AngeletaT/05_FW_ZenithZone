@@ -214,9 +214,18 @@ function handleFile(file) {
 	})
 }
 
-function handleFilePath(filePath) {
+function handleFilePath(response) {
+	// Parse the response string into an object
+	var responseObject = JSON.parse(response)
+
+	// Extract the file path from the response object
+	var filePath = responseObject.filePath
+
+	// Remove the unwanted part of the path
+	filePath = filePath.replace("..", "")
+
 	console.log("Ruta del archivo:", filePath)
-	
+
 	var access_token = localStorage.getItem("access_token")
 	var op = "update_avatar"
 
@@ -227,14 +236,13 @@ function handleFilePath(filePath) {
 	})
 		.then(function (data) {
 			console.log("Dentro del then", data)
-			return
+			// return
 			// console.log("Success")
 			location.reload()
 		})
 		.catch(function (e) {
 			console.error("Catch error: ", e)
 		})
-
 }
 
 // FAVORITOS

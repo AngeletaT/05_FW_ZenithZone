@@ -11,7 +11,7 @@ if (isset($_FILES['file'])) {
     $targetFilePath = $targetDir . $name;
 
     if (move_uploaded_file($_FILES['file']['tmp_name'], $targetFilePath)) {
-        $response['filePath'] = $targetFilePath;
+        $response['filePath'] = "/angela/ZZFrameWork" . $targetFilePath;
     } else {
         $response['error'] = "Error al subir el archivo: " . $name;
     }

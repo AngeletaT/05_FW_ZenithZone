@@ -63,6 +63,15 @@ class profile_dao
         $db->ejecutar($sql);
     }
 
+    public function update_user_avatar($db, $username, $avatar)
+    {
+        $sql = "UPDATE users 
+        SET avatar = '$avatar' 
+        WHERE username = '$username'";
+
+        $db->ejecutar($sql);
+    }
+
     // LIKES DEL USUARIO
     public function select_likes($db, $username)
     {
